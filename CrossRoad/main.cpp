@@ -54,7 +54,7 @@ void ResizeView(const sf::RenderWindow& window, sf::View& view);
 float findPosCarY(sf::RectangleShape colorcar, float poscary);
 bool Collision(sf::Vector2f posobject, sf::RectangleShape sizeobject, sf::RectangleShape posplayerfunc, sf::RectangleShape playersizefunc);
 bool changeVolumeSign(float playery, float trainy, float limitupper, float limitlower, float trainsizey);
-bool changeVolumeTrain(float playery, float trainy, float limitupper, float limitlower, float trainsizey);
+
 sf::Vector2f positionview;
 int main()
 {
@@ -77,19 +77,19 @@ int main()
 	player.setPosition(spawnPoint);
 
 	sf::RectangleShape white(sf::Vector2f(sizecarx, sizecary));
-	white.setFillColor(sf::Color::White);
+	white.setFillColor(sf::Color::Transparent);
 
 	sf::RectangleShape green(sf::Vector2f(sizecarx, sizecary));
-	green.setFillColor(sf::Color::Green);
+	green.setFillColor(sf::Color::Transparent);
 
 	sf::RectangleShape red(sf::Vector2f(200.f, sizecary));
-	red.setFillColor(sf::Color::Red);
+	red.setFillColor(sf::Color::Transparent);
 
 	sf::RectangleShape yellow(sf::Vector2f(90, sizecary));
-	yellow.setFillColor(sf::Color::Yellow);
+	yellow.setFillColor(sf::Color::Transparent);
 
 	sf::RectangleShape blue(sf::Vector2f(sizecarx, sizecary));
-	blue.setFillColor(sf::Color::Blue);
+	blue.setFillColor(sf::Color::Transparent);
 
 	sf::RectangleShape purple(sf::Vector2f(100.f, 50.f));
 	purple.setFillColor(sf::Color::Magenta);
@@ -397,6 +397,28 @@ int main()
 		}
 	}
 
+	//texture car
+	sf::Sprite carwhitesp;
+	sf::Sprite cargreensp;
+	sf::Sprite carredsp;
+	sf::Sprite caryellowsp;
+	sf::Sprite carbluesp;
+	sf::Texture texturecar;
+	texturecar.loadFromFile("carsptext.png");
+	//texturecar.setSmooth(true);
+	carredsp.setTexture(texturecar);
+	caryellowsp.setTexture(texturecar);
+	carbluesp.setTexture(texturecar);
+	carwhitesp.setTexture(texturecar);
+	cargreensp.setTexture(texturecar);
+	//carsp.setTextureRect(sf::IntRect(0, 0, 120.f, 65.0f));
+	carwhitesp.setTextureRect(sf::IntRect(492, 18, 82.f, 58.0f));
+	carredsp.setTextureRect(sf::IntRect(20, 203, 139.f, 74.0f));
+	caryellowsp.setTextureRect(sf::IntRect(20, 25, 63.f, 52.0f));
+	carbluesp.setTextureRect(sf::IntRect(353, 101, 87.f, 65.0f));
+	cargreensp.setTextureRect(sf::IntRect(584, 101, 92.f, 65.0f));
+	//carsp.setScale(sf::Vector2f(1.0f, 1.0f));
+
 	sf::RectangleShape platmid(sf::Vector2f(1080.0f, 50.0f));//200
 	platmid.setFillColor(sf::Color::Cyan);
 	sf::Vector2f posplatmid[4];
@@ -423,10 +445,19 @@ int main()
 	sf::RectangleShape hitboxTrain(sf::Vector2f(4320, 350));
 	hitboxTrain.setFillColor(sf::Color::White);
 	hitboxTrain.setPosition(-4520, findPosCarY(hitboxTrain, hitboxTrain.getPosition().y));//-4320
-
+	sf::Texture texturetrain;
+	texturetrain.loadFromFile("traintext.png");
+	hitboxTrain.setTexture(&texturetrain);
+	
 	sf::RectangleShape signTrain(sf::Vector2f(100.0f, 100.0f));
 	signTrain.setFillColor(sf::Color::Green);
 	sf::Vector2f possign[3];
+	sf::Sprite signsp;
+	sf::Texture texturesign;
+	texturesign.loadFromFile("danger.jpg");
+	signsp.setTexture(texturesign);
+	signsp.setTextureRect(sf::IntRect(0,0,1300.f,1300.f));
+	signsp.setScale(0.0769230769230769f, 0.0769230769230769f);
 
 	sf::Font fontscore;
 	fontscore.loadFromFile("fonttext/GOTHICB.ttf");
@@ -988,7 +1019,7 @@ int main()
 	effecfootstep.loadFromFile("footsteps111.wav");
 	sf::Sound footSound;
 	footSound.setBuffer(effecfootstep);
-	footSound.setVolume(15);
+	footSound.setVolume(20);
 	footSound.setLoop(true);
 
 	sf::RectangleShape mapbox(sf::Vector2f(1080.f, 4955.f));
@@ -2144,8 +2175,21 @@ int main()
 		{
 			for (i = 0; i <= 3; i++)
 			{
+				if (whitex[a].checkside == 1)
+				{
+
+					carwhitesp.setScale(1.463414634146341f, 1.120689655172414f);
+					carwhitesp.setPosition(poswhite[a][i].x, poswhite[a][i].y);
+				}
+				else
+				{
+
+					carwhitesp.setScale(sf::Vector2f(-1.463414634146341f, 1.120689655172414f));
+					carwhitesp.setPosition(poswhite[a][i].x + white.getSize().x, poswhite[a][i].y);
+				}
 				white.setPosition(poswhite[a][i].x, poswhite[a][i].y);
 				window.draw(white);
+				window.draw(carwhitesp);
 			}
 		}
 		//draw blue
@@ -2153,8 +2197,21 @@ int main()
 		{
 			for (i = 0; i <= 2; i++)
 			{
+				if (bluex[a].checkside == 1)
+				{
+
+					carbluesp.setScale(1.379310344827586f, 1.0f);
+					carbluesp.setPosition(posblue[a][i].x, posblue[a][i].y);
+				}
+				else
+				{
+
+					carbluesp.setScale(sf::Vector2f(-1.379310344827586f, 1.0f));
+					carbluesp.setPosition(posblue[a][i].x + blue.getSize().x, posblue[a][i].y);
+				}
 				blue.setPosition(posblue[a][i].x, posblue[a][i].y);
 				window.draw(blue);
+				window.draw(carbluesp);
 			}
 		}
 		//draw green
@@ -2162,8 +2219,21 @@ int main()
 		{
 			for (i = 0; i <= 2; i++)
 			{
+				if (greenx[a].checkside == 1)
+				{
+
+					cargreensp.setScale(1.304347826086957f, 1.0f);
+					cargreensp.setPosition(posgreen[a][i].x, posgreen[a][i].y);
+				}
+				else
+				{
+
+					cargreensp.setScale(sf::Vector2f(-1.304347826086957f, 1.0f));
+					cargreensp.setPosition(posgreen[a][i].x + green.getSize().x, posgreen[a][i].y);
+				}
 				green.setPosition(posgreen[a][i].x, posgreen[a][i].y);
 				window.draw(green);
+				window.draw(cargreensp);
 			}
 		}
 		//draw red
@@ -2171,8 +2241,21 @@ int main()
 		{
 			for (i = 0; i <= 2; i++)
 			{
+				if (redx[a].checkside == 1)
+				{
+
+					carredsp.setScale(1.438848920863309f, 0.8783783783783784f);
+					carredsp.setPosition(posred[a][i].x, posred[a][i].y);
+				}
+				else
+				{
+
+					carredsp.setScale(sf::Vector2f(-1.438848920863309f, 0.8783783783783784f));
+					carredsp.setPosition(posred[a][i].x + red.getSize().x, posred[a][i].y);
+				}
 				red.setPosition(posred[a][i].x, posred[a][i].y);
 				window.draw(red);
+				window.draw(carredsp);
 			}
 		}
 		//draw yellow
@@ -2180,8 +2263,21 @@ int main()
 		{
 			for (i = 0; i <= 3; i++)
 			{
+				if (yellowx[a].checkside == 1)
+				{
+
+					caryellowsp.setScale(1.428571428571429f, 1.250f);
+					caryellowsp.setPosition(posyellow[a][i].x, posyellow[a][i].y);
+				}
+				else
+				{
+
+					caryellowsp.setScale(sf::Vector2f(-1.428571428571429f, 1.250f));
+					caryellowsp.setPosition(posyellow[a][i].x + yellow.getSize().x, posyellow[a][i].y);
+				}
 				yellow.setPosition(posyellow[a][i].x, posyellow[a][i].y);
 				window.draw(yellow);
+				window.draw(caryellowsp);
 			}
 		}
 		//draw river
@@ -2313,15 +2409,18 @@ int main()
 			window.draw(itemcoins);
 		}
 
+		
 		window.draw(hitboxTrain);
+		
 		//sign
-
 		for (i = 0; i <= 2; i++)
 		{
 			signTrain.setPosition(possign[i].x, possign[i].y);
+			signsp.setPosition(possign[i].x,possign[i].y);
 			if (trainrunning == 0)
 			{
 				window.draw(signTrain);
+				window.draw(signsp);
 			}
 		}
 
@@ -2383,18 +2482,6 @@ bool Collision(sf::Vector2f posobject, sf::RectangleShape sizeobject, sf::Rectan
 bool changeVolumeSign(float playery, float trainy, float limitupper, float limitlower, float trainsizey)
 {
 	if ((abs(playery - trainy) < limitupper && abs(playery - trainy) >= limitlower) || (abs(playery - (trainy + trainsizey)) < limitupper && abs(playery - (trainy + trainsizey)) >= limitlower))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool changeVolumeTrain(float playery, float trainy, float limitupper, float limitlower, float trainsizey)
-{
-	if ((abs(playery - (trainy + trainsizey)) < limitupper && abs(playery - (trainy + trainsizey)) >= limitlower))
 	{
 		return true;
 	}
