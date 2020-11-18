@@ -20,3 +20,7 @@ private:
 	sf::Text pausemenu[MAX_NUMBER_OF_ITEMS];
 
 };
+
+class PauseMenu
+{
+};

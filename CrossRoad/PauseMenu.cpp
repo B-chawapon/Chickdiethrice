@@ -43,9 +43,11 @@ void Pausemenu::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
+		pausemenu[selectedItemIndex].setScale(1.f, 1.f);
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex--;
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::Red);
+		pausemenu[selectedItemIndex].setScale(2.f, 2.f);
 	}
 }
 
@@ -53,8 +55,10 @@ void Pausemenu::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
+		pausemenu[selectedItemIndex].setScale(1.f, 1.f);
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex++;
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::Red);
+		pausemenu[selectedItemIndex].setScale(2.f, 2.f);
 	}
 }
