@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "Menu.h"
 #include<stdio.h>
 #include<iostream>
 #include<time.h>
@@ -43,6 +44,8 @@ int die = 0;
 int countchecksign = 0;
 int answer;
 
+int state = 1;
+
 int checkSoundAlert = 0;
 struct checksidexi
 {
@@ -74,6 +77,8 @@ int main()
 	player.setFillColor(sf::Color::Green);
 
 	sf::Vector2f spawnPoint = { 1080 / 2,145.f };
+	sf::Vector2f halfPoint = { 1080 / 2,2400.f };
+	sf::Vector2f bottomPoint = { 1080 / 2,3896.f };
 	player.setPosition(spawnPoint);
 
 	sf::RectangleShape white(sf::Vector2f(sizecarx, sizecary));
@@ -353,9 +358,16 @@ int main()
 	for (i = 0; i <= 2; i++)
 	{
 		posclock[i].x = rand() % 1000;
-		posclock[i].y = rand() % 4900;
-	}
+		while (true)
+		{
+			posclock[i].y = rand() % 4900;
+			if (posclock[i].y > 100.0f)
+			{
+				break;
+			}
+		}
 
+	}
 	sf::RectangleShape itemboots(sf::Vector2f(40.f, 40.f));
 	sf::Texture textureboots;
 	textureboots.loadFromFile("boots.png");
@@ -452,12 +464,11 @@ int main()
 	sf::RectangleShape signTrain(sf::Vector2f(100.0f, 100.0f));
 	signTrain.setFillColor(sf::Color::Green);
 	sf::Vector2f possign[3];
-	sf::Sprite signsp;
 	sf::Texture texturesign;
-	texturesign.loadFromFile("danger.jpg");
-	signsp.setTexture(texturesign);
-	signsp.setTextureRect(sf::IntRect(0,0,1300.f,1300.f));
-	signsp.setScale(0.0769230769230769f, 0.0769230769230769f);
+	texturesign.loadFromFile("danger2.jpg");
+	signTrain.setTexture(&texturesign);
+	//signTrain.setScale(0.0769230769230769f, 0.0769230769230769f);
+
 
 	sf::Font fontscore;
 	fontscore.loadFromFile("fonttext/GOTHICB.ttf");
@@ -1013,7 +1024,7 @@ int main()
 		return -1; // error
 	music.setVolume(60);
 	music.setLoop(true);
-	music.play();
+	
 
 	sf::SoundBuffer effecfootstep;
 	effecfootstep.loadFromFile("footsteps111.wav");
@@ -1027,6 +1038,9 @@ int main()
 	texturemap.loadFromFile("map.png");
 	mapbox.setTexture(&texturemap);
 	//texturemap.setSmooth(true);
+
+	Menu menu(window.getSize().x, window.getSize().y);
+	
 	while (window.isOpen())
 	{
 		window.clear();
@@ -1044,36 +1058,35 @@ int main()
 				ResizeView(window, view);
 				break;
 			case ::sf::Event::KeyPressed:
-				if (event.key.code == sf::Keyboard::W)
+				if (event.key.code == sf::Keyboard::W && state==0)
 				{
 					if (footSound.getStatus() != 2)
 					{
 						footSound.play();
 					}
 				}
-				if (event.key.code == sf::Keyboard::S)
+				if (event.key.code == sf::Keyboard::S && state == 0)
 				{
 					if (footSound.getStatus() != 2)
 					{
 						footSound.play();
 					}
 				}
-				if (event.key.code == sf::Keyboard::A)
+				if (event.key.code == sf::Keyboard::A && state == 0)
 				{
 					if (footSound.getStatus() != 2)
 					{
 						footSound.play();
 					}
 				}
-				if (event.key.code == sf::Keyboard::D)
+				if (event.key.code == sf::Keyboard::D && state == 0)
 				{
 					if (footSound.getStatus() != 2)
 					{
 						footSound.play();
 					}
 				}
-
-				if (event.key.code == sf::Keyboard::R)
+				if (event.key.code == sf::Keyboard::R && state == 0)
 				{
 					//slowtime = 0.1;//0.1
 					if (allowDraw == 0)
@@ -1095,27 +1108,56 @@ int main()
 					hpbar = -30;
 					checkcollintime = 0;
 				}
+				if (event.key.code == sf::Keyboard::Enter && menu.GetPressedItem()==0)
+				{
+					state = 0;
+				}
+				if (event.key.code == sf::Keyboard::Enter && menu.GetPressedItem() == 1)
+				{
+					state = 1;
+				}
+				if (event.key.code == sf::Keyboard::Enter && menu.GetPressedItem() == 2)
+				{
+					window.close();
+				}
 				break;
 			case ::sf::Event::KeyReleased:
-				if (event.key.code == sf::Keyboard::W)
+				if (event.key.code == sf::Keyboard::W && state == 0)
 				{
 					footSound.pause();
 				}
-				if (event.key.code == sf::Keyboard::S)
+				if (event.key.code == sf::Keyboard::S && state == 0)
 				{
 					footSound.pause();
 				}
-				if (event.key.code == sf::Keyboard::A)
+				if (event.key.code == sf::Keyboard::A && state == 0)
 				{
 					footSound.pause();
 				}
-				if (event.key.code == sf::Keyboard::D)
+				if (event.key.code == sf::Keyboard::D && state == 0)
 				{
 					footSound.pause();
 				}
+				if (event.key.code == sf::Keyboard::Up)
+				{
+					menu.MoveUp();
+				}
+				if (event.key.code == sf::Keyboard::Down)
+				{
+					menu.MoveDown();
+				}
+				menu.GetPressedItem() == sf::Keyboard::Return;
+				
 				break;
+				
 			}
 		}
+		if(state==0)
+		{
+			if (music.getStatus() != 2)
+			{
+				music.play();
+			}
 
 		//player move  //+ Collinsions *************************************************************
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))//2.5
@@ -1146,7 +1188,7 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 		{
-			window.close();
+			state = 1;
 		}
 
 		//animation coins
@@ -1615,10 +1657,10 @@ int main()
 			signTime = signclock.getElapsedTime();
 			if (signTime.asSeconds() > 0.8f)
 			{
-				signTrain.setFillColor(sf::Color::Red);
+				signTrain.setFillColor(sf::Color::Transparent);
 				if (signTime.asSeconds() > 1.6f)
 				{
-					signTrain.setFillColor(sf::Color::Green);
+					signTrain.setFillColor(sf::Color::Red);
 					signNotification += 1;
 					if (signNotification == 5)
 					{
@@ -1689,7 +1731,7 @@ int main()
 					countcollin += 1;
 					speed -= 0.05;
 					immue = immueclock.restart();
-					if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
+					/*if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
 					{
 						carcrash1.play();
 					}
@@ -1708,7 +1750,7 @@ int main()
 					if (effectSoundCrash == 5 && carcrash5.getStatus() != 2)
 					{
 						carcrash5.play();
-					}
+					}*/
 					break;
 				}
 			}
@@ -2063,7 +2105,14 @@ int main()
 				checkslowtime = 1;
 				clock.restart();
 				posclock[i].x = rand() % 1000;
-				posclock[i].y = rand() % 4900;
+				while (true)
+				{
+					posclock[i].y = rand() % 4900;
+					if (posclock[i].y > 100.0f)
+					{
+						break;
+					}
+				}
 				clockSound.play();
 			}
 		}
@@ -2096,7 +2145,14 @@ int main()
 					speed += 0.075;
 				}
 				posboots[i].x = rand() % 1000;
-				posboots[i].y = rand() % 4900;
+				while (true)
+				{
+					posboots[i].y = rand() % 4900;
+					if (posboots[i].y > 100.0f)
+					{
+						break;
+					}
+				}
 			}
 			posboots[2].x = -99;
 			posboots[2].y = -99;
@@ -2416,11 +2472,9 @@ int main()
 		for (i = 0; i <= 2; i++)
 		{
 			signTrain.setPosition(possign[i].x, possign[i].y);
-			signsp.setPosition(possign[i].x,possign[i].y);
 			if (trainrunning == 0)
 			{
 				window.draw(signTrain);
-				window.draw(signsp);
 			}
 		}
 
@@ -2435,8 +2489,16 @@ int main()
 			window.draw(scoretext);
 			window.draw(highscoretext);
 		}
+		}
+
+		if (state == 1)
+		{
+			music.stop();
+
+			menu.draw(window);
+		}
 		window.display();
-		window.clear();
+		//window.clear();
 	}
 	return 0;
 }
@@ -2490,3 +2552,4 @@ bool changeVolumeSign(float playery, float trainy, float limitupper, float limit
 		return false;
 	}
 }
+
