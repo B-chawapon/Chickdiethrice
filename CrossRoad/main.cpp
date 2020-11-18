@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Menu.h"
+#include "PauseMenu.h"
 #include<stdio.h>
 #include<iostream>
 #include<time.h>
@@ -1022,7 +1023,7 @@ int main()
 	sf::Music music;
 	if (!music.openFromFile("soundsonicbg2.wav"))
 		return -1; // error
-	music.setVolume(60);
+	music.setVolume(100);//60
 	music.setLoop(true);
 	
 
@@ -1040,6 +1041,7 @@ int main()
 	//texturemap.setSmooth(true);
 
 	Menu menu(window.getSize().x, window.getSize().y);
+	Pausemenu pausemenu(window.getSize().x, window.getSize().y);
 	
 	while (window.isOpen())
 	{
@@ -1108,17 +1110,24 @@ int main()
 					hpbar = -30;
 					checkcollintime = 0;
 				}
-				if (event.key.code == sf::Keyboard::Enter && menu.GetPressedItem()==0)
+				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem()==0||pausemenu.GetPressedItem()==0))
 				{
 					state = 0;
 				}
-				if (event.key.code == sf::Keyboard::Enter && menu.GetPressedItem() == 1)
+				if (event.key.code == sf::Keyboard::Enter && pausemenu.GetPressedItem() == 1)
 				{
-					state = 1;
+					state = 2;
 				}
-				if (event.key.code == sf::Keyboard::Enter && menu.GetPressedItem() == 2)
+				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 2 || pausemenu.GetPressedItem() == 2))
 				{
-					window.close();
+					if (state == 1)
+					{
+						window.close();
+					}
+					if (state == 2)
+					{
+						state = 1;
+					}
 				}
 				break;
 			case ::sf::Event::KeyReleased:
@@ -1138,16 +1147,18 @@ int main()
 				{
 					footSound.pause();
 				}
-				if (event.key.code == sf::Keyboard::Up)
+				if (event.key.code == sf::Keyboard::Up && (state == 1||state==2))
 				{
 					menu.MoveUp();
+					pausemenu.MoveUp();
 				}
-				if (event.key.code == sf::Keyboard::Down)
+				if (event.key.code == sf::Keyboard::Down && (state == 1||state==2))
 				{
 					menu.MoveDown();
+					pausemenu.MoveDown();
 				}
 				menu.GetPressedItem() == sf::Keyboard::Return;
-				
+				pausemenu.GetPressedItem() == sf::Keyboard::Return;
 				break;
 				
 			}
@@ -1188,7 +1199,7 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 		{
-			state = 1;
+			state = 2;
 		}
 
 		//animation coins
@@ -2197,7 +2208,7 @@ int main()
 			hs << "HighScore " << hightDistance;
 		}
 
-		answerc << player.getPosition().x << '\n' << player.getPosition().y;
+		answerc << state << '\n';
 		answertext.setString(answerc.str());
 		answertext.setPosition(positionview.x, positionview.y);
 
@@ -2215,15 +2226,17 @@ int main()
 
 		staminabar.setPosition(33.3f, positionview.y + 710.5f);
 		staminaSprite.setPosition(8, positionview.y + 520);
-
-		window.clear();
-
-		window.setView(view);
 		for (i = 0; i <= 3; i++)
 		{
 			platmid.setPosition(posplatmid[i].x, posplatmid[i].y);
-			window.draw(platmid);
 		}
+
+
+
+		window.setView(view);
+		
+		window.draw(platmid);
+		
 
 		window.draw(mapbox);
 		//draw white
@@ -2493,10 +2506,24 @@ int main()
 
 		if (state == 1)
 		{
-			music.stop();
 
+			view.reset(sf::FloatRect(0,0, screen.x, screen.y));
+			window.setView(view);
 			menu.draw(window);
 		}
+		if (state == 2)
+		{
+			music.pause();
+			alert.pause();
+			trainSound.pause();
+			clockSound.pause();
+			coinSound.pause();
+			bootsSound.pause();
+			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
+			window.setView(view);
+			pausemenu.draw(window);
+		}
+		cout << state<<'\n';
 		window.display();
 		//window.clear();
 	}
