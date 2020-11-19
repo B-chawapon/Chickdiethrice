@@ -6,12 +6,13 @@
 class Pausemenu
 {
 public:
-	Pausemenu(float width, float height);
+	Pausemenu(float width, float height,float x,float y);
 	~Pausemenu();
 
 	void draw(sf::RenderWindow& window);
 	void MoveUp();
 	void MoveDown();
+	void SetPOS(float x, float y);
 	int GetPressedItem() { return selectedItemIndex; }
 
 private:

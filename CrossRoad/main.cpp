@@ -1042,11 +1042,10 @@ int main()
 	//texturemap.setSmooth(true);
 
 	Menu menu(window.getSize().x, window.getSize().y);
-	Pausemenu pausemenu(window.getSize().x, window.getSize().y);
+	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
 
 	while (window.isOpen())
 	{
-		window.clear();
 
 		//printf("%f\n", player.getPosition().y);
 		sf::Event event;
@@ -1113,11 +1112,32 @@ int main()
 				}
 				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 0 || pausemenu.GetPressedItem() == 0))
 				{
-					
+					if (state == 1)
+					{
+						restart = 1;
+						state = 0;
+
+
+					}
+					if (state == 2)
+					{
+						restart = 0;
+						state = 0;
+
+					}
+
 				}
-				if (event.key.code == sf::Keyboard::Enter && pausemenu.GetPressedItem() == 1)
+				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 1 || pausemenu.GetPressedItem() == 1))
 				{
-					state = 2;
+					if (state == 1)
+					{
+						state = 2;
+					}
+					if (state == 2)
+					{
+						state = 2;
+					}
+
 				}
 				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 2 || pausemenu.GetPressedItem() == 2))
 				{
@@ -1128,6 +1148,7 @@ int main()
 					if (state == 2)
 					{
 						state = 1;
+						window.clear();
 					}
 				}
 				break;
@@ -1166,634 +1187,653 @@ int main()
 		}
 		if (state == 0)
 		{
-			if(restart==1)
-			{
-				 speed = 1;
-				 slowtime = 1;
-				 checkslowtime = 0; 
-				 stackshoes = 0; scorecoins = 0; restart = 0; tempdistance = 0; hightDistance = 0; hpbar = 0;countcollin = 0;die = 0;countchecksign = 0;
-					answer=0;
-					trainrunning = 0;
-			player.setFillColor(sf::Color::Green);
-			player.setPosition(spawnPoint);
-			//reset purple
-			for (i = 0; i <= 5; i++)
-			{
-				if (i == 0)
-				{
-					pospurple[0].x = 500.0f;
-					pospurple[i].y = 755.0f;
-					continue;
-				}
-				if (i >= 1 && i <= 2)
-				{
-					pospurple[1].x = 200.0f;
-					pospurple[2].x = 800.0f;
-					pospurple[i].y = 1845.0f;
-					continue;
-				}
-				if (i >= 3 && i <= 5)
-				{
-					pospurple[3].x = 180.0f;
-					pospurple[4].x = 490.0f;
-					pospurple[5].x = 800.0f;
-					pospurple[i].y = 3335.0f;
-				}
-			}
 
-			//reset river
-			for (i = 0; i <= 2; i++)
+			if (restart == 1)
 			{
-				posriver[i].x = 0;
-				if (i == 0)
+				window.clear();
+				speed = 1;
+				slowtime = 1;
+				checkslowtime = 0;
+				stackshoes = 0; scorecoins = 0; restart = 0; tempdistance = 0; hightDistance = 0; hpbar = 0; countcollin = 0; die = 0; countchecksign = 0;
+				answer = 0;
+				clock.restart();
+				durationslow = sf::seconds(0.00f);
+				coin = sf::seconds(0.00f);
+				 animationcoin.restart();
+				waterTime = sf::seconds(0.00f);
+				 animationwater.restart();
+				 immue = sf::seconds(0.00f);
+				 immueclock.restart();
+				signTime = sf::seconds(0.00f);
+				 signclock.restart();
+				 signNotification = 0;
+				 trainrunning = 0;
+				 realspawn = 0;
+				spawnTrain = sf::seconds(0.00f);
+				 trainclock.restart();
+				trainrunning = 0;
+				player.setFillColor(sf::Color::Green);
+				player.setPosition(spawnPoint);
+				//reset purple
+				for (i = 0; i <= 5; i++)
 				{
-					posriver[i].y = 1010;//1000+10
-				}
-				if (i == 1)
-				{
-					posriver[i].y = 2500;
-				}
-				if (i == 2)
-				{
-					posriver[i].y = 4030;//4000+30
-				}
-				//1000 2500 4000
-			}
-			//reset boat
-			for (i = 0; i <= 8; i++)
-			{
-				if (i >= 0 && i <= 2)
-				{
-					posboat[i].y = 1010;//360
-				}
-				if (i >= 3 && i <= 5)
-				{
-					posboat[i].y = 2625.0f;//360
-				}
-				if (i >= 6 && i <= 8)
-				{
-					posboat[i].y = 4092.5f;//360
-				}
-			}
-			posboat[0].x = -200; posboat[1].x = -600; posboat[2].x = -1000;
-			posboat[3].x = -200; posboat[4].x = -600; posboat[5].x = -1000;
-			posboat[6].x = -200; posboat[7].x = -600; posboat[8].x = -1000;
-			//reset boat2
-			for (i = 0; i <= 8; i++)
-			{
-				if (i >= 0 && i <= 2)
-				{
-					posboat2[i].y = 1072.5f;//360
-				}
-				if (i >= 3 && i <= 5)
-				{
-					posboat2[i].y = 2562.5f;//360
-				}
-				if (i >= 6 && i <= 8)
-				{
-					posboat2[i].y = 4217.5f;//360
-				}
-			}
-			posboat2[0].x = 1080; posboat2[1].x = 1500; posboat2[2].x = 1820;
-			posboat2[3].x = 1080; posboat2[4].x = 1500; posboat2[5].x = 1820;
-			posboat2[6].x = 1080; posboat2[7].x = 1500; posboat2[8].x = 1820;
-			//reset boat3
-			for (i = 0; i <= 5; i++)
-			{
-				if (i >= 0 && i <= 1)
-				{
-					posboat3[i].y = 1135.0f;//485.0f
-				}
-				if (i >= 2 && i <= 3)
-				{
-					posboat3[i].y = 2500.0f;//485.0f
-				}
-				if (i >= 4 && i <= 5)
-				{
-					posboat3[i].y = 4155.0f;//485.0f
-				}
-			}
-			posboat3[0].x = -300; posboat3[1].x = -900;
-			posboat3[2].x = -300; posboat3[3].x = -900;
-			posboat3[4].x = -300; posboat3[5].x = -900;
-			//reset boat4
-			for (i = 0; i <= 5; i++)
-			{
-				if (i >= 0 && i <= 1)
-				{
-					posboat4[i].y = 1197.5f;//547.5
-				}
-				if (i >= 2 && i <= 3)
-				{
-					posboat4[i].y = 2687.5f;//547.5
-				}
-				if (i >= 4 && i <= 5)
-				{
-					posboat4[i].y = 4030;//547.5
-				}
-			}
-			posboat4[0].x = 1200; posboat4[1].x = 2200;
-			posboat4[2].x = 1200; posboat4[3].x = 2200;
-			posboat4[4].x = 1200; posboat4[5].x = 2200;
-			//reset clock
-			for (i = 0; i <= 2; i++)
-			{
-				posclock[i].x = rand() % 1000;
-				while (true)
-				{
-					posclock[i].y = rand() % 4900;
-					if (posclock[i].y > 100.0f)
+					if (i == 0)
 					{
-						break;
+						pospurple[0].x = 500.0f;
+						pospurple[i].y = 755.0f;
+						continue;
+					}
+					if (i >= 1 && i <= 2)
+					{
+						pospurple[1].x = 200.0f;
+						pospurple[2].x = 800.0f;
+						pospurple[i].y = 1845.0f;
+						continue;
+					}
+					if (i >= 3 && i <= 5)
+					{
+						pospurple[3].x = 180.0f;
+						pospurple[4].x = 490.0f;
+						pospurple[5].x = 800.0f;
+						pospurple[i].y = 3335.0f;
 					}
 				}
 
-			}
-			//reset boots
-			for (i = 0; i <= 1; i++)
-			{
-				posboots[i].x = rand() % 1000;
-				while (true)
+				//reset river
+				for (i = 0; i <= 2; i++)
 				{
-					posboots[i].y = rand() % 4900;
-					if (posboots[i].y > 100.0f)
+					posriver[i].x = 0;
+					if (i == 0)
 					{
-						break;
+						posriver[i].y = 1010;//1000+10
+					}
+					if (i == 1)
+					{
+						posriver[i].y = 2500;
+					}
+					if (i == 2)
+					{
+						posriver[i].y = 4030;//4000+30
+					}
+					//1000 2500 4000
+				}
+				//reset boat
+				for (i = 0; i <= 8; i++)
+				{
+					if (i >= 0 && i <= 2)
+					{
+						posboat[i].y = 1010;//360
+					}
+					if (i >= 3 && i <= 5)
+					{
+						posboat[i].y = 2625.0f;//360
+					}
+					if (i >= 6 && i <= 8)
+					{
+						posboat[i].y = 4092.5f;//360
 					}
 				}
-			}
-			//reset coin
-			for (i = 0; i <= 24; i++)
-			{
-				poscoins[i].x = rand() % 1000;
-				while (true)
+				posboat[0].x = -200; posboat[1].x = -600; posboat[2].x = -1000;
+				posboat[3].x = -200; posboat[4].x = -600; posboat[5].x = -1000;
+				posboat[6].x = -200; posboat[7].x = -600; posboat[8].x = -1000;
+				//reset boat2
+				for (i = 0; i <= 8; i++)
 				{
-					poscoins[i].y = rand() % 4900;
-					if (poscoins[i].y > 100.0f)
+					if (i >= 0 && i <= 2)
 					{
-						break;
+						posboat2[i].y = 1072.5f;//360
+					}
+					if (i >= 3 && i <= 5)
+					{
+						posboat2[i].y = 2562.5f;//360
+					}
+					if (i >= 6 && i <= 8)
+					{
+						posboat2[i].y = 4217.5f;//360
 					}
 				}
-			}
-			//rest plat mid
-			for (i = 0; i <= 3; i++)
-			{
-				if (i == 0)
+				posboat2[0].x = 1080; posboat2[1].x = 1500; posboat2[2].x = 1820;
+				posboat2[3].x = 1080; posboat2[4].x = 1500; posboat2[5].x = 1820;
+				posboat2[6].x = 1080; posboat2[7].x = 1500; posboat2[8].x = 1820;
+				//reset boat3
+				for (i = 0; i <= 5; i++)
 				{
-					posplatmid[i].y = 390.0f;//360
-				}
-				if (i == 1)
-				{
-					posplatmid[i].y = 755.0f;//360
-				}
-				if (i == 2)
-				{
-					posplatmid[i].y = 1845.0f;//360
-				}
-				if (i == 3)
-				{
-					posplatmid[i].y = 3335.0f;//360
-				}
-			}
-			//reset poswhite
-			for (a = 0; a <= 5; a++)
-			{
-				whitex[a].checkside = rand() % 2;
-				if (whitex[a].checkside == 0)
-				{
-					whitex[a].checkside = 1;
-					for (i = 0; i <= 3; i++)
+					if (i >= 0 && i <= 1)
 					{
-						if (a == 0)
-						{
-							poswhite[a][i].x = -120 - (540 * i);
-							poswhite[a][i].y = 295;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
-						if (a == 1)
-						{
-							poswhite[a][i].x = -120 - (540 * i);
-							poswhite[a][i].y = 1370;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
-						if (a == 2)
-						{
-							poswhite[a][0].x = -120; poswhite[a][1].x = -320; poswhite[a][2].x = -530; poswhite[a][3].x = -750;
-							poswhite[a][i].y = 2305;//2115
-						}
-						if (a == 3)
-						{
-							poswhite[a][0].x = -120; poswhite[a][1].x = -320; poswhite[a][2].x = -530; poswhite[a][3].x = -750;
-							poswhite[a][i].y = 3050;//3050
-						}
-						if (a == 4)
-						{
-							poswhite[a][i].x = -120 - (540 * i);
-							poswhite[a][i].y = 3605;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
-						if (a == 5)
-						{
-							poswhite[a][i].x = -120 - (540 * i);
-							poswhite[a][i].y = 4400;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
+						posboat3[i].y = 1135.0f;//485.0f
+					}
+					if (i >= 2 && i <= 3)
+					{
+						posboat3[i].y = 2500.0f;//485.0f
+					}
+					if (i >= 4 && i <= 5)
+					{
+						posboat3[i].y = 4155.0f;//485.0f
 					}
 				}
-				else
+				posboat3[0].x = -300; posboat3[1].x = -900;
+				posboat3[2].x = -300; posboat3[3].x = -900;
+				posboat3[4].x = -300; posboat3[5].x = -900;
+				//reset boat4
+				for (i = 0; i <= 5; i++)
 				{
-					whitex[a].checkside = -1;
-					for (i = 0; i <= 3; i++)
+					if (i >= 0 && i <= 1)
 					{
-						if (a == 0)
-						{
-							poswhite[a][i].x = 1080 + (540 * i);
-							poswhite[a][i].y = 295;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
-						if (a == 1)
-						{
-							poswhite[a][i].x = 1080 + (540 * i);
-							poswhite[a][i].y = 1370;//470
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
-						if (a == 2)
-						{
-							poswhite[a][0].x = 1080; poswhite[a][1].x = 1280; poswhite[a][2].x = 1490; poswhite[a][3].x = 1710;
-							poswhite[a][i].y = 2305;//2115
-						}
-						if (a == 3)
-						{
-							poswhite[a][0].x = 1080; poswhite[a][1].x = 1280; poswhite[a][2].x = 1490; poswhite[a][3].x = 1710;
-							poswhite[a][i].y = 3050;//3050
-						}
-						if (a == 4)
-						{
-							poswhite[a][i].x = 1080 + (540 * i);
-							poswhite[a][i].y = 3605;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
-						if (a == 5)
-						{
-							poswhite[a][i].x = 1080 + (540 * i);
-							poswhite[a][i].y = 4400;
-							if (i == 3)
-							{
-								poswhite[a][i].y = -99;
-							}
-						}
+						posboat4[i].y = 1197.5f;//547.5
+					}
+					if (i >= 2 && i <= 3)
+					{
+						posboat4[i].y = 2687.5f;//547.5
+					}
+					if (i >= 4 && i <= 5)
+					{
+						posboat4[i].y = 4030;//547.5
 					}
 				}
-			}
+				posboat4[0].x = 1200; posboat4[1].x = 2200;
+				posboat4[2].x = 1200; posboat4[3].x = 2200;
+				posboat4[4].x = 1200; posboat4[5].x = 2200;
+				//reset clock
+				for (i = 0; i <= 2; i++)
+				{
+					posclock[i].x = rand() % 1000;
+					while (true)
+					{
+						posclock[i].y = rand() % 4900;
+						if (posclock[i].y > 100.0f)
+						{
+							break;
+						}
+					}
 
-			//reset green
-			for (a = 0; a <= 3; a++)
-			{
-				greenx[a].checkside = rand() % 2;
-				if (greenx[a].checkside == 0)
+				}
+				//reset boots
+				for (i = 0; i <= 1; i++)
 				{
-					greenx[a].checkside = 1;
-					for (i = 0; i <= 2; i++)
+					posboots[i].x = rand() % 1000;
+					while (true)
 					{
-						posgreen[a][0].x = -120;
-						posgreen[a][1].x = -350;
-						posgreen[a][2].x = -900;
-						if (a == 0)
+						posboots[i].y = rand() % 4900;
+						if (posboots[i].y > 100.0f)
 						{
-							posgreen[a][i].y = 1560;//1370
-						}
-						if (a == 1)
-						{
-							posgreen[a][i].y = 2210;//1465
-						}
-						if (a == 2)
-						{
-							posgreen[a][i].y = 2955;
-						}
-						if (a == 3)
-						{
-							posgreen[a][i].y = 3415;
+							break;
 						}
 					}
 				}
-				else
+				//reset coin
+				for (i = 0; i <= 24; i++)
 				{
-					greenx[a].checkside = -1;
-					for (i = 0; i <= 2; i++)
+					poscoins[i].x = rand() % 1000;
+					while (true)
 					{
-						posgreen[a][0].x = 1200;
-						posgreen[a][1].x = 1430;
-						posgreen[a][2].x = 1980;
-						if (a == 0)
+						poscoins[i].y = rand() % 4900;
+						if (poscoins[i].y > 100.0f)
 						{
-							posgreen[a][i].y = 1560;//1370
-						}
-						if (a == 1)
-						{
-							posgreen[a][i].y = 2210;//1465
-						}
-						if (a == 2)
-						{
-							posgreen[a][i].y = 2955;
-						}
-						if (a == 3)
-						{
-							posgreen[a][i].y = 3415;
+							break;
 						}
 					}
 				}
-			}
+				//rest plat mid
+				for (i = 0; i <= 3; i++)
+				{
+					if (i == 0)
+					{
+						posplatmid[i].y = 390.0f;//360
+					}
+					if (i == 1)
+					{
+						posplatmid[i].y = 755.0f;//360
+					}
+					if (i == 2)
+					{
+						posplatmid[i].y = 1845.0f;//360
+					}
+					if (i == 3)
+					{
+						posplatmid[i].y = 3335.0f;//360
+					}
+				}
+				//reset poswhite
+				for (a = 0; a <= 5; a++)
+				{
+					whitex[a].checkside = rand() % 2;
+					if (whitex[a].checkside == 0)
+					{
+						whitex[a].checkside = 1;
+						for (i = 0; i <= 3; i++)
+						{
+							if (a == 0)
+							{
+								poswhite[a][i].x = -120 - (540 * i);
+								poswhite[a][i].y = 295;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+							if (a == 1)
+							{
+								poswhite[a][i].x = -120 - (540 * i);
+								poswhite[a][i].y = 1370;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+							if (a == 2)
+							{
+								poswhite[a][0].x = -120; poswhite[a][1].x = -320; poswhite[a][2].x = -530; poswhite[a][3].x = -750;
+								poswhite[a][i].y = 2305;//2115
+							}
+							if (a == 3)
+							{
+								poswhite[a][0].x = -120; poswhite[a][1].x = -320; poswhite[a][2].x = -530; poswhite[a][3].x = -750;
+								poswhite[a][i].y = 3050;//3050
+							}
+							if (a == 4)
+							{
+								poswhite[a][i].x = -120 - (540 * i);
+								poswhite[a][i].y = 3605;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+							if (a == 5)
+							{
+								poswhite[a][i].x = -120 - (540 * i);
+								poswhite[a][i].y = 4400;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+						}
+					}
+					else
+					{
+						whitex[a].checkside = -1;
+						for (i = 0; i <= 3; i++)
+						{
+							if (a == 0)
+							{
+								poswhite[a][i].x = 1080 + (540 * i);
+								poswhite[a][i].y = 295;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+							if (a == 1)
+							{
+								poswhite[a][i].x = 1080 + (540 * i);
+								poswhite[a][i].y = 1370;//470
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+							if (a == 2)
+							{
+								poswhite[a][0].x = 1080; poswhite[a][1].x = 1280; poswhite[a][2].x = 1490; poswhite[a][3].x = 1710;
+								poswhite[a][i].y = 2305;//2115
+							}
+							if (a == 3)
+							{
+								poswhite[a][0].x = 1080; poswhite[a][1].x = 1280; poswhite[a][2].x = 1490; poswhite[a][3].x = 1710;
+								poswhite[a][i].y = 3050;//3050
+							}
+							if (a == 4)
+							{
+								poswhite[a][i].x = 1080 + (540 * i);
+								poswhite[a][i].y = 3605;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+							if (a == 5)
+							{
+								poswhite[a][i].x = 1080 + (540 * i);
+								poswhite[a][i].y = 4400;
+								if (i == 3)
+								{
+									poswhite[a][i].y = -99;
+								}
+							}
+						}
+					}
+				}
 
-			//reset red
-			for (a = 0; a <= 6; a++)
-			{
-				redx[a].checkside = rand() % 2;
-				if (redx[a].checkside == 0)
+				//reset green
+				for (a = 0; a <= 3; a++)
 				{
-					redx[a].checkside = 1;
-					for (i = 0; i <= 2; i++)
+					greenx[a].checkside = rand() % 2;
+					if (greenx[a].checkside == 0)
 					{
-						posred[a][i].x = -200 - (540 * i);
-						if (a == 0)
+						greenx[a].checkside = 1;
+						for (i = 0; i <= 2; i++)
 						{
-							posred[a][i].y = 660;
+							posgreen[a][0].x = -120;
+							posgreen[a][1].x = -350;
+							posgreen[a][2].x = -900;
+							if (a == 0)
+							{
+								posgreen[a][i].y = 1560;//1370
+							}
+							if (a == 1)
+							{
+								posgreen[a][i].y = 2210;//1465
+							}
+							if (a == 2)
+							{
+								posgreen[a][i].y = 2955;
+							}
+							if (a == 3)
+							{
+								posgreen[a][i].y = 3415;
+							}
 						}
-						if (a == 1)
+					}
+					else
+					{
+						greenx[a].checkside = -1;
+						for (i = 0; i <= 2; i++)
 						{
-							posred[a][i].y = 835;
-						}
-						if (a == 2)
-						{
-							posred[a][i].y = 1925;
-						}
-						if (a == 3)
-						{
-							posred[a][i].y = 2020;
-						}
-						if (a == 4)
-						{
-							posred[a][i].y = 3145;
-						}
-						if (a == 5)
-						{
-							posred[a][i].y = 3795;
-						}
-						if (a == 6)
-						{
-							posred[a][i].y = 4590;
+							posgreen[a][0].x = 1200;
+							posgreen[a][1].x = 1430;
+							posgreen[a][2].x = 1980;
+							if (a == 0)
+							{
+								posgreen[a][i].y = 1560;//1370
+							}
+							if (a == 1)
+							{
+								posgreen[a][i].y = 2210;//1465
+							}
+							if (a == 2)
+							{
+								posgreen[a][i].y = 2955;
+							}
+							if (a == 3)
+							{
+								posgreen[a][i].y = 3415;
+							}
 						}
 					}
 				}
-				else
-				{
-					redx[a].checkside = -1;
-					for (i = 0; i <= 2; i++)
-					{
-						posred[a][i].x = 1080 + (540 * i);
-						if (a == 0)
-						{
-							posred[a][i].y = 660;
-						}
-						if (a == 1)
-						{
-							posred[a][i].y = 835;
-						}
-						if (a == 2)
-						{
-							posred[a][i].y = 1925;
-						}
-						if (a == 3)
-						{
-							posred[a][i].y = 2020;
-						}
-						if (a == 4)
-						{
-							posred[a][i].y = 3145;
-						}
-						if (a == 5)
-						{
-							posred[a][i].y = 3795;
-						}
-						if (a == 6)
-						{
-							posred[a][i].y = 4590;
-						}
-					}
-				}
-			}
 
-			//reset yellow
-			for (a = 0; a <= 5; a++)
-			{
-				yellowx[a].checkside = rand() % 2;
-				if (yellowx[a].checkside == 0)
+				//reset red
+				for (a = 0; a <= 6; a++)
 				{
-					yellowx[a].checkside = 1;
-					for (i = 0; i <= 3; i++)
+					redx[a].checkside = rand() % 2;
+					if (redx[a].checkside == 0)
 					{
-						if (a == 0)
+						redx[a].checkside = 1;
+						for (i = 0; i <= 2; i++)
 						{
-							posyellow[a][i].x = -190 - (800 * i);
-							posyellow[a][i].y = 470;//1370
-							if (i >= 3)
+							posred[a][i].x = -200 - (540 * i);
+							if (a == 0)
 							{
-								posyellow[a][i].y = -99;
+								posred[a][i].y = 660;
+							}
+							if (a == 1)
+							{
+								posred[a][i].y = 835;
+							}
+							if (a == 2)
+							{
+								posred[a][i].y = 1925;
+							}
+							if (a == 3)
+							{
+								posred[a][i].y = 2020;
+							}
+							if (a == 4)
+							{
+								posred[a][i].y = 3145;
+							}
+							if (a == 5)
+							{
+								posred[a][i].y = 3795;
+							}
+							if (a == 6)
+							{
+								posred[a][i].y = 4590;
 							}
 						}
-						if (a == 1)
+					}
+					else
+					{
+						redx[a].checkside = -1;
+						for (i = 0; i <= 2; i++)
 						{
-							posyellow[a][i].x = -190 - (800 * i);
-							posyellow[a][i].y = 1465;//1465
-							if (i >= 3)
+							posred[a][i].x = 1080 + (540 * i);
+							if (a == 0)
 							{
-								posyellow[a][i].y = -99;
+								posred[a][i].y = 660;
 							}
-						}
-						if (a == 2)
-						{
-							posyellow[a][i].x = -190 - (800 * i);
-							posyellow[a][i].y = 1655;
-							if (i >= 3)
+							if (a == 1)
 							{
-								posyellow[a][i].y = -99;
+								posred[a][i].y = 835;
 							}
-						}
-						if (a == 3)
-						{
-							posyellow[a][i].x = -190 - (800 * i);
-							posyellow[a][i].y = 2115;//2305
-							if (i >= 3)
+							if (a == 2)
 							{
-								posyellow[a][i].y = -99;
+								posred[a][i].y = 1925;
 							}
-						}
-						if (a == 4)
-						{
-							posyellow[a][i].x = -190 - (800 * i);
-							posyellow[a][i].y = 3240;//2305
-							if (i >= 3)
+							if (a == 3)
 							{
-								posyellow[a][i].y = -99;
+								posred[a][i].y = 2020;
 							}
-						}
-						if (a == 5)
-						{
-							posyellow[a][0].x = -120; posyellow[a][1].x = -400; posyellow[a][2].x = -610; posyellow[a][3].x = -830;
-							posyellow[a][i].y = 3700;
+							if (a == 4)
+							{
+								posred[a][i].y = 3145;
+							}
+							if (a == 5)
+							{
+								posred[a][i].y = 3795;
+							}
+							if (a == 6)
+							{
+								posred[a][i].y = 4590;
+							}
 						}
 					}
 				}
-				else
-				{
-					yellowx[a].checkside = -1;
-					for (i = 0; i <= 3; i++)
-					{
-						if (a == 0)
-						{
-							posyellow[a][i].x = 1180 + (540 * i);
-							posyellow[a][i].y = 470;//1370
-							if (i >= 3)
-							{
-								posyellow[a][i].y = -99;
-							}
-						}
-						if (a == 1)
-						{
-							posyellow[a][i].x = 1180 + (540 * i);
-							posyellow[a][i].y = 1465;//1465
-							if (i >= 3)
-							{
-								posyellow[a][i].y = -99;
-							}
-						}
-						if (a == 2)
-						{
-							posyellow[a][i].x = 1180 + (540 * i);
-							posyellow[a][i].y = 1655;
-							if (i >= 3)
-							{
-								posyellow[a][i].y = -99;
-							}
-						}
-						if (a == 3)
-						{
-							posyellow[a][i].x = 1180 + (540 * i);
-							posyellow[a][i].y = 2115;//2305
-							if (i >= 3)
-							{
-								posyellow[a][i].y = -99;
-							}
-						}
-						if (a == 4)
-						{
-							posyellow[a][i].x = 1180 + (540 * i);
-							posyellow[a][i].y = 3240;//2305
-							if (i >= 3)
-							{
-								posyellow[a][i].y = -99;
-							}
-						}
-						if (a == 5)
-						{
-							posyellow[a][0].x = 1080; posyellow[a][1].x = 1360; posyellow[a][2].x = 1570; posyellow[a][3].x = 1790;
-							posyellow[a][i].y = 3700;
-						}
-					}
-				}
-			}
 
-			//reset blue
-			for (a = 0; a <= 5; a++)
-			{
-				bluex[a].checkside = rand() % 2;
-				if (bluex[a].checkside == 0)
+				//reset yellow
+				for (a = 0; a <= 5; a++)
 				{
-					bluex[a].checkside = 1;
-					for (i = 0; i <= 2; i++)
+					yellowx[a].checkside = rand() % 2;
+					if (yellowx[a].checkside == 0)
 					{
-						posblue[a][i].x = -120 - (540 * i);
-						if (a == 0)
+						yellowx[a].checkside = 1;
+						for (i = 0; i <= 3; i++)
 						{
-							posblue[a][i].y = 200;
+							if (a == 0)
+							{
+								posyellow[a][i].x = -190 - (800 * i);
+								posyellow[a][i].y = 470;//1370
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 1)
+							{
+								posyellow[a][i].x = -190 - (800 * i);
+								posyellow[a][i].y = 1465;//1465
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 2)
+							{
+								posyellow[a][i].x = -190 - (800 * i);
+								posyellow[a][i].y = 1655;
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 3)
+							{
+								posyellow[a][i].x = -190 - (800 * i);
+								posyellow[a][i].y = 2115;//2305
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 4)
+							{
+								posyellow[a][i].x = -190 - (800 * i);
+								posyellow[a][i].y = 3240;//2305
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 5)
+							{
+								posyellow[a][0].x = -120; posyellow[a][1].x = -400; posyellow[a][2].x = -610; posyellow[a][3].x = -830;
+								posyellow[a][i].y = 3700;
+							}
 						}
-						if (a == 1)
+					}
+					else
+					{
+						yellowx[a].checkside = -1;
+						for (i = 0; i <= 3; i++)
 						{
-							posblue[a][i].y = 565;
-						}
-						if (a == 2)
-						{
-							posblue[a][i].y = 1750;
-						}
-						if (a == 3)
-						{
-							posblue[a][i].y = 2860;
-						}
-						if (a == 4)
-						{
-							posblue[a][i].y = 3510;
-						}
-						if (a == 5)
-						{
-							posblue[a][i].y = 4495;
+							if (a == 0)
+							{
+								posyellow[a][i].x = 1180 + (540 * i);
+								posyellow[a][i].y = 470;//1370
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 1)
+							{
+								posyellow[a][i].x = 1180 + (540 * i);
+								posyellow[a][i].y = 1465;//1465
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 2)
+							{
+								posyellow[a][i].x = 1180 + (540 * i);
+								posyellow[a][i].y = 1655;
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 3)
+							{
+								posyellow[a][i].x = 1180 + (540 * i);
+								posyellow[a][i].y = 2115;//2305
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 4)
+							{
+								posyellow[a][i].x = 1180 + (540 * i);
+								posyellow[a][i].y = 3240;//2305
+								if (i >= 3)
+								{
+									posyellow[a][i].y = -99;
+								}
+							}
+							if (a == 5)
+							{
+								posyellow[a][0].x = 1080; posyellow[a][1].x = 1360; posyellow[a][2].x = 1570; posyellow[a][3].x = 1790;
+								posyellow[a][i].y = 3700;
+							}
 						}
 					}
 				}
-				else
-				{
-					bluex[a].checkside = -1;
-					for (i = 0; i <= 2; i++)
-					{
-						posblue[a][i].x = 1080 + (540 * i);
-						if (a == 0)
-						{
-							posblue[a][i].y = 200;
-						}
-						if (a == 1)
-						{
-							posblue[a][i].y = 565;
-						}
-						if (a == 2)
-						{
-							posblue[a][i].y = 1750;
-						}
-						if (a == 3)
-						{
-							posblue[a][i].y = 2860;
-						}
-						if (a == 4)
-						{
-							posblue[a][i].y = 3510;
-						}
-						if (a == 5)
-						{
-							posblue[a][i].y = 4495;
-						}
-					}
-				}
-			}
 
-			
+				//reset blue
+				for (a = 0; a <= 5; a++)
+				{
+					bluex[a].checkside = rand() % 2;
+					if (bluex[a].checkside == 0)
+					{
+						bluex[a].checkside = 1;
+						for (i = 0; i <= 2; i++)
+						{
+							posblue[a][i].x = -120 - (540 * i);
+							if (a == 0)
+							{
+								posblue[a][i].y = 200;
+							}
+							if (a == 1)
+							{
+								posblue[a][i].y = 565;
+							}
+							if (a == 2)
+							{
+								posblue[a][i].y = 1750;
+							}
+							if (a == 3)
+							{
+								posblue[a][i].y = 2860;
+							}
+							if (a == 4)
+							{
+								posblue[a][i].y = 3510;
+							}
+							if (a == 5)
+							{
+								posblue[a][i].y = 4495;
+							}
+						}
+					}
+					else
+					{
+						bluex[a].checkside = -1;
+						for (i = 0; i <= 2; i++)
+						{
+							posblue[a][i].x = 1080 + (540 * i);
+							if (a == 0)
+							{
+								posblue[a][i].y = 200;
+							}
+							if (a == 1)
+							{
+								posblue[a][i].y = 565;
+							}
+							if (a == 2)
+							{
+								posblue[a][i].y = 1750;
+							}
+							if (a == 3)
+							{
+								posblue[a][i].y = 2860;
+							}
+							if (a == 4)
+							{
+								posblue[a][i].y = 3510;
+							}
+							if (a == 5)
+							{
+								posblue[a][i].y = 4495;
+							}
+						}
+					}
+				}
+
+				//reset train
+				hitboxTrain.setPosition(-4520, findPosCarY(hitboxTrain, hitboxTrain.getPosition().y)/*2534*/);
+				restart = 0;
 			}
 			if (music.getStatus() != 2)
 			{
@@ -2859,321 +2899,302 @@ int main()
 			{
 				platmid.setPosition(posplatmid[i].x, posplatmid[i].y);
 			}
-
-
-
 			window.setView(view);
-
-			window.draw(platmid);
-
-
-			window.draw(mapbox);
-			//draw white
-			for (a = 0; a <= 5; a++)
-			{
-				for (i = 0; i <= 3; i++)
-				{
-					if (whitex[a].checkside == 1)
-					{
-
-						carwhitesp.setScale(1.463414634146341f, 1.120689655172414f);
-						carwhitesp.setPosition(poswhite[a][i].x, poswhite[a][i].y);
-					}
-					else
-					{
-
-						carwhitesp.setScale(sf::Vector2f(-1.463414634146341f, 1.120689655172414f));
-						carwhitesp.setPosition(poswhite[a][i].x + white.getSize().x, poswhite[a][i].y);
-					}
-					white.setPosition(poswhite[a][i].x, poswhite[a][i].y);
-					window.draw(white);
-					window.draw(carwhitesp);
-				}
-			}
-			//draw blue
-			for (a = 0; a <= 5; a++)
-			{
-				for (i = 0; i <= 2; i++)
-				{
-					if (bluex[a].checkside == 1)
-					{
-
-						carbluesp.setScale(1.379310344827586f, 1.0f);
-						carbluesp.setPosition(posblue[a][i].x, posblue[a][i].y);
-					}
-					else
-					{
-
-						carbluesp.setScale(sf::Vector2f(-1.379310344827586f, 1.0f));
-						carbluesp.setPosition(posblue[a][i].x + blue.getSize().x, posblue[a][i].y);
-					}
-					blue.setPosition(posblue[a][i].x, posblue[a][i].y);
-					window.draw(blue);
-					window.draw(carbluesp);
-				}
-			}
-			//draw green
-			for (a = 0; a <= 3; a++)
-			{
-				for (i = 0; i <= 2; i++)
-				{
-					if (greenx[a].checkside == 1)
-					{
-
-						cargreensp.setScale(1.304347826086957f, 1.0f);
-						cargreensp.setPosition(posgreen[a][i].x, posgreen[a][i].y);
-					}
-					else
-					{
-
-						cargreensp.setScale(sf::Vector2f(-1.304347826086957f, 1.0f));
-						cargreensp.setPosition(posgreen[a][i].x + green.getSize().x, posgreen[a][i].y);
-					}
-					green.setPosition(posgreen[a][i].x, posgreen[a][i].y);
-					window.draw(green);
-					window.draw(cargreensp);
-				}
-			}
-			//draw red
-			for (a = 0; a <= 6; a++)
-			{
-				for (i = 0; i <= 2; i++)
-				{
-					if (redx[a].checkside == 1)
-					{
-
-						carredsp.setScale(1.438848920863309f, 0.8783783783783784f);
-						carredsp.setPosition(posred[a][i].x, posred[a][i].y);
-					}
-					else
-					{
-
-						carredsp.setScale(sf::Vector2f(-1.438848920863309f, 0.8783783783783784f));
-						carredsp.setPosition(posred[a][i].x + red.getSize().x, posred[a][i].y);
-					}
-					red.setPosition(posred[a][i].x, posred[a][i].y);
-					window.draw(red);
-					window.draw(carredsp);
-				}
-			}
-			//draw yellow
-			for (a = 0; a <= 5; a++)
-			{
-				for (i = 0; i <= 3; i++)
-				{
-					if (yellowx[a].checkside == 1)
-					{
-
-						caryellowsp.setScale(1.428571428571429f, 1.250f);
-						caryellowsp.setPosition(posyellow[a][i].x, posyellow[a][i].y);
-					}
-					else
-					{
-
-						caryellowsp.setScale(sf::Vector2f(-1.428571428571429f, 1.250f));
-						caryellowsp.setPosition(posyellow[a][i].x + yellow.getSize().x, posyellow[a][i].y);
-					}
-					yellow.setPosition(posyellow[a][i].x, posyellow[a][i].y);
-					window.draw(yellow);
-					window.draw(caryellowsp);
-				}
-			}
-			//draw river
-			for (i = 0; i <= 2; i++)
-			{
-				river.setPosition(posriver[i].x, posriver[i].y);
-				water.setPosition(posriver[i].x, posriver[i].y);
-				window.draw(river);
-				window.draw(water);
-			}
-			//draw boat1
-			for (i = 0; i <= 8; i++)
-			{
-				if (i >= 0 && i <= 2)
-				{
-					sushiyelloworangered.setPosition(posboat[i].x - 0.0f, posboat[i].y - 0.0f);
-				}
-				if (i >= 3 && i <= 5)
-				{
-					zeldaboat.setPosition(posboat[i].x - 0.0f, posboat[i].y - 1.5f);
-				}
-				if (i >= 6 && i <= 8)
-				{
-					dogpizza.setPosition(posboat[i].x - 0.0f, posboat[i].y - 0.0f);
-				}
-				boat1.setPosition(posboat[i].x, posboat[i].y);
-				window.draw(boat1);
-				window.draw(sushiyelloworangered);
-				window.draw(zeldaboat);
-				window.draw(dogpizza);
-			}
-			//draw boat3
-			for (i = 0; i <= 5; i++)
-			{
-				if (i >= 0 && i <= 1)
-				{
-					mixsuhi.setPosition(posboat3[i].x, posboat3[i].y);
-				}
-				if (i >= 2 && i <= 3)
-				{
-					woodpae.setPosition(posboat3[i].x, posboat3[i].y);
-				}
-				if (i >= 4 && i <= 5)
-				{
-					crocodileboat.setPosition(posboat3[i].x + .0f, posboat3[i].y);
-				}
-				boat3.setPosition(posboat3[i].x, posboat3[i].y);
-				window.draw(boat3);
-				window.draw(mixsuhi);
-				window.draw(woodpae);
-				window.draw(crocodileboat);
-			}
-			//draw boat2
-			for (i = 0; i <= 8; i++)
-			{
-				if (i >= 0 && i <= 2)
-				{
-					duosushi.setPosition(posboat2[i].x - 0.0f, posboat2[i].y - 0.0f);
-				}
-				if (i >= 3 && i <= 5)
-				{
-					sushiboat.setPosition(posboat2[i].x - 10.0f, posboat2[i].y - 15.0f);// -10 -15
-				}
-				if (i >= 6 && i <= 8)
-				{
-					dogham.setPosition(posboat2[i].x - 10.0f, posboat2[i].y - 0.0f);
-				}
-				boat2.setPosition(posboat2[i].x, posboat2[i].y);
-				window.draw(boat2);
-				window.draw(duosushi);
-				window.draw(sushiboat);
-				window.draw(dogham);
-			}
-			//draw boat4
-			for (i = 0; i <= 5; i++)
-			{
-				if (i >= 0 && i <= 1)
-				{
-					uniship.setPosition(posboat4[i].x, posboat4[i].y);
-				}
-				if (i >= 2 && i <= 3)
-				{
-					woodlogboat2.setPosition(posboat4[i].x - 0.0f, posboat4[i].y);
-				}
-				if (i >= 4 && i <= 5)
-				{
-					fishboat.setPosition(posboat4[i].x - 0.0f, posboat4[i].y);
-				}
-				boat4.setPosition(posboat4[i].x, posboat4[i].y);
-				window.draw(boat4);
-				window.draw(uniship);
-				window.draw(fishboat);
-				window.draw(woodlogboat2);
-			}
-			//box purple
-			for (i = 0; i <= 5; i++)
-			{
-				purple.setPosition(pospurple[i].x, pospurple[i].y);
-				window.draw(purple);
-			}
-			window.draw(player);
-
-			//draw clock
-			for (i = 0; i <= 2; i++)
-			{
-				itemclock.setPosition(posclock[i].x, posclock[i].y);
-				window.draw(itemclock);
-			}
-			//draw boots
-			for (i = 0; i <= 2; i++)
-			{
-				if (allowDraw == 1)
-				{
-					posboots[2].x = positionview.x + 600;
-					posboots[2].y = positionview.y;
-				}
-				itemboots.setPosition(posboots[i].x, posboots[i].y);
-				window.draw(itemboots);
-			}
-			//draw coin
-			for (i = 0; i <= 25; i++)
-			{
-				if (allowDraw == 1)
-				{
-					poscoins[25].x = positionview.x + 510;
-					poscoins[25].y = positionview.y;
-				}
-				itemcoins.setPosition(poscoins[i].x, poscoins[i].y);
-				window.draw(itemcoins);
-			}
-
-
-			window.draw(hitboxTrain);
-
-			//sign
-			for (i = 0; i <= 2; i++)
-			{
-				signTrain.setPosition(possign[i].x, possign[i].y);
-				if (trainrunning == 0)
-				{
-					window.draw(signTrain);
-				}
-			}
-
-			window.draw(answertext);
-
-			window.draw(staminaSprite);
-			window.draw(staminabar);
-			if (allowDraw == 1)
-			{
-				window.draw(cointext);
-				window.draw(shoetext);
-				window.draw(scoretext);
-				window.draw(highscoretext);
-			}
+			window.display();
 		}
-
 		if (state == 1)
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && (menu.GetPressedItem() == 0))
-			{
-				
-					state = 0;
-					restart = 1;
-				
-			}
+			window.clear();
 			music.stop();
 			alert.stop();
 			trainSound.stop();
 			clockSound.stop();
 			coinSound.stop();
 			bootsSound.stop();
+			footSound.stop();
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
+
 			menu.draw(window);
+			window.display();
 		}
 		if (state == 2)
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter) && (pausemenu.GetPressedItem() == 0))
-			{
-
-				state = 0;
-				restart = 0;
-
-			}
 			music.pause();
 			alert.pause();
 			trainSound.pause();
 			clockSound.pause();
 			coinSound.pause();
 			bootsSound.pause();
-			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
-			window.setView(view);
+			footSound.pause();
+			//view.reset(sf::FloatRect(positionview.x, positionview.y, screen.x, screen.y));
+			//window.setView(view);
+			pausemenu.SetPOS(positionview.x,positionview.y);
 			pausemenu.draw(window);
+			window.display();
+
 		}
 		cout << state << '\n' << menu.GetPressedItem() << pausemenu.GetPressedItem() << '\n';
-		window.display();
-		//window.clear();
+		window.draw(platmid);
+		window.draw(mapbox);
+		//draw white
+		for (a = 0; a <= 5; a++)
+		{
+			for (i = 0; i <= 3; i++)
+			{
+				if (whitex[a].checkside == 1)
+				{
+
+					carwhitesp.setScale(1.463414634146341f, 1.120689655172414f);
+					carwhitesp.setPosition(poswhite[a][i].x, poswhite[a][i].y);
+				}
+				else
+				{
+
+					carwhitesp.setScale(sf::Vector2f(-1.463414634146341f, 1.120689655172414f));
+					carwhitesp.setPosition(poswhite[a][i].x + white.getSize().x, poswhite[a][i].y);
+				}
+				white.setPosition(poswhite[a][i].x, poswhite[a][i].y);
+				window.draw(white);
+				window.draw(carwhitesp);
+			}
+		}
+		//draw blue
+		for (a = 0; a <= 5; a++)
+		{
+			for (i = 0; i <= 2; i++)
+			{
+				if (bluex[a].checkside == 1)
+				{
+
+					carbluesp.setScale(1.379310344827586f, 1.0f);
+					carbluesp.setPosition(posblue[a][i].x, posblue[a][i].y);
+				}
+				else
+				{
+
+					carbluesp.setScale(sf::Vector2f(-1.379310344827586f, 1.0f));
+					carbluesp.setPosition(posblue[a][i].x + blue.getSize().x, posblue[a][i].y);
+				}
+				blue.setPosition(posblue[a][i].x, posblue[a][i].y);
+				window.draw(blue);
+				window.draw(carbluesp);
+			}
+		}
+		//draw green
+		for (a = 0; a <= 3; a++)
+		{
+			for (i = 0; i <= 2; i++)
+			{
+				if (greenx[a].checkside == 1)
+				{
+
+					cargreensp.setScale(1.304347826086957f, 1.0f);
+					cargreensp.setPosition(posgreen[a][i].x, posgreen[a][i].y);
+				}
+				else
+				{
+
+					cargreensp.setScale(sf::Vector2f(-1.304347826086957f, 1.0f));
+					cargreensp.setPosition(posgreen[a][i].x + green.getSize().x, posgreen[a][i].y);
+				}
+				green.setPosition(posgreen[a][i].x, posgreen[a][i].y);
+				window.draw(green);
+				window.draw(cargreensp);
+			}
+		}
+		//draw red
+		for (a = 0; a <= 6; a++)
+		{
+			for (i = 0; i <= 2; i++)
+			{
+				if (redx[a].checkside == 1)
+				{
+
+					carredsp.setScale(1.438848920863309f, 0.8783783783783784f);
+					carredsp.setPosition(posred[a][i].x, posred[a][i].y);
+				}
+				else
+				{
+
+					carredsp.setScale(sf::Vector2f(-1.438848920863309f, 0.8783783783783784f));
+					carredsp.setPosition(posred[a][i].x + red.getSize().x, posred[a][i].y);
+				}
+				red.setPosition(posred[a][i].x, posred[a][i].y);
+				window.draw(red);
+				window.draw(carredsp);
+			}
+		}
+		//draw yellow
+		for (a = 0; a <= 5; a++)
+		{
+			for (i = 0; i <= 3; i++)
+			{
+				if (yellowx[a].checkside == 1)
+				{
+
+					caryellowsp.setScale(1.428571428571429f, 1.250f);
+					caryellowsp.setPosition(posyellow[a][i].x, posyellow[a][i].y);
+				}
+				else
+				{
+
+					caryellowsp.setScale(sf::Vector2f(-1.428571428571429f, 1.250f));
+					caryellowsp.setPosition(posyellow[a][i].x + yellow.getSize().x, posyellow[a][i].y);
+				}
+				yellow.setPosition(posyellow[a][i].x, posyellow[a][i].y);
+				window.draw(yellow);
+				window.draw(caryellowsp);
+			}
+		}
+		//draw river
+		for (i = 0; i <= 2; i++)
+		{
+			river.setPosition(posriver[i].x, posriver[i].y);
+			water.setPosition(posriver[i].x, posriver[i].y);
+			window.draw(river);
+			window.draw(water);
+		}
+		//draw boat1
+		for (i = 0; i <= 8; i++)
+		{
+			if (i >= 0 && i <= 2)
+			{
+				sushiyelloworangered.setPosition(posboat[i].x - 0.0f, posboat[i].y - 0.0f);
+			}
+			if (i >= 3 && i <= 5)
+			{
+				zeldaboat.setPosition(posboat[i].x - 0.0f, posboat[i].y - 1.5f);
+			}
+			if (i >= 6 && i <= 8)
+			{
+				dogpizza.setPosition(posboat[i].x - 0.0f, posboat[i].y - 0.0f);
+			}
+			boat1.setPosition(posboat[i].x, posboat[i].y);
+			window.draw(boat1);
+			window.draw(sushiyelloworangered);
+			window.draw(zeldaboat);
+			window.draw(dogpizza);
+		}
+		//draw boat3
+		for (i = 0; i <= 5; i++)
+		{
+			if (i >= 0 && i <= 1)
+			{
+				mixsuhi.setPosition(posboat3[i].x, posboat3[i].y);
+			}
+			if (i >= 2 && i <= 3)
+			{
+				woodpae.setPosition(posboat3[i].x, posboat3[i].y);
+			}
+			if (i >= 4 && i <= 5)
+			{
+				crocodileboat.setPosition(posboat3[i].x + .0f, posboat3[i].y);
+			}
+			boat3.setPosition(posboat3[i].x, posboat3[i].y);
+			window.draw(boat3);
+			window.draw(mixsuhi);
+			window.draw(woodpae);
+			window.draw(crocodileboat);
+		}
+		//draw boat2
+		for (i = 0; i <= 8; i++)
+		{
+			if (i >= 0 && i <= 2)
+			{
+				duosushi.setPosition(posboat2[i].x - 0.0f, posboat2[i].y - 0.0f);
+			}
+			if (i >= 3 && i <= 5)
+			{
+				sushiboat.setPosition(posboat2[i].x - 10.0f, posboat2[i].y - 15.0f);// -10 -15
+			}
+			if (i >= 6 && i <= 8)
+			{
+				dogham.setPosition(posboat2[i].x - 10.0f, posboat2[i].y - 0.0f);
+			}
+			boat2.setPosition(posboat2[i].x, posboat2[i].y);
+			window.draw(boat2);
+			window.draw(duosushi);
+			window.draw(sushiboat);
+			window.draw(dogham);
+		}
+		//draw boat4
+		for (i = 0; i <= 5; i++)
+		{
+			if (i >= 0 && i <= 1)
+			{
+				uniship.setPosition(posboat4[i].x, posboat4[i].y);
+			}
+			if (i >= 2 && i <= 3)
+			{
+				woodlogboat2.setPosition(posboat4[i].x - 0.0f, posboat4[i].y);
+			}
+			if (i >= 4 && i <= 5)
+			{
+				fishboat.setPosition(posboat4[i].x - 0.0f, posboat4[i].y);
+			}
+			boat4.setPosition(posboat4[i].x, posboat4[i].y);
+			window.draw(boat4);
+			window.draw(uniship);
+			window.draw(fishboat);
+			window.draw(woodlogboat2);
+		}
+		//box purple
+		for (i = 0; i <= 5; i++)
+		{
+			purple.setPosition(pospurple[i].x, pospurple[i].y);
+			window.draw(purple);
+		}
+		window.draw(player);
+		//draw clock
+		for (i = 0; i <= 2; i++)
+		{
+			itemclock.setPosition(posclock[i].x, posclock[i].y);
+			window.draw(itemclock);
+		}
+		//draw boots
+		for (i = 0; i <= 2; i++)
+		{
+			if (allowDraw == 1)
+			{
+				posboots[2].x = positionview.x + 600;
+				posboots[2].y = positionview.y;
+			}
+			itemboots.setPosition(posboots[i].x, posboots[i].y);
+			window.draw(itemboots);
+		}
+		//draw coin
+		for (i = 0; i <= 25; i++)
+		{
+			if (allowDraw == 1)
+			{
+				poscoins[25].x = positionview.x + 510;
+				poscoins[25].y = positionview.y;
+			}
+			itemcoins.setPosition(poscoins[i].x, poscoins[i].y);
+			window.draw(itemcoins);
+		}
+		window.draw(hitboxTrain);
+		//sign
+		for (i = 0; i <= 2; i++)
+		{
+			signTrain.setPosition(possign[i].x, possign[i].y);
+			if (trainrunning == 0)
+			{
+				window.draw(signTrain);
+			}
+		}
+		window.draw(answertext);
+		window.draw(staminaSprite);
+		window.draw(staminabar);
+		if (allowDraw == 1)
+		{
+			window.draw(cointext);
+			window.draw(shoetext);
+			window.draw(scoretext);
+			window.draw(highscoretext);
+		}
+
 	}
 	return 0;
 }
