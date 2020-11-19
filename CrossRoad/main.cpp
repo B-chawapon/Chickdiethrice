@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 #include "Menu.h"
 #include "PauseMenu.h"
+#include "Textbox.h"
 #include<stdio.h>
 #include<iostream>
 #include<time.h>
@@ -29,6 +30,7 @@ int frame = 0;
 int framewater = 0;
 bool collinreturn;
 bool restart;
+bool texttyping = 0;
 float realposcary;
 static const float screenheight = 720.0f;
 static const float sizecary = 65.0f;
@@ -1043,7 +1045,12 @@ int main()
 
 	Menu menu(window.getSize().x, window.getSize().y,0,0);
 	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
-
+	
+	Textbox textbox1(50,sf::Color::White,false);
+	sf::Font gOTHICB;
+	gOTHICB.loadFromFile("fonttext/GOTHICB.ttf");
+	textbox1.setFont(gOTHICB);
+	textbox1.setPosition({ 100,100 });
 	while (window.isOpen())
 	{
 
@@ -1131,7 +1138,17 @@ int main()
 				{
 					if (state == 1)
 					{
-						state = 2;
+						if (texttyping == 1)
+						{
+							textbox1.setSelected(false);
+							texttyping = 0;
+						}
+						else
+						{
+							textbox1.setSelected(true);
+							texttyping = 1;
+						}
+
 					}
 					if (state == 2)
 					{
@@ -1139,6 +1156,7 @@ int main()
 					}
 
 				}
+				
 				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 2 || pausemenu.GetPressedItem() == 2))
 				{
 					if (state == 1)
@@ -1151,6 +1169,7 @@ int main()
 						window.clear();
 					}
 				}
+				
 				break;
 			case ::sf::Event::KeyReleased:
 				if (event.key.code == sf::Keyboard::W && state == 0)
@@ -1181,6 +1200,9 @@ int main()
 				}
 				menu.GetPressedItem() == sf::Keyboard::Return;
 				pausemenu.GetPressedItem() == sf::Keyboard::Return;
+				break;
+			case::sf::Event::TextEntered:
+				textbox1.typeOn(event);
 				break;
 
 			}
@@ -2877,7 +2899,8 @@ int main()
 				hs << "HighScore " << hightDistance;
 			}
 
-			answerc << state << '\n';
+			textbox1.setSelected(false);
+			answerc << textbox1.getText() << '\n';
 			answertext.setString(answerc.str());
 			answertext.setPosition(positionview.x, positionview.y);
 
@@ -2904,6 +2927,7 @@ int main()
 		}
 		if (state == 1)
 		{
+			
 			window.clear();
 			music.stop();
 			alert.stop();
@@ -2916,6 +2940,7 @@ int main()
 			window.setView(view);
 			menu.SetPOS(100,10);
 			menu.draw(window);
+			textbox1.drawTo(window);
 			window.display();
 		}
 		if (state == 2)
@@ -2934,7 +2959,7 @@ int main()
 			window.display();
 
 		}
-		cout << state << '\n' << menu.GetPressedItem() << pausemenu.GetPressedItem() << '\n';
+		cout << state << '\n' <<textbox1.getText();
 		window.draw(platmid);
 		window.draw(mapbox);
 		//draw white

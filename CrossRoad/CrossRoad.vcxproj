@@ -26,6 +26,7 @@
   <ItemGroup>
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PauseMenu.h" />
+    <ClInclude Include="Textbox.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

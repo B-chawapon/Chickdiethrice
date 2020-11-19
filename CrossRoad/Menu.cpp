@@ -7,14 +7,14 @@ Menu::Menu(float width, float height,float x, float y)
 	{
 		// handle error
 	}
-
+	
 	menu[0].setFont(font);
 	menu[0].setFillColor(sf::Color::Red);
 	menu[0].setString("Play");
 	
 	menu[1].setFont(font);
 	menu[1].setFillColor(sf::Color::White);
-	menu[1].setString("Options");
+	menu[1].setString("Insert name");
 	
 
 	menu[2].setFont(font);
