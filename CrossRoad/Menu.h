@@ -6,12 +6,13 @@
 class Menu
 {
 public:
-	Menu(float width, float height);
+	Menu(float width, float height,float x, float y);
 	~Menu();
 
 	void draw(sf::RenderWindow& window);
 	void MoveUp();
 	void MoveDown();
+	void SetPOS(float x, float y);
 	int GetPressedItem() { return selectedItemIndex; }
 
 private:

@@ -1,6 +1,4 @@
-﻿  Menu.cpp
-  PauseMenu.cpp
-  main.cpp
+﻿  main.cpp
 C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(67,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(73,49): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
@@ -747,6 +745,5 @@ C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(2915,41): warning C4
           ]
 C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3208,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3220,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
 C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3223): warning C4715: 'findPosCarY': not all control paths return a value
   CrossRoad.vcxproj -> C:\Users\Chawapon\source\repos\CrossRoad\x64\Debug\CrossRoad.exe

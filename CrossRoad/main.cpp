@@ -1041,7 +1041,7 @@ int main()
 	mapbox.setTexture(&texturemap);
 	//texturemap.setSmooth(true);
 
-	Menu menu(window.getSize().x, window.getSize().y);
+	Menu menu(window.getSize().x, window.getSize().y,0,0);
 	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
 
 	while (window.isOpen())
@@ -2914,7 +2914,7 @@ int main()
 			footSound.stop();
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
-
+			menu.SetPOS(100,10);
 			menu.draw(window);
 			window.display();
 		}
