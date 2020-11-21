@@ -3,6 +3,7 @@
 #include "Menu.h"
 #include "PauseMenu.h"
 #include "Textbox.h"
+#include"Button.h"
 #include<stdio.h>
 #include<iostream>
 #include<time.h>
@@ -16,7 +17,7 @@ int j = 0;
 int i = 1;
 int m = 0;
 int s = 0;
-
+int stackwtfpausemenu = 0;
 int a = 0;//blue
 
 float speed = 1;
@@ -28,9 +29,15 @@ int stackshoes = 0;
 int scorecoins = 0;
 int frame = 0;
 int framewater = 0;
+
+int framechicken = 0;
+int checksideplayer = 0;
+int redchicken = 0;
+int redchcikeny = 0;
 bool collinreturn;
 bool restart;
 bool texttyping = 0;
+bool clickinsername = 0;
 float realposcary;
 static const float screenheight = 720.0f;
 static const float sizecary = 65.0f;
@@ -79,6 +86,13 @@ int main()
 
 	sf::RectangleShape player(sf::Vector2f(35.f, 35.f));//35
 	player.setFillColor(sf::Color::Green);
+	 
+	sf::Texture chicktexture;
+	chicktexture.loadFromFile("chic.png");
+	sf::Sprite chicksp;
+	chicksp.setTexture(chicktexture);
+	chicksp.setTextureRect(sf::IntRect(0.0f, 0.0f, 48.f, 48.f));
+	chicksp.setScale(1.371428571428571f, 1.371428571428571f);
 
 	sf::Vector2f spawnPoint = { 1080 / 2,145.f };
 	sf::Vector2f halfPoint = { 1080 / 2,2400.f };
@@ -955,6 +969,8 @@ int main()
 	sf::Clock immueclock;
 	sf::Time signTime;
 	sf::Clock signclock;
+	sf::Clock animationplayer;
+	sf::Time playerchange;
 	int signNotification = 0;
 	int trainrunning = 0;
 	bool realspawn = 0;
@@ -1043,14 +1059,35 @@ int main()
 	mapbox.setTexture(&texturemap);
 	//texturemap.setSmooth(true);
 
-	Menu menu(window.getSize().x, window.getSize().y,0,0);
 	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
 	
 	Textbox textbox1(50,sf::Color::White,false);
 	sf::Font gOTHICB;
 	gOTHICB.loadFromFile("fonttext/GOTHICB.ttf");
 	textbox1.setFont(gOTHICB);
-	textbox1.setPosition({ 100,100 });
+	textbox1.setPosition({ 700,275 });
+	textbox1.setLimit(true,10);
+
+	Buttuon playButton("Play", {130,65},60,sf::Color::Green,sf::Color::Red);
+	playButton.setPosition({ 800,200 });
+	playButton.setFont(gOTHICB);
+	playButton.setPositiontext({800,188});
+
+	Buttuon insertNameButton("Name", { 180,55 }, 60, sf::Color::Green, sf::Color::Red);
+	insertNameButton.setPosition({ 800,310 });
+	insertNameButton.setFont(gOTHICB);
+	insertNameButton.setPositiontext({ 800,300});
+
+	Buttuon leaderboardButton("Leaderboard", { 380,55 }, 60, sf::Color::Green, sf::Color::Red);
+	leaderboardButton.setPosition({ 800,420 });
+	leaderboardButton.setFont(gOTHICB);
+	leaderboardButton.setPositiontext({ 800,410 });
+
+	Buttuon exitbutton("Exit", { 100,55 }, 60, sf::Color::Green, sf::Color::Red);
+	exitbutton.setPosition({ 800,520 });
+	exitbutton.setFont(gOTHICB);
+	exitbutton.setPositiontext({ 800,510 });
+
 	while (window.isOpen())
 	{
 
@@ -1117,59 +1154,49 @@ int main()
 					hpbar = -30;
 					checkcollintime = 0;
 				}
-				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 0 || pausemenu.GetPressedItem() == 0))
+				if (event.key.code == sf::Keyboard::W && state == 2)
 				{
-					if (state == 1)
-					{
-						restart = 1;
-						state = 0;
-
-
-					}
-					if (state == 2)
-					{
-						restart = 0;
-						state = 0;
-
-					}
-
+					pausemenu.MoveUp();
+					pausemenu.GetPressedItem();
 				}
-				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 1 || pausemenu.GetPressedItem() == 1))
+				if (event.key.code == sf::Keyboard::S && state == 2)
 				{
-					if (state == 1)
-					{
-						if (texttyping == 1)
-						{
-							textbox1.setSelected(false);
-							texttyping = 0;
-						}
-						else
-						{
-							textbox1.setSelected(true);
-							texttyping = 1;
-						}
-
-					}
-					if (state == 2)
-					{
-						state = 2;
-					}
-
+					pausemenu.MoveDown();
+					pausemenu.GetPressedItem();
 				}
-				
-				if (event.key.code == sf::Keyboard::Enter && (menu.GetPressedItem() == 2 || pausemenu.GetPressedItem() == 2))
+				if (event.key.code == sf::Keyboard::Up && state == 2)
 				{
-					if (state == 1)
+					pausemenu.MoveUp();
+					pausemenu.GetPressedItem();
+				}
+				if (event.key.code == sf::Keyboard::Down && state == 2)
+				{
+					pausemenu.MoveDown();
+					pausemenu.GetPressedItem();
+				}
+				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 0)
+				{
+					state=0;
+				}
+				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 1)
+				{
+					state = 1;
+				}
+				if (event.key.code == sf::Keyboard::Enter && state == 1)
+				{
+					if (texttyping == 1)
 					{
-						window.close();
+						textbox1.setSelected(false);
+						texttyping = 0;
+
 					}
-					if (state == 2)
+					else
 					{
-						state = 1;
-						window.clear();
+						textbox1.setSelected(true);
+						texttyping = 1;
+						clickinsername = 1;
 					}
 				}
-				
 				break;
 			case ::sf::Event::KeyReleased:
 				if (event.key.code == sf::Keyboard::W && state == 0)
@@ -1188,28 +1215,63 @@ int main()
 				{
 					footSound.pause();
 				}
-				if (event.key.code == sf::Keyboard::Up && (state == 1 || state == 2))
-				{
-					menu.MoveUp();
-					pausemenu.MoveUp();
-				}
-				if (event.key.code == sf::Keyboard::Down && (state == 1 || state == 2))
-				{
-					menu.MoveDown();
-					pausemenu.MoveDown();
-				}
-				menu.GetPressedItem() == sf::Keyboard::Return;
-				pausemenu.GetPressedItem() == sf::Keyboard::Return;
 				break;
 			case::sf::Event::TextEntered:
 				textbox1.typeOn(event);
 				break;
+			case::sf::Event::MouseMoved:
+				playButton.isMouseOver(window);
+				insertNameButton.isMouseOver(window);
+				leaderboardButton.isMouseOver(window);
+				exitbutton.isMouseOver(window);
+				
+				break;
 
+			case sf::Event::MouseButtonPressed:
+				if (state == 1)
+				{
+					if (playButton.isMouseOver(window))
+					{
+						if (state == 1)
+						{
+							restart = 1;
+							state = 0;
+						}
+					}
+					if (insertNameButton.isMouseOver(window))
+					{
+						if (texttyping == 1)
+						{
+							textbox1.setSelected(false);
+							texttyping = 0;
+							
+						}
+						else
+						{
+							textbox1.setSelected(true);
+							texttyping = 1;
+							clickinsername = 1;
+						}
+					}
+					if (leaderboardButton.isMouseOver(window))
+					{
+						if (state == 1)
+						{
+
+							state = 2;
+						}
+					}
+					if (exitbutton.isMouseOver(window))
+					{
+						window.close();
+					}
+				}
+				break;
 			}
 		}
 		if (state == 0)
 		{
-
+			window.setMouseCursorVisible(true);
 			if (restart == 1)
 			{
 				window.clear();
@@ -1234,6 +1296,8 @@ int main()
 				spawnTrain = sf::seconds(0.00f);
 				 trainclock.restart();
 				trainrunning = 0;
+				animationplayer.restart();
+				playerchange = sf::seconds(0.00f);
 				player.setFillColor(sf::Color::Green);
 				player.setPosition(spawnPoint);
 				//reset purple
@@ -1865,18 +1929,22 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))//2.5
 			{
 				player.move(0.f, -2.5f * speed);
+				checksideplayer = 3;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 			{
 				player.move(0.f, 2.5f * speed);
+				checksideplayer = 0;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 			{
 				player.move(-2.5f * speed, 0.0f);
+				checksideplayer = 1;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
 				player.move(2.5f * speed, 0.f);
+				checksideplayer = 2;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 			{
@@ -1891,8 +1959,23 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 			{
 				state = 2;
+				continue;
 			}
-
+			//animation player
+			playerchange = animationplayer.getElapsedTime();
+			if (playerchange.asSeconds() > 0.35f)
+			{
+				if (framechicken <= 2)
+				{
+					chicksp.setTextureRect(sf::IntRect(((framechicken+redchicken)*48.f)+0.0f, ((checksideplayer+redchcikeny)*48.f)+0.0f, 48.f, 48.f));
+					framechicken++;
+					if (framechicken == 3)
+					{
+						framechicken = 0;
+					}
+				}
+				animationplayer.restart();
+			}
 			//animation coins
 			coin = animationcoin.getElapsedTime();
 			if (coin.asSeconds() > 0.15f)
@@ -2431,6 +2514,8 @@ int main()
 					{
 						hpbar += 1;
 						countcollin += 1;
+						redchicken = 9;
+						redchcikeny = 4;
 						speed -= 0.05;
 						immue = immueclock.restart();
 						/*if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
@@ -2466,6 +2551,8 @@ int main()
 				{
 					player.setFillColor(sf::Color::Green);
 					checkcollintime = 0;
+					redchicken = 0;
+					redchcikeny = 0;
 				}
 			}
 
@@ -2922,12 +3009,13 @@ int main()
 			{
 				platmid.setPosition(posplatmid[i].x, posplatmid[i].y);
 			}
+			chicksp.setPosition(player.getPosition().x-18,player.getPosition().y-20);
 			window.setView(view);
 			window.display();
 		}
 		if (state == 1)
 		{
-			
+			window.setMouseCursorVisible(true);
 			window.clear();
 			music.stop();
 			alert.stop();
@@ -2938,13 +3026,21 @@ int main()
 			footSound.stop();
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
-			menu.SetPOS(100,10);
-			menu.draw(window);
+			
+			
 			textbox1.drawTo(window);
+			exitbutton.drawTO(window);
+			leaderboardButton.drawTO(window);
+			if (clickinsername == 0)
+			{
+				insertNameButton.drawTO(window);
+			}
+			playButton.drawTO(window);
 			window.display();
 		}
 		if (state == 2)
 		{
+			window.setMouseCursorVisible(true);
 			music.pause();
 			alert.pause();
 			trainSound.pause();
@@ -2954,12 +3050,13 @@ int main()
 			footSound.pause();
 			//view.reset(sf::FloatRect(positionview.x, positionview.y, screen.x, screen.y));
 			//window.setView(view);
+			
 			pausemenu.SetPOS(positionview.x,positionview.y);
 			pausemenu.draw(window);
 			window.display();
 
 		}
-		cout << state << '\n' <<textbox1.getText();
+		//cout << state << '\n' <<textbox1.getText();
 		window.draw(platmid);
 		window.draw(mapbox);
 		//draw white
@@ -3171,6 +3268,7 @@ int main()
 			window.draw(purple);
 		}
 		window.draw(player);
+		window.draw(chicksp);
 		//draw clock
 		for (i = 0; i <= 2; i++)
 		{
@@ -3219,7 +3317,7 @@ int main()
 			window.draw(scoretext);
 			window.draw(highscoretext);
 		}
-
+		
 	}
 	return 0;
 }

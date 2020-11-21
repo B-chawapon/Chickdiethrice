@@ -13,16 +13,18 @@ Pausemenu::Pausemenu(float width, float height,float x ,float y)
 	pausemenu[0].setString("Resume");
 	
 
+	
+
 	pausemenu[1].setFont(font);
 	pausemenu[1].setFillColor(sf::Color::White);
-	pausemenu[1].setString("Save Game");
-
-	pausemenu[2].setFont(font);
-	pausemenu[2].setFillColor(sf::Color::White);
-	pausemenu[2].setString("Return to Menu");
+	pausemenu[1].setString("Return to Menu");
+	
 	
 
 	selectedItemIndex = 0;
+	
+	
+	
 }
 
 
@@ -36,6 +38,7 @@ void Pausemenu::draw(sf::RenderWindow& window)
 	{
 		window.draw(pausemenu[i]);
 	}
+
 }
 
 void Pausemenu::MoveUp()
@@ -63,9 +66,9 @@ void Pausemenu::MoveDown()
 }
 void Pausemenu::SetPOS(float x,float y)
 {
-	pausemenu[0].setPosition(sf::Vector2f(x + 500, y+200 ));
-	pausemenu[1].setPosition(sf::Vector2f(x + 500, y+300));
-	pausemenu[2].setPosition(sf::Vector2f(x + 500,y+400 ));
+	pausemenu[0].setPosition(sf::Vector2f(x + 540, y+300 ));
+	pausemenu[1].setPosition(sf::Vector2f(x + 540, y+400));
+	
 }
 
 

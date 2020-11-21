@@ -38,9 +38,10 @@ public:
 	{
 		textbox.setPosition(pos);
 	}
-	void setLimit(bool Tof)
+	void setLimit(bool Tof,int lim)
 	{
 		hasLimit = Tof;
+		limit = lim - 1;
 	}
 	void setSelected(bool sel)
 	{
@@ -49,7 +50,7 @@ public:
 		{
 			string t = text.str();
 			string newT = "";
-			for (int i = 0; i < t.length() - 1; i++)
+			for (int i = 0; i < t.length() ; i++)
 			{
 				newT += t[i];
 			}
@@ -86,6 +87,7 @@ public:
 			}
 		}
 	}
+	
 private:
 	sf::Text textbox;
 	ostringstream text;
