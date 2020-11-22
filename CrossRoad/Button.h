@@ -12,16 +12,19 @@ public:
 
 
 	}
-	Buttuon(string t,sf::Vector2f size,int charSize,sf::Color bgColor,sf::Color textcolor)
+	Buttuon(string t,sf::Vector2f size,int charSize,sf::Color bgColor,sf::Color textcolor,sf::Color outline,int sizeoutline)
 	{
 		text.setString(t);
 		text.setFillColor(textcolor);
 		text.setCharacterSize(charSize);
 		text.setOrigin(size.x/2,size.y/2);
+		text.setOutlineColor(outline);
+		text.setOutlineThickness(sizeoutline);
 		
 		button.setSize(size);
 		button.setFillColor(bgColor);
 		button.setOrigin( size.x / 2,size.y / 2 );
+
 	}
 
 	
@@ -51,10 +54,13 @@ public:
 		
 		text.setPosition(pos);
 	}
+	
+	
 	void drawTO(sf::RenderWindow& window)
 	{
 		window.draw(button);
 		window.draw(text);
+		window.draw(buttonbox);
 	}
 	bool isMouseOver(sf::RenderWindow& window)
 	{
@@ -123,11 +129,12 @@ public:
 	{
 		return button.getPosition().y;
 	}
+	
 private:
 	sf::RectangleShape button;
 	sf::Text text;
 	sf::Vector2f btnPos;
-
+	sf::Sprite buttonbox;
 
 
 

@@ -6,7 +6,7 @@
 class Pausemenu
 {
 public:
-	Pausemenu(float width, float height,float x,float y);
+	Pausemenu(float width, float height, float x, float y);
 	~Pausemenu();
 
 	void draw(sf::RenderWindow& window);

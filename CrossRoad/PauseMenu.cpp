@@ -3,7 +3,7 @@
 
 Pausemenu::Pausemenu(float width, float height,float x ,float y)
 {
-	if (!font.loadFromFile("fonttext/GOTHICB.ttf"))
+	if (!font.loadFromFile("fonttext/8-BIT WONDER.ttf"))
 	{
 		// handle error
 	}
@@ -11,14 +11,16 @@ Pausemenu::Pausemenu(float width, float height,float x ,float y)
 	pausemenu[0].setFont(font);
 	pausemenu[0].setFillColor(sf::Color::Red);
 	pausemenu[0].setString("Resume");
-	
+	pausemenu[0].setOutlineColor(sf::Color::Black);
+	pausemenu[0].setOutlineThickness(3);
 
 	
 
 	pausemenu[1].setFont(font);
 	pausemenu[1].setFillColor(sf::Color::White);
 	pausemenu[1].setString("Return to Menu");
-	
+	pausemenu[1].setOutlineColor(sf::Color::Black);
+	pausemenu[1].setOutlineThickness(3);
 	
 
 	selectedItemIndex = 0;
@@ -49,7 +51,7 @@ void Pausemenu::MoveUp()
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex--;
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::Red);
-		pausemenu[selectedItemIndex].setScale(2.f, 2.f);
+		pausemenu[selectedItemIndex].setScale(1.4f, 1.4f);
 	}
 }
 
@@ -61,13 +63,13 @@ void Pausemenu::MoveDown()
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex++;
 		pausemenu[selectedItemIndex].setFillColor(sf::Color::Red);
-		pausemenu[selectedItemIndex].setScale(2.f, 2.f);
+		pausemenu[selectedItemIndex].setScale(1.4f, 1.4f);
 	}
 }
 void Pausemenu::SetPOS(float x,float y)
 {
-	pausemenu[0].setPosition(sf::Vector2f(x + 540, y+300 ));
-	pausemenu[1].setPosition(sf::Vector2f(x + 540, y+400));
+	pausemenu[0].setPosition(sf::Vector2f(x + 340, y+300 ));
+	pausemenu[1].setPosition(sf::Vector2f(x + 340, y+400));
 	
 }
 

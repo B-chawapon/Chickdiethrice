@@ -16,10 +16,12 @@ public:
 
 
 	}
-	Textbox(int size, sf::Color color, bool sel)
+	Textbox(int size, sf::Color color, bool sel, sf::Color outline, int sizeoutline)
 	{
 		textbox.setCharacterSize(size);
 		textbox.setFillColor(color);
+		textbox.setOutlineColor(outline);
+		textbox.setOutlineThickness(sizeoutline);
 		isSelected = sel;
 		if (sel)
 		{

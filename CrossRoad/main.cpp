@@ -29,7 +29,7 @@ int stackshoes = 0;
 int scorecoins = 0;
 int frame = 0;
 int framewater = 0;
-
+int frametp = 0;
 int framechicken = 0;
 int checksideplayer = 0;
 int redchicken = 0;
@@ -77,6 +77,11 @@ int main()
 
 	sf::Vector2i screen(1080, 720);
 	sf::RenderWindow window(sf::VideoMode(screen.x, screen.y), "GAME!", sf::Style::Close | sf::Style::Resize);
+
+	sf::Texture bgtexture;
+	bgtexture.loadFromFile("bgmenu.png");
+	sf::Sprite bgmenubox;
+	bgmenubox.setTexture(bgtexture);
 
 	sf::View view;
 	view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
@@ -476,6 +481,17 @@ int main()
 	endPointbox.setFillColor(sf::Color::Green);
 	endPointbox.setPosition(520,4850);
 
+	sf::RectangleShape tpbox(sf::Vector2f(90, 90));
+	tpbox.setFillColor(sf::Color::Blue);
+	tpbox.setPosition(505, 4820);
+	sf::Texture tpeff;
+	tpeff.loadFromFile("tptx.png");
+	sf::Sprite tpsp;
+	tpsp.setTexture(tpeff);
+	tpsp.setScale(1.3f,1.3f);
+	tpsp.setPosition(493, 4805);
+	
+
 	sf::RectangleShape hitboxTrain(sf::Vector2f(4320, 350));
 	hitboxTrain.setFillColor(sf::Color::White);
 	hitboxTrain.setPosition(-4520, findPosCarY(hitboxTrain, hitboxTrain.getPosition().y));//-4320
@@ -494,29 +510,42 @@ int main()
 
 	sf::Font fontscore;
 	fontscore.loadFromFile("fonttext/GOTHICB.ttf");
+	
+	sf::Font bit8;
+	bit8.loadFromFile("fonttext/8-BIT WONDER.ttf");
 
 	sf::Text highscoretext;
-	highscoretext.setFont(fontscore);
+	highscoretext.setFont(bit8);
 	highscoretext.setCharacterSize(20);
 	highscoretext.setString("Highscore 0");
+	highscoretext.setOutlineColor(sf::Color::Black);
+	highscoretext.setOutlineThickness(2);
+
 	sf::Text scoretext;
-	scoretext.setFont(fontscore);
+	scoretext.setFont(bit8);
 	scoretext.setCharacterSize(20);
 	scoretext.setString("Score 0");
+	scoretext.setOutlineColor(sf::Color::Black);
+	scoretext.setOutlineThickness(2);
 
 	sf::Text shoetext;
-	shoetext.setFont(fontscore);
+	shoetext.setFont(bit8);
 	shoetext.setCharacterSize(20);
 	shoetext.setString("Shoes 0");
-
+	shoetext.setOutlineColor(sf::Color::Black);
+	shoetext.setOutlineThickness(2);
 	sf::Text cointext;
-	cointext.setFont(fontscore);
+	cointext.setFont(bit8);
 	cointext.setCharacterSize(20);
 	cointext.setString("Shoes 0");
+	cointext.setOutlineColor(sf::Color::Black);
+	cointext.setOutlineThickness(2);
 
 	sf::Text nameplayerDisplay;
-	nameplayerDisplay.setFont(fontscore);
-	nameplayerDisplay.setCharacterSize(40);
+	nameplayerDisplay.setFont(bit8);
+	nameplayerDisplay.setCharacterSize(20);
+	nameplayerDisplay.setOutlineColor(sf::Color::Black);
+	nameplayerDisplay.setOutlineThickness(2);
 
 	int distance;
 
@@ -977,6 +1006,8 @@ int main()
 	sf::Time playerchange;
 	sf::Clock clockstandTp;
 	sf::Time standTp;
+	sf::Clock animationtp;
+	sf::Time tptime;
 	int signNotification = 0;
 	int trainrunning = 0;
 	bool realspawn = 0;
@@ -1068,32 +1099,40 @@ int main()
 	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
 	Menu endMenu(window.getSize().x, window.getSize().y, positionview.x, positionview.y);
 	
-	Textbox textbox1(50,sf::Color::White,false);
+	
 	sf::Font gOTHICB;
 	gOTHICB.loadFromFile("fonttext/GOTHICB.ttf");
-	textbox1.setFont(gOTHICB);
-	textbox1.setPosition({ 700,275 });
-	textbox1.setLimit(true,10);
+	
 
-	Buttuon playButton("Play", {130,65},60,sf::Color::Green,sf::Color::Red);
-	playButton.setPosition({ 800,200 });
-	playButton.setFont(gOTHICB);
-	playButton.setPositiontext({800,188});
+	Textbox textbox1(40, sf::Color::White, false, sf::Color::Black, 3);
+	textbox1.setFont(bit8);
+	textbox1.setPosition({ 700,270 });
+	textbox1.setLimit(true,5);
 
-	Buttuon insertNameButton("Name", { 180,55 }, 60, sf::Color::Green, sf::Color::Red);
-	insertNameButton.setPosition({ 800,310 });
-	insertNameButton.setFont(gOTHICB);
-	insertNameButton.setPositiontext({ 800,300});
 
-	Buttuon leaderboardButton("Leaderboard", { 380,55 }, 60, sf::Color::Green, sf::Color::Red);
-	leaderboardButton.setPosition({ 800,420 });
-	leaderboardButton.setFont(gOTHICB);
-	leaderboardButton.setPositiontext({ 800,410 });
+	
+	Buttuon playButton("Play", {160,40},40,sf::Color::Transparent,sf::Color::White,sf::Color::Black,3);
+	playButton.setPosition({ 800,210 });
+	playButton.setFont(bit8);
+	playButton.setPositiontext({800,208});
+	
 
-	Buttuon exitbutton("Exit", { 100,55 }, 60, sf::Color::Green, sf::Color::Red);
-	exitbutton.setPosition({ 800,520 });
-	exitbutton.setFont(gOTHICB);
-	exitbutton.setPositiontext({ 800,510 });
+	Buttuon insertNameButton("Name", { 180,42 }, 40, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
+	insertNameButton.setPosition({ 802,292 });
+	insertNameButton.setFont(bit8);
+	insertNameButton.setPositiontext({ 805,290});
+
+	Buttuon leaderboardButton("Leaderboard", { 385,40 }, 35, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
+	leaderboardButton.setPosition({ 805,390 });
+	leaderboardButton.setFont(bit8);
+	leaderboardButton.setPositiontext({ 805,390 });
+
+	Buttuon exitbutton("Exit", { 130,40 }, 40, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
+	exitbutton.setPosition({ 798,472 });
+	exitbutton.setFont(bit8);
+	exitbutton.setPositiontext({ 798,470 });
+
+
 
 	while (window.isOpen())
 	{
@@ -1365,6 +1404,8 @@ int main()
 				standTp = sf::seconds(0.00f);
 				clockstandTp.restart();
 				playerchange = sf::seconds(0.00f);
+				animationtp.restart();
+				tptime = sf::seconds(0.00f);
 				player.setFillColor(sf::Color::Green);
 				player.setPosition(spawnPoint);
 				//reset purple
@@ -2073,7 +2114,21 @@ int main()
 				}
 				animationwater.restart();
 			}
-
+			//animation tp
+			tptime = animationtp.getElapsedTime();
+			if (tptime.asSeconds() > 0.05f)
+			{
+				if (frametp <= 12)
+				{
+					tpsp.setTextureRect(sf::IntRect((frametp * 90.f) + 0.0f,  0.0f, 90.f, 90.f));
+					frametp++;
+					if (frametp == 13)
+					{
+						frametp = 0;
+					}
+				}
+				animationtp.restart();
+			}
 			positionview.y = player.getPosition().y + 10 - (screen.y / 2);
 			positionview.x = 0;
 			if (positionview.y < 0)
@@ -2652,6 +2707,10 @@ int main()
 					staminabar.setSize(sf::Vector2f(27.f, 80.33333333333333f));
 					player.setPosition(spawnPoint);
 				}
+				if (die == 3)
+				{
+					state=3;
+				}
 			}
 
 			//COllinsion block purple
@@ -3059,16 +3118,16 @@ int main()
 			nameplayerDisplay.setPosition(positionview.x, positionview.y);
 
 			coinc << "x " << scorecoins;
-			cointext.setPosition(positionview.x + 550, positionview.y);
+			cointext.setPosition(positionview.x + 350, positionview.y);
 			cointext.setString(coinc.str());
 
 			shoec << "x " << stackshoes;
-			shoetext.setPosition(positionview.x + 650, positionview.y);
+			shoetext.setPosition(positionview.x + 500, positionview.y);
 			shoetext.setString(shoec.str());
 
-			scoretext.setPosition(positionview.x + 950, positionview.y);
+			scoretext.setPosition(positionview.x + 875, positionview.y);
 			highscoretext.setString(hs.str());
-			highscoretext.setPosition(positionview.x + 750, positionview.y);
+			highscoretext.setPosition(positionview.x + 590, positionview.y);
 
 			staminabar.setPosition(33.3f, positionview.y + 710.5f);
 			staminaSprite.setPosition(8, positionview.y + 520);
@@ -3109,8 +3168,9 @@ int main()
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
 			
-			
+			window.draw(bgmenubox);
 			textbox1.drawTo(window);
+		
 			exitbutton.drawTO(window);
 			leaderboardButton.drawTO(window);
 			if (clickinsername == 0)
@@ -3149,10 +3209,10 @@ int main()
 			footSound.pause();
 
 			stringstream hsend;
-			hsend <<"HighScore"<< '\n' <<"     "<<hightDistance;
+			hsend <<"HighScore"<< '\n' << '\n' <<"    "<<hightDistance;
 			highscoretext.setString(hsend.str());
 			highscoretext.setCharacterSize(100);
-			highscoretext.setPosition(positionview.x + 310, positionview.y+75);
+			highscoretext.setPosition(positionview.x + 145, positionview.y+95);
 			player.move(0.0f,-5.0f);
 			chicksp.setScale(5.f,5.f);
 			chicksp.setPosition(player.getPosition().x-90,player.getPosition().y-90);
@@ -3371,7 +3431,9 @@ int main()
 			purple.setPosition(pospurple[i].x, pospurple[i].y);
 			window.draw(purple);
 		}
+		window.draw(tpbox);
 		window.draw(endPointbox);
+		window.draw(tpsp);
 		window.draw(player);
 		
 		//draw clock
@@ -3383,9 +3445,9 @@ int main()
 		//draw boots
 		for (i = 0; i <= 2; i++)
 		{
-			if (allowDraw == 1)
+			if (allowDraw == 0)//1
 			{
-				posboots[2].x = positionview.x + 600;
+				posboots[2].x = positionview.x + 450;
 				posboots[2].y = positionview.y;
 			}
 			itemboots.setPosition(posboots[i].x, posboots[i].y);
@@ -3394,9 +3456,9 @@ int main()
 		//draw coin
 		for (i = 0; i <= 25; i++)
 		{
-			if (allowDraw == 1)
+			if (allowDraw == 0)//1
 			{
-				poscoins[25].x = positionview.x + 510;
+				poscoins[25].x = positionview.x + 310;
 				poscoins[25].y = positionview.y;
 			}
 			itemcoins.setPosition(poscoins[i].x, poscoins[i].y);
@@ -3416,7 +3478,7 @@ int main()
 		window.draw(nameplayerDisplay);
 		window.draw(staminaSprite);
 		window.draw(staminabar);
-		if (allowDraw == 1)
+		if (allowDraw == 0)//1
 		{
 			window.draw(cointext);
 			window.draw(shoetext);
