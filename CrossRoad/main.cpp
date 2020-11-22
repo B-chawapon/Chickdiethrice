@@ -514,9 +514,9 @@ int main()
 	cointext.setCharacterSize(20);
 	cointext.setString("Shoes 0");
 
-	sf::Text answertext;
-	answertext.setFont(fontscore);
-	answertext.setCharacterSize(20);
+	sf::Text nameplayerDisplay;
+	nameplayerDisplay.setFont(fontscore);
+	nameplayerDisplay.setCharacterSize(40);
 
 	int distance;
 
@@ -1161,31 +1161,86 @@ int main()
 					hpbar = -30;
 					checkcollintime = 0;
 				}
-				if (event.key.code == sf::Keyboard::W && state == 2)
+				if (event.key.code == sf::Keyboard::W && (state == 2||state==3))
 				{
-					pausemenu.MoveUp();
-					pausemenu.GetPressedItem();
+					if (state == 2)
+					{
+						pausemenu.MoveUp();
+						pausemenu.GetPressedItem();
+					}
+					if (state == 3)
+					{
+
+						endMenu.MoveUp();
+						endMenu.GetPressedItem();
+					}
 				}
-				if (event.key.code == sf::Keyboard::S && state == 2)
+				if (event.key.code == sf::Keyboard::S && (state == 2 || state == 3))
 				{
-					pausemenu.MoveDown();
-					pausemenu.GetPressedItem();
+					if (state == 2)
+					{
+						pausemenu.MoveDown();
+						pausemenu.GetPressedItem();
+					}
+					if (state == 3)
+					{
+
+						endMenu.MoveDown();
+						endMenu.GetPressedItem();
+					}
 				}
-				if (event.key.code == sf::Keyboard::Up && state == 2)
+				if (event.key.code == sf::Keyboard::Up && (state == 2 || state == 3))
 				{
-					pausemenu.MoveUp();
-					pausemenu.GetPressedItem();
+					if (state == 2)
+					{
+						pausemenu.MoveUp();
+						pausemenu.GetPressedItem();
+					}
+					if (state == 3)
+					{
+
+						endMenu.MoveUp();
+						endMenu.GetPressedItem();
+					}
 				}
-				if (event.key.code == sf::Keyboard::Down && state == 2)
+				if (event.key.code == sf::Keyboard::Down && (state == 2 || state == 3))
 				{
-					pausemenu.MoveDown();
+					if (state == 2)
+					{
+						pausemenu.MoveDown();
 					pausemenu.GetPressedItem();
+					}
+					if (state == 3)
+					{
+
+						endMenu.MoveDown();
+						endMenu.GetPressedItem();
+					}
+				}
+				if (event.key.code == sf::Keyboard::Left &&  state == 3)
+				{
+					endMenu.MoveUp();
+					endMenu.GetPressedItem();
+				}
+				if (event.key.code == sf::Keyboard::Right && state == 3)
+				{
+					endMenu.MoveDown();
+					endMenu.GetPressedItem();
 				}
 				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 0)
 				{
 					state=0;
 				}
 				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 1)
+				{
+					state = 1;
+				}
+				if (event.key.code == sf::Keyboard::Enter && state == 3 && endMenu.GetPressedItem() == 0)
+				{
+					state = 0;
+					restart = 1;
+				}
+				if (event.key.code == sf::Keyboard::Enter && state == 3 && endMenu.GetPressedItem() == 1)
 				{
 					state = 1;
 				}
@@ -1282,6 +1337,9 @@ int main()
 			if (restart == 1)
 			{
 				window.clear();
+				highscoretext.setCharacterSize(20);
+				chicksp.setPosition(player.getPosition().x-18,player.getPosition().y-20);
+				chicksp.setScale(1.371428571428571f, 1.371428571428571f);
 				speed = 1;
 				slowtime = 1;
 				checkslowtime = 0;
@@ -2971,7 +3029,7 @@ int main()
 				poscoins[25].y = -99;
 			}
 
-			stringstream hs, sc, shoec, coinc, answerc;
+			stringstream hs, sc, shoec, coinc, nameplayerValue;
 			//printf("%d", s);
 			distance = ((player.getPosition().y + player.getSize().y) - 120);
 			if (distance - tempdistance > 0)
@@ -2996,9 +3054,9 @@ int main()
 			}
 
 			textbox1.setSelected(false);
-			answerc << textbox1.getText() << '\n';
-			answertext.setString(answerc.str());
-			answertext.setPosition(positionview.x, positionview.y);
+			nameplayerValue << textbox1.getText() << '\n';
+			nameplayerDisplay.setString(nameplayerValue.str());
+			nameplayerDisplay.setPosition(positionview.x, positionview.y);
 
 			coinc << "x " << scorecoins;
 			cointext.setPosition(positionview.x + 550, positionview.y);
@@ -3033,7 +3091,7 @@ int main()
 			else {
 				clockstandTp.restart();
 			}
-			cout << standTp.asSeconds()<<'\n';
+			
 			window.setView(view);
 			window.display();
 		}
@@ -3089,7 +3147,12 @@ int main()
 			coinSound.pause();
 			bootsSound.pause();
 			footSound.pause();
-			
+
+			stringstream hsend;
+			hsend <<"HighScore"<< '\n' <<"     "<<hightDistance;
+			highscoretext.setString(hsend.str());
+			highscoretext.setCharacterSize(100);
+			highscoretext.setPosition(positionview.x + 310, positionview.y+75);
 			player.move(0.0f,-5.0f);
 			chicksp.setScale(5.f,5.f);
 			chicksp.setPosition(player.getPosition().x-90,player.getPosition().y-90);
@@ -3310,7 +3373,7 @@ int main()
 		}
 		window.draw(endPointbox);
 		window.draw(player);
-		window.draw(chicksp);
+		
 		//draw clock
 		for (i = 0; i <= 2; i++)
 		{
@@ -3349,7 +3412,8 @@ int main()
 				window.draw(signTrain);
 			}
 		}
-		window.draw(answertext);
+		window.draw(chicksp);
+		window.draw(nameplayerDisplay);
 		window.draw(staminaSprite);
 		window.draw(staminabar);
 		if (allowDraw == 1)

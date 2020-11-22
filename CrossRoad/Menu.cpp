@@ -11,11 +11,12 @@ Menu::Menu(float width, float height,float x, float y)
 	menu[0].setFont(font);
 	menu[0].setFillColor(sf::Color::Red);
 	menu[0].setString("Retry");
-	
+	menu[0].setScale(1.4f,1.4f);
+
 	menu[1].setFont(font);
 	menu[1].setFillColor(sf::Color::White);
 	menu[1].setString("Return to menu");
-	
+	menu[1].setScale(1.4f, 1.4f);
 
 	
 	
@@ -40,11 +41,11 @@ void Menu::MoveUp()
 {
 	if (selectedItemIndex - 1 >= 0)
 	{
-		menu[selectedItemIndex].setScale(1.f, 1.f);
+		
 		menu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex--;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
-		menu[selectedItemIndex].setScale(2.f,2.f);
+		
 	}
 }
 
@@ -52,16 +53,16 @@ void Menu::MoveDown()
 {
 	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS)
 	{
-		menu[selectedItemIndex].setScale(1.f, 1.f);
+		
 		menu[selectedItemIndex].setFillColor(sf::Color::White);
 		selectedItemIndex++;
 		menu[selectedItemIndex].setFillColor(sf::Color::Red);
-		menu[selectedItemIndex].setScale(2.f, 2.f);
+		
 	}
 }
 void Menu::SetPOS(float x, float y)
 {
-	menu[0].setPosition(sf::Vector2f(x + 500, y + 200));
-	menu[1].setPosition(sf::Vector2f(x + 500, y + 300));
+	menu[0].setPosition(sf::Vector2f(x + 300, y + 500));
+	menu[1].setPosition(sf::Vector2f(x + 650, y + 500));
 	
 }
