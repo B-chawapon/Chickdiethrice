@@ -10,16 +10,14 @@ Menu::Menu(float width, float height,float x, float y)
 	
 	menu[0].setFont(font);
 	menu[0].setFillColor(sf::Color::Red);
-	menu[0].setString("Play");
+	menu[0].setString("Retry");
 	
 	menu[1].setFont(font);
 	menu[1].setFillColor(sf::Color::White);
-	menu[1].setString("Insert name");
+	menu[1].setString("Return to menu");
 	
 
-	menu[2].setFont(font);
-	menu[2].setFillColor(sf::Color::White);
-	menu[2].setString("Exit");
+	
 	
 
 	selectedItemIndex = 0;
@@ -65,5 +63,5 @@ void Menu::SetPOS(float x, float y)
 {
 	menu[0].setPosition(sf::Vector2f(x + 500, y + 200));
 	menu[1].setPosition(sf::Vector2f(x + 500, y + 300));
-	menu[2].setPosition(sf::Vector2f(x + 500, y + 400));
+	
 }

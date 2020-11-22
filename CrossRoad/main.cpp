@@ -472,6 +472,10 @@ int main()
 		}
 	}
 
+	sf::RectangleShape endPointbox(sf::Vector2f(60,60));
+	endPointbox.setFillColor(sf::Color::Green);
+	endPointbox.setPosition(520,4850);
+
 	sf::RectangleShape hitboxTrain(sf::Vector2f(4320, 350));
 	hitboxTrain.setFillColor(sf::Color::White);
 	hitboxTrain.setPosition(-4520, findPosCarY(hitboxTrain, hitboxTrain.getPosition().y));//-4320
@@ -971,6 +975,8 @@ int main()
 	sf::Clock signclock;
 	sf::Clock animationplayer;
 	sf::Time playerchange;
+	sf::Clock clockstandTp;
+	sf::Time standTp;
 	int signNotification = 0;
 	int trainrunning = 0;
 	bool realspawn = 0;
@@ -1060,6 +1066,7 @@ int main()
 	//texturemap.setSmooth(true);
 
 	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
+	Menu endMenu(window.getSize().x, window.getSize().y, positionview.x, positionview.y);
 	
 	Textbox textbox1(50,sf::Color::White,false);
 	sf::Font gOTHICB;
@@ -1271,7 +1278,7 @@ int main()
 		}
 		if (state == 0)
 		{
-			window.setMouseCursorVisible(true);
+			window.setMouseCursorVisible(false);
 			if (restart == 1)
 			{
 				window.clear();
@@ -1297,6 +1304,8 @@ int main()
 				 trainclock.restart();
 				trainrunning = 0;
 				animationplayer.restart();
+				standTp = sf::seconds(0.00f);
+				clockstandTp.restart();
 				playerchange = sf::seconds(0.00f);
 				player.setFillColor(sf::Color::Green);
 				player.setPosition(spawnPoint);
@@ -1963,7 +1972,7 @@ int main()
 			}
 			//animation player
 			playerchange = animationplayer.getElapsedTime();
-			if (playerchange.asSeconds() > 0.35f)
+			if (playerchange.asSeconds() > 0.15f)
 			{
 				if (framechicken <= 2)
 				{
@@ -3010,6 +3019,21 @@ int main()
 				platmid.setPosition(posplatmid[i].x, posplatmid[i].y);
 			}
 			chicksp.setPosition(player.getPosition().x-18,player.getPosition().y-20);
+			
+			
+			if (player.getGlobalBounds().intersects(endPointbox.getGlobalBounds()))
+			{
+				standTp = clockstandTp.getElapsedTime();
+				if (standTp.asSeconds() > 0.5f)//2.5
+				{
+					state = 3;
+					clockstandTp.restart();
+				}
+			}
+			else {
+				clockstandTp.restart();
+			}
+			cout << standTp.asSeconds()<<'\n';
 			window.setView(view);
 			window.display();
 		}
@@ -3040,7 +3064,7 @@ int main()
 		}
 		if (state == 2)
 		{
-			window.setMouseCursorVisible(true);
+			window.setMouseCursorVisible(false);
 			music.pause();
 			alert.pause();
 			trainSound.pause();
@@ -3055,6 +3079,23 @@ int main()
 			pausemenu.draw(window);
 			window.display();
 
+		}
+		if (state == 3)//endgame
+		{
+			window.setMouseCursorVisible(false);
+			alert.pause();
+			trainSound.pause();
+			clockSound.pause();
+			coinSound.pause();
+			bootsSound.pause();
+			footSound.pause();
+			
+			player.move(0.0f,-5.0f);
+			chicksp.setScale(5.f,5.f);
+			chicksp.setPosition(player.getPosition().x-90,player.getPosition().y-90);
+			endMenu.SetPOS(positionview.x, positionview.y);
+			endMenu.draw(window);
+			window.display();
 		}
 		//cout << state << '\n' <<textbox1.getText();
 		window.draw(platmid);
@@ -3267,6 +3308,7 @@ int main()
 			purple.setPosition(pospurple[i].x, pospurple[i].y);
 			window.draw(purple);
 		}
+		window.draw(endPointbox);
 		window.draw(player);
 		window.draw(chicksp);
 		//draw clock
