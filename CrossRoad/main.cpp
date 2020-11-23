@@ -7,10 +7,12 @@
 #include<stdio.h>
 #include<iostream>
 #include<time.h>
-#include<iostream>
 #include <string>
 #include <sstream>
 #include <math.h>
+#include<algorithm>
+#include<vector>
+#include<utility>
 //MAP  WEIGHT =1080   HEIGHT=5000;
 using namespace std;
 int j = 0;
@@ -91,7 +93,7 @@ int main()
 
 	sf::RectangleShape player(sf::Vector2f(35.f, 35.f));//35
 	player.setFillColor(sf::Color::Green);
-	 
+
 	sf::Texture chicktexture;
 	chicktexture.loadFromFile("chic.png");
 	sf::Sprite chicksp;
@@ -477,9 +479,9 @@ int main()
 		}
 	}
 
-	sf::RectangleShape endPointbox(sf::Vector2f(60,60));
+	sf::RectangleShape endPointbox(sf::Vector2f(60, 60));
 	endPointbox.setFillColor(sf::Color::Green);
-	endPointbox.setPosition(520,4850);
+	endPointbox.setPosition(520, 4850);
 
 	sf::RectangleShape tpbox(sf::Vector2f(90, 90));
 	tpbox.setFillColor(sf::Color::Blue);
@@ -488,9 +490,9 @@ int main()
 	tpeff.loadFromFile("tptx.png");
 	sf::Sprite tpsp;
 	tpsp.setTexture(tpeff);
-	tpsp.setScale(1.3f,1.3f);
+	tpsp.setScale(1.3f, 1.3f);
 	tpsp.setPosition(493, 4805);
-	
+
 
 	sf::RectangleShape hitboxTrain(sf::Vector2f(4320, 350));
 	hitboxTrain.setFillColor(sf::Color::White);
@@ -510,7 +512,7 @@ int main()
 
 	sf::Font fontscore;
 	fontscore.loadFromFile("fonttext/GOTHICB.ttf");
-	
+
 	sf::Font bit8;
 	bit8.loadFromFile("fonttext/8-BIT WONDER.ttf");
 
@@ -1096,31 +1098,31 @@ int main()
 	mapbox.setTexture(&texturemap);
 	//texturemap.setSmooth(true);
 
-	Pausemenu pausemenu(window.getSize().x, window.getSize().y,positionview.x,positionview.y);
+	Pausemenu pausemenu(window.getSize().x, window.getSize().y, positionview.x, positionview.y);
 	Menu endMenu(window.getSize().x, window.getSize().y, positionview.x, positionview.y);
-	
-	
+
+
 	sf::Font gOTHICB;
 	gOTHICB.loadFromFile("fonttext/GOTHICB.ttf");
-	
+
 
 	Textbox textbox1(40, sf::Color::White, false, sf::Color::Black, 3);
 	textbox1.setFont(bit8);
 	textbox1.setPosition({ 700,270 });
-	textbox1.setLimit(true,5);
+	textbox1.setLimit(true, 5);
 
 
-	
-	Buttuon playButton("Play", {160,40},40,sf::Color::Transparent,sf::Color::White,sf::Color::Black,3);
+
+	Buttuon playButton("Play", { 160,40 }, 40, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
 	playButton.setPosition({ 800,210 });
 	playButton.setFont(bit8);
-	playButton.setPositiontext({800,208});
-	
+	playButton.setPositiontext({ 800,208 });
+
 
 	Buttuon insertNameButton("Name", { 180,42 }, 40, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
 	insertNameButton.setPosition({ 802,292 });
 	insertNameButton.setFont(bit8);
-	insertNameButton.setPositiontext({ 805,290});
+	insertNameButton.setPositiontext({ 805,290 });
 
 	Buttuon leaderboardButton("Leaderboard", { 385,40 }, 35, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
 	leaderboardButton.setPosition({ 805,390 });
@@ -1132,8 +1134,18 @@ int main()
 	exitbutton.setFont(bit8);
 	exitbutton.setPositiontext({ 798,470 });
 
+	Buttuon backButtonlead("Back", { 130,30 }, 30, sf::Color::Green, sf::Color::White, sf::Color::Black, 3);
+	backButtonlead.setPosition({ 95,672 });
+	backButtonlead.setFont(bit8);
+	backButtonlead.setPositiontext({ 100,670 });
 
+	sf::Texture ledTexture;
+	ledTexture.loadFromFile("leaderbg.png");
+	sf::Sprite bgleader;
+	bgleader.setTexture(ledTexture);
 
+	FILE* fptr;
+	fptr = fopen("test.txt","r");
 	while (window.isOpen())
 	{
 
@@ -1200,7 +1212,7 @@ int main()
 					hpbar = -30;
 					checkcollintime = 0;
 				}
-				if (event.key.code == sf::Keyboard::W && (state == 2||state==3))
+				if (event.key.code == sf::Keyboard::W && (state == 2 || state == 3))
 				{
 					if (state == 2)
 					{
@@ -1247,7 +1259,7 @@ int main()
 					if (state == 2)
 					{
 						pausemenu.MoveDown();
-					pausemenu.GetPressedItem();
+						pausemenu.GetPressedItem();
 					}
 					if (state == 3)
 					{
@@ -1256,7 +1268,7 @@ int main()
 						endMenu.GetPressedItem();
 					}
 				}
-				if (event.key.code == sf::Keyboard::Left &&  state == 3)
+				if (event.key.code == sf::Keyboard::Left && state == 3)
 				{
 					endMenu.MoveUp();
 					endMenu.GetPressedItem();
@@ -1268,7 +1280,7 @@ int main()
 				}
 				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 0)
 				{
-					state=0;
+					state = 0;
 				}
 				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 1)
 				{
@@ -1325,9 +1337,8 @@ int main()
 				insertNameButton.isMouseOver(window);
 				leaderboardButton.isMouseOver(window);
 				exitbutton.isMouseOver(window);
-				
+				backButtonlead.isMouseOver(window);
 				break;
-
 			case sf::Event::MouseButtonPressed:
 				if (state == 1)
 				{
@@ -1345,7 +1356,7 @@ int main()
 						{
 							textbox1.setSelected(false);
 							texttyping = 0;
-							
+
 						}
 						else
 						{
@@ -1359,7 +1370,7 @@ int main()
 						if (state == 1)
 						{
 
-							state = 2;
+							state = 4;
 						}
 					}
 					if (exitbutton.isMouseOver(window))
@@ -1367,17 +1378,24 @@ int main()
 						window.close();
 					}
 				}
+				if (state == 4)
+				{
+					if (backButtonlead.isMouseOver(window))
+					{
+						state = 1;
+					}
+				}
 				break;
 			}
 		}
-		if (state == 0)
+		if (state == 0)//playing
 		{
 			window.setMouseCursorVisible(false);
 			if (restart == 1)
 			{
 				window.clear();
 				highscoretext.setCharacterSize(20);
-				chicksp.setPosition(player.getPosition().x-18,player.getPosition().y-20);
+				chicksp.setPosition(player.getPosition().x - 18, player.getPosition().y - 20);
 				chicksp.setScale(1.371428571428571f, 1.371428571428571f);
 				speed = 1;
 				slowtime = 1;
@@ -1387,18 +1405,18 @@ int main()
 				clock.restart();
 				durationslow = sf::seconds(0.00f);
 				coin = sf::seconds(0.00f);
-				 animationcoin.restart();
+				animationcoin.restart();
 				waterTime = sf::seconds(0.00f);
-				 animationwater.restart();
-				 immue = sf::seconds(0.00f);
-				 immueclock.restart();
+				animationwater.restart();
+				immue = sf::seconds(0.00f);
+				immueclock.restart();
 				signTime = sf::seconds(0.00f);
-				 signclock.restart();
-				 signNotification = 0;
-				 trainrunning = 0;
-				 realspawn = 0;
+				signclock.restart();
+				signNotification = 0;
+				trainrunning = 0;
+				realspawn = 0;
 				spawnTrain = sf::seconds(0.00f);
-				 trainclock.restart();
+				trainclock.restart();
 				trainrunning = 0;
 				animationplayer.restart();
 				standTp = sf::seconds(0.00f);
@@ -2075,7 +2093,7 @@ int main()
 			{
 				if (framechicken <= 2)
 				{
-					chicksp.setTextureRect(sf::IntRect(((framechicken+redchicken)*48.f)+0.0f, ((checksideplayer+redchcikeny)*48.f)+0.0f, 48.f, 48.f));
+					chicksp.setTextureRect(sf::IntRect(((framechicken + redchicken) * 48.f) + 0.0f, ((checksideplayer + redchcikeny) * 48.f) + 0.0f, 48.f, 48.f));
 					framechicken++;
 					if (framechicken == 3)
 					{
@@ -2120,7 +2138,7 @@ int main()
 			{
 				if (frametp <= 12)
 				{
-					tpsp.setTextureRect(sf::IntRect((frametp * 90.f) + 0.0f,  0.0f, 90.f, 90.f));
+					tpsp.setTextureRect(sf::IntRect((frametp * 90.f) + 0.0f, 0.0f, 90.f, 90.f));
 					frametp++;
 					if (frametp == 13)
 					{
@@ -2709,7 +2727,7 @@ int main()
 				}
 				if (die == 3)
 				{
-					state=3;
+					state = 3;
 				}
 			}
 
@@ -3135,9 +3153,9 @@ int main()
 			{
 				platmid.setPosition(posplatmid[i].x, posplatmid[i].y);
 			}
-			chicksp.setPosition(player.getPosition().x-18,player.getPosition().y-20);
-			
-			
+			chicksp.setPosition(player.getPosition().x - 18, player.getPosition().y - 20);
+
+
 			if (player.getGlobalBounds().intersects(endPointbox.getGlobalBounds()))
 			{
 				standTp = clockstandTp.getElapsedTime();
@@ -3150,11 +3168,11 @@ int main()
 			else {
 				clockstandTp.restart();
 			}
-			
+
 			window.setView(view);
 			window.display();
 		}
-		if (state == 1)
+		if (state == 1)//main menu
 		{
 			window.setMouseCursorVisible(true);
 			window.clear();
@@ -3167,10 +3185,10 @@ int main()
 			footSound.stop();
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
-			
+
 			window.draw(bgmenubox);
 			textbox1.drawTo(window);
-		
+
 			exitbutton.drawTO(window);
 			leaderboardButton.drawTO(window);
 			if (clickinsername == 0)
@@ -3180,7 +3198,7 @@ int main()
 			playButton.drawTO(window);
 			window.display();
 		}
-		if (state == 2)
+		if (state == 2)//pasuemenu
 		{
 			window.setMouseCursorVisible(false);
 			music.pause();
@@ -3192,14 +3210,15 @@ int main()
 			footSound.pause();
 			//view.reset(sf::FloatRect(positionview.x, positionview.y, screen.x, screen.y));
 			//window.setView(view);
-			
-			pausemenu.SetPOS(positionview.x,positionview.y);
+
+			pausemenu.SetPOS(positionview.x, positionview.y);
 			pausemenu.draw(window);
 			window.display();
 
 		}
 		if (state == 3)//endgame
 		{
+			
 			window.setMouseCursorVisible(false);
 			alert.pause();
 			trainSound.pause();
@@ -3209,15 +3228,26 @@ int main()
 			footSound.pause();
 
 			stringstream hsend;
-			hsend <<"HighScore"<< '\n' << '\n' <<"    "<<hightDistance;
+			hsend << "HighScore" << '\n' << '\n' << "    " << hightDistance;
 			highscoretext.setString(hsend.str());
 			highscoretext.setCharacterSize(100);
-			highscoretext.setPosition(positionview.x + 145, positionview.y+95);
-			player.move(0.0f,-5.0f);
-			chicksp.setScale(5.f,5.f);
-			chicksp.setPosition(player.getPosition().x-90,player.getPosition().y-90);
+			highscoretext.setPosition(positionview.x + 145, positionview.y + 95);
+			player.move(0.0f, -5.0f);
+			chicksp.setScale(5.f, 5.f);
+			chicksp.setPosition(player.getPosition().x - 90, player.getPosition().y - 90);
 			endMenu.SetPOS(positionview.x, positionview.y);
 			endMenu.draw(window);
+			window.display();
+		}
+		if (state == 4)
+		{
+			window.clear();
+			window.setMouseCursorVisible(true);
+
+			window.draw(bgleader);
+			backButtonlead.drawTO(window);
+			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
+			window.setView(view);
 			window.display();
 		}
 		//cout << state << '\n' <<textbox1.getText();
@@ -3435,7 +3465,7 @@ int main()
 		window.draw(endPointbox);
 		window.draw(tpsp);
 		window.draw(player);
-		
+
 		//draw clock
 		for (i = 0; i <= 2; i++)
 		{
@@ -3485,7 +3515,7 @@ int main()
 			window.draw(scoretext);
 			window.draw(highscoretext);
 		}
-		
+
 	}
 	return 0;
 }
