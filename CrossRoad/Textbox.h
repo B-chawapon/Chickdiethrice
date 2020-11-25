@@ -45,6 +45,10 @@ public:
 		hasLimit = Tof;
 		limit = lim - 1;
 	}
+	void setColor(sf::Color color)
+	{
+		textbox.setFillColor(color);
+	}
 	void setSelected(bool sel)
 	{
 		isSelected = sel;

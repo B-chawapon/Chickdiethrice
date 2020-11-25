@@ -4,6 +4,7 @@
 
 #include<stdio.h>
 #include<sstream>
+#include<string.h>
 
 using namespace std;
 class Buttuon {
@@ -26,8 +27,6 @@ public:
 		button.setOrigin( size.x / 2,size.y / 2 );
 
 	}
-
-	
 	void setFont(sf::Font& font)
 	{
 		text.setFont(font);

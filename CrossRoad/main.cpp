@@ -14,6 +14,7 @@
 #include<vector>
 #include<utility>
 //MAP  WEIGHT =1080   HEIGHT=5000;
+
 using namespace std;
 int j = 0;
 int i = 1;
@@ -1146,6 +1147,8 @@ int main()
 
 	FILE* fptr;
 	fptr = fopen("test.txt","r");
+
+	string nameliveinput;
 	while (window.isOpen())
 	{
 
@@ -1295,21 +1298,6 @@ int main()
 				{
 					state = 1;
 				}
-				if (event.key.code == sf::Keyboard::Enter && state == 1)
-				{
-					if (texttyping == 1)
-					{
-						textbox1.setSelected(false);
-						texttyping = 0;
-
-					}
-					else
-					{
-						textbox1.setSelected(true);
-						texttyping = 1;
-						clickinsername = 1;
-					}
-				}
 				break;
 			case ::sf::Event::KeyReleased:
 				if (event.key.code == sf::Keyboard::W && state == 0)
@@ -1344,32 +1332,51 @@ int main()
 				{
 					if (playButton.isMouseOver(window))
 					{
-						if (state == 1)
+						if (state == 1 && nameliveinput!="")
 						{
 							restart = 1;
 							state = 0;
+							
+						}
+						else
+						{
+							insertNameButton.setTextColor(sf::Color(255, 30, 75, 255));
+							state = 1;
 						}
 					}
 					if (insertNameButton.isMouseOver(window))
 					{
-						if (texttyping == 1)
+						if (clickinsername == 0)
 						{
-							textbox1.setSelected(false);
-							texttyping = 0;
-
+							textbox1.setSelected(true);
+							clickinsername = 1;
+							texttyping = 1;
 						}
 						else
 						{
-							textbox1.setSelected(true);
-							texttyping = 1;
-							clickinsername = 1;
+							textbox1.setColor(sf::Color(255, 100, 5,255));
+							textbox1.setSelected(false);
+							clickinsername = 0;
+							nameliveinput = textbox1.getText();
+							if (nameliveinput == "")
+							{
+								textbox1.setColor(sf::Color::White);
+								insertNameButton.setTextColor(sf::Color(255, 30, 75, 255));
+								playButton.setTextColor(sf::Color::White);
+								texttyping = 0;
+							}
+							else
+							{
+								playButton.setTextColor(sf::Color::Green);
+							}
+							
 						}
 					}
 					if (leaderboardButton.isMouseOver(window))
 					{
 						if (state == 1)
 						{
-
+							insertNameButton.setTextColor(sf::Color::White);
 							state = 4;
 						}
 					}
@@ -1388,12 +1395,15 @@ int main()
 				break;
 			}
 		}
+		cout << nameliveinput << '\n';
+		
 		if (state == 0)//playing
 		{
 			window.setMouseCursorVisible(false);
 			if (restart == 1)
 			{
 				window.clear();
+				highscoretext.setFillColor(sf::Color::White);
 				highscoretext.setCharacterSize(20);
 				chicksp.setPosition(player.getPosition().x - 18, player.getPosition().y - 20);
 				chicksp.setScale(1.371428571428571f, 1.371428571428571f);
@@ -3191,10 +3201,11 @@ int main()
 
 			exitbutton.drawTO(window);
 			leaderboardButton.drawTO(window);
-			if (clickinsername == 0)
+			if (texttyping == 0 )
 			{
 				insertNameButton.drawTO(window);
 			}
+			
 			playButton.drawTO(window);
 			window.display();
 		}
@@ -3232,6 +3243,7 @@ int main()
 			highscoretext.setString(hsend.str());
 			highscoretext.setCharacterSize(100);
 			highscoretext.setPosition(positionview.x + 145, positionview.y + 95);
+			highscoretext.setFillColor(sf::Color::Green);
 			player.move(0.0f, -5.0f);
 			chicksp.setScale(5.f, 5.f);
 			chicksp.setPosition(player.getPosition().x - 90, player.getPosition().y - 90);
