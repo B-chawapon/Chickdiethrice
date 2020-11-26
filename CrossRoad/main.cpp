@@ -2672,11 +2672,10 @@ int main()
 			//Collinsion Train
 			if (player.getGlobalBounds().intersects(hitboxTrain.getGlobalBounds()))
 			{
-				if (hitboxTrain.getPosition().x > 0)
-				{
-					trainSound.stop();
-					staminabar.setSize(sf::Vector2f(27.f, -1));
-				}
+				
+				trainSound.stop();
+				staminabar.setSize(sf::Vector2f(27.f, -1));
+				
 				
 			}
 
@@ -2790,7 +2789,7 @@ int main()
 						redchcikeny = 4;
 						speed -= 0.05;
 						immue = immueclock.restart();
-						/*if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
+						if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
 						{
 							carcrash1.play();
 						}
@@ -2809,7 +2808,7 @@ int main()
 						if (effectSoundCrash == 5 && carcrash5.getStatus() != 2)
 						{
 							carcrash5.play();
-						}*/
+						}
 						break;
 					}
 				}
@@ -3372,6 +3371,7 @@ int main()
 			chicksp.setPosition(player.getPosition().x - 90, player.getPosition().y - 90);
 			endMenu.SetPOS(positionview.x, positionview.y);
 			endMenu.draw(window);
+			window.draw(highscoretext);
 			if (openfile == 0)
 			{
 				userScore.push_back(make_pair(userNum[5], userName[5]));
@@ -3386,8 +3386,8 @@ int main()
 					
 						strcpy(name, userScore[index].second.c_str());
 
-						scoreLead[i] = userScore[index].first;
-						scoreTextLead[i] = userScore[index].second;
+						/*scoreLead[i] = userScore[index].first;
+						scoreTextLead[i] = userScore[index].second;*/
 						fprintf(fptr, "%s %d \n", name, userScore[index].first);
 					
 
@@ -3411,6 +3411,27 @@ int main()
 
 			if (openfile == 0)
 			{
+				fptr = fopen("./bobo.txt", "r");
+				if (fptr == NULL)
+				{
+					cout << "read";
+				}
+				for (index = 0; index < 6; index++)
+				{
+					if (index <= 4)
+					{
+						fscanf(fptr, "%s", &name);
+						userName[index] = name;
+						fscanf(fptr, "%d", &userNum[index]);
+						scoreLead[index] = userNum[index];
+						scoreTextLead[index] = userName[index];
+					}
+				}
+				fclose(fptr);
+
+
+
+
 				leaderText.setStr(scoreTextLead[0]);
 				no2Text.setStr(scoreTextLead[1]);
 				no3Text.setStr(scoreTextLead[2]);
@@ -3653,15 +3674,15 @@ int main()
 			window.draw(woodlogboat2);
 		}
 		//box purple
-		for (i = 0; i <= 5; i++)
+		/*for (i = 0; i <= 5; i++)
 		{
 			purple.setPosition(pospurple[i].x, pospurple[i].y);
 			window.draw(purple);
-		}
-		window.draw(tpbox);
-		window.draw(endPointbox);
+		}*/
+		//window.draw(tpbox);
+		//window.draw(endPointbox);
 		window.draw(tpsp);
-		window.draw(player);
+		//window.draw(player);
 
 		//draw clock
 		for (i = 0; i <= 2; i++)
@@ -3672,7 +3693,7 @@ int main()
 		//draw boots
 		for (i = 0; i <= 2; i++)
 		{
-			if (allowDraw == 0)//1
+			if (allowDraw == 1)//1
 			{
 				posboots[2].x = positionview.x + 450;
 				posboots[2].y = positionview.y;
@@ -3683,7 +3704,7 @@ int main()
 		//draw coin
 		for (i = 0; i <= 25; i++)
 		{
-			if (allowDraw == 0)//1
+			if (allowDraw == 1)//1
 			{
 				poscoins[25].x = positionview.x + 310;
 				poscoins[25].y = positionview.y;
@@ -3705,7 +3726,7 @@ int main()
 		window.draw(nameplayerDisplay);
 		window.draw(staminaSprite);
 		window.draw(staminabar);
-		if (allowDraw == 0)//1
+		if (allowDraw == 1)//1
 		{
 			window.draw(cointext);
 			window.draw(shoetext);
