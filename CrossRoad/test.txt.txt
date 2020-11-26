@@ -1,1 +1,5 @@
-test 123
+bot0 87
+bot1 50
+bot2 25
+bot3 10
+bot4 666

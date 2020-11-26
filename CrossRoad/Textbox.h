@@ -3,6 +3,7 @@
 #include<SFML/Graphics.hpp>
 #include<sstream>
 #include<stdio.h>
+#include<string.h>
 using namespace std;
 
 #define DELETE_KEY 8
@@ -61,6 +62,18 @@ public:
 				newT += t[i];
 			}
 		}
+	}
+	void setStr(string a)
+	{
+		return textbox.setString(a);
+	}
+	void setInt(int k)
+	{
+		stringstream aa;
+			aa << k;
+			string wtf;
+			aa >> wtf;
+		return textbox.setString(wtf);
 	}
 	string getText()
 	{

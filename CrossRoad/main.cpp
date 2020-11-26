@@ -14,7 +14,7 @@
 #include<vector>
 #include<utility>
 //MAP  WEIGHT =1080   HEIGHT=5000;
-
+#define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 int j = 0;
 int i = 1;
@@ -41,6 +41,7 @@ bool collinreturn;
 bool restart;
 bool texttyping = 0;
 bool clickinsername = 0;
+bool openfile = 0;
 float realposcary;
 static const float screenheight = 720.0f;
 static const float sizecary = 65.0f;
@@ -48,7 +49,7 @@ static const float sizecarx = 120.0f;
 
 int side = 1;
 int tempdistance;
-int hightDistance;
+int highDistance;
 int allowDraw = 0;
 
 int checkcollintime = 0;
@@ -57,7 +58,7 @@ int countcollin = 0;
 int die = 0;
 int countchecksign = 0;
 int answer;
-
+int firstopemfile=0;
 int state = 1;
 
 int checkSoundAlert = 0;
@@ -66,6 +67,9 @@ struct checksidexi
 	int checkside;
 }whitex[6], redx[7], yellowx[6], bluex[6], greenx[4];
 int checksidexci;
+
+int scoreLead[6];
+string scoreTextLead[6];
 
 void ResizeView(const sf::RenderWindow& window, sf::View& view);
 float findPosCarY(sf::RectangleShape colorcar, float poscary);
@@ -1112,6 +1116,50 @@ int main()
 	textbox1.setPosition({ 700,270 });
 	textbox1.setLimit(true, 5);
 
+	Textbox leaderText(120, sf::Color::White, true, sf::Color::Black, 3);
+	leaderText.setFont(bit8);
+	leaderText.setPosition({ 230,50 });
+	leaderText.setLimit(true, 5);
+	Textbox scoreLeaderText(110, sf::Color::White, true, sf::Color::Black, 3);
+	scoreLeaderText.setFont(bit8);
+	scoreLeaderText.setPosition({ 500,200 });
+	scoreLeaderText.setLimit(true, 5);
+
+	Textbox no2Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	no2Text.setFont(bit8);
+	no2Text.setPosition({ 530,380 });
+	no2Text.setLimit(true, 5);
+	Textbox scoreno2Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	scoreno2Text.setFont(bit8);
+	scoreno2Text.setPosition({ 800,380 });
+	scoreno2Text.setLimit(true, 5);
+
+	Textbox no3Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	no3Text.setFont(bit8);
+	no3Text.setPosition({ 530,470 });
+	no3Text.setLimit(true, 5);
+	Textbox scoreno3Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	scoreno3Text.setFont(bit8);
+	scoreno3Text.setPosition({ 800,470 });
+	scoreno3Text.setLimit(true, 5);
+
+	Textbox no4Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	no4Text.setFont(bit8);
+	no4Text.setPosition({ 530,560 });
+	no4Text.setLimit(true, 5);
+	Textbox scoreno4Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	scoreno4Text.setFont(bit8);
+	scoreno4Text.setPosition({ 800,560 });
+	scoreno4Text.setLimit(true, 5);
+
+	Textbox no5Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	no5Text.setFont(bit8);
+	no5Text.setPosition({ 530,650 });
+	no5Text.setLimit(true, 5);
+	Textbox scoreno5Text(40, sf::Color::White, true, sf::Color::Black, 3);
+	scoreno5Text.setFont(bit8);
+	scoreno5Text.setPosition({ 800,650 });
+	scoreno5Text.setLimit(true, 5);
 
 
 	Buttuon playButton("Play", { 160,40 }, 40, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
@@ -1145,8 +1193,69 @@ int main()
 	sf::Sprite bgleader;
 	bgleader.setTexture(ledTexture);
 
+	char name[255];
+	string userName[6];
+	int userNum[6];
+	vector<pair<int, string>> userScore;
 	FILE* fptr;
-	fptr = fopen("test.txt","r");
+	int index = 0;
+	int lenstr;
+
+	
+
+	fptr = fopen("./bobo.txt", "r");
+	if (fptr == NULL)
+	{
+		cout << "read";
+	}
+	for (index = 0; index < 6; index++)
+	{
+		if (index <= 4)
+		{
+			fscanf(fptr, "%s", &name);
+			userName[index] = name;
+			fscanf(fptr, "%d", &userNum[index]);
+			scoreLead[index] = userNum[index];
+			scoreTextLead[index] = userName[index];
+			userScore.push_back(make_pair(userNum[index], userName[index]));
+		}
+	}
+	fclose(fptr);
+	/*fptr = fopen("./bobo.txt", "r");
+	if (fptr == NULL)
+	{
+		cout << "read";
+	}
+	for(index=0;index<6;index++)
+	{
+		fscanf(fptr, "%s", &name);
+		userName[index] = name;
+		//userName[5] = "puck2";
+		fscanf(fptr,"%d",&userNum[index]);
+		//userNum[5] = 70;
+		userScore.push_back(make_pair(userNum[index], userName[index]));
+		//cout << userName[index]<< " " << userNum[index] << '\n';
+	}
+	fclose(fptr);
+	sort(userScore.begin(), userScore.end());
+	fptr = fopen("./bobo.txt", "w");
+	if (fptr == NULL)
+	{
+		cout << "write";
+	}
+	for (index = 5; index >=0 ; index--)//index>=1************
+	{
+		strcpy(name,userScore[index].second.c_str());
+		fprintf(fptr,"%s %d\n",name, userScore[index].first);
+
+	}
+	fclose(fptr);
+
+	cout  << '\n';
+	for (index = 5; index>=0; index--)
+	{
+		cout << userScore[index].first << " " << userScore[index].second << '\n';
+	}*/
 
 	string nameliveinput;
 	while (window.isOpen())
@@ -1297,6 +1406,7 @@ int main()
 				if (event.key.code == sf::Keyboard::Enter && state == 3 && endMenu.GetPressedItem() == 1)
 				{
 					state = 1;
+					openfile = 0;
 				}
 				break;
 			case ::sf::Event::KeyReleased:
@@ -1332,7 +1442,7 @@ int main()
 				{
 					if (playButton.isMouseOver(window))
 					{
-						if (state == 1 && nameliveinput!="")
+						if (state == 1 && (nameliveinput!=""||nameliveinput!=" "))
 						{
 							restart = 1;
 							state = 0;
@@ -1358,7 +1468,8 @@ int main()
 							textbox1.setSelected(false);
 							clickinsername = 0;
 							nameliveinput = textbox1.getText();
-							if (nameliveinput == "")
+							cout << userName[5] ;
+							if (nameliveinput == ""||nameliveinput==" ")
 							{
 								textbox1.setColor(sf::Color::White);
 								insertNameButton.setTextColor(sf::Color(255, 30, 75, 255));
@@ -1368,6 +1479,7 @@ int main()
 							else
 							{
 								playButton.setTextColor(sf::Color::Green);
+								
 							}
 							
 						}
@@ -1390,18 +1502,20 @@ int main()
 					if (backButtonlead.isMouseOver(window))
 					{
 						state = 1;
+						openfile = 0;
 					}
 				}
 				break;
 			}
 		}
-		cout << nameliveinput << '\n';
-		
+
+		//cout << userName[5]<<'\n';
 		if (state == 0)//playing
 		{
 			window.setMouseCursorVisible(false);
 			if (restart == 1)
 			{
+				userName[5] = nameliveinput;
 				window.clear();
 				highscoretext.setFillColor(sf::Color::White);
 				highscoretext.setCharacterSize(20);
@@ -1410,7 +1524,7 @@ int main()
 				speed = 1;
 				slowtime = 1;
 				checkslowtime = 0;
-				stackshoes = 0; scorecoins = 0; restart = 0; tempdistance = 0; hightDistance = 0; hpbar = 0; countcollin = 0; die = 0; countchecksign = 0;
+				stackshoes = 0; scorecoins = 0; restart = 0; tempdistance = 0; highDistance = 0; hpbar = 0; countcollin = 0; die = 0; countchecksign = 0;
 				answer = 0;
 				clock.restart();
 				durationslow = sf::seconds(0.00f);
@@ -2066,21 +2180,25 @@ int main()
 			{
 				player.move(0.f, -2.5f * speed);
 				checksideplayer = 3;
+				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 			{
 				player.move(0.f, 2.5f * speed);
 				checksideplayer = 0;
+				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 			{
 				player.move(-2.5f * speed, 0.0f);
 				checksideplayer = 1;
+				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
 				player.move(2.5f * speed, 0.f);
 				checksideplayer = 2;
+				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 			{
@@ -2554,8 +2672,12 @@ int main()
 			//Collinsion Train
 			if (player.getGlobalBounds().intersects(hitboxTrain.getGlobalBounds()))
 			{
-				trainSound.stop();
-				staminabar.setSize(sf::Vector2f(27.f, -1));
+				if (hitboxTrain.getPosition().x > 0)
+				{
+					trainSound.stop();
+					staminabar.setSize(sf::Vector2f(27.f, -1));
+				}
+				
 			}
 
 			//signtrain
@@ -3119,6 +3241,7 @@ int main()
 			stringstream hs, sc, shoec, coinc, nameplayerValue;
 			//printf("%d", s);
 			distance = ((player.getPosition().y + player.getSize().y) - 120);
+			
 			if (distance - tempdistance > 0)
 			{
 				tempdistance = distance;
@@ -3130,16 +3253,15 @@ int main()
 				sc << "Score " << tempdistance;
 				scoretext.setString(sc.str());
 			}
-			if (tempdistance - hightDistance > 0)
+			if (tempdistance - highDistance > 0)
 			{
-				hightDistance = tempdistance;
-				hs << "HighScore " << hightDistance;
+				highDistance = tempdistance;
+				hs << "HighScore " << highDistance;
 			}
 			else
 			{
-				hs << "HighScore " << hightDistance;
+				hs << "HighScore " << highDistance;
 			}
-
 			textbox1.setSelected(false);
 			nameplayerValue << textbox1.getText() << '\n';
 			nameplayerDisplay.setString(nameplayerValue.str());
@@ -3229,7 +3351,7 @@ int main()
 		}
 		if (state == 3)//endgame
 		{
-			
+			cout << userName[5] << '\n';
 			window.setMouseCursorVisible(false);
 			alert.pause();
 			trainSound.pause();
@@ -3237,9 +3359,10 @@ int main()
 			coinSound.pause();
 			bootsSound.pause();
 			footSound.pause();
-
+			
 			stringstream hsend;
-			hsend << "HighScore" << '\n' << '\n' << "    " << hightDistance;
+			hsend << "HighScore" << '\n' << '\n' << "    " << highDistance+(scorecoins*10);
+			userNum[5] = highDistance + (scorecoins * 10);
 			highscoretext.setString(hsend.str());
 			highscoretext.setCharacterSize(100);
 			highscoretext.setPosition(positionview.x + 145, positionview.y + 95);
@@ -3249,15 +3372,77 @@ int main()
 			chicksp.setPosition(player.getPosition().x - 90, player.getPosition().y - 90);
 			endMenu.SetPOS(positionview.x, positionview.y);
 			endMenu.draw(window);
+			if (openfile == 0)
+			{
+				userScore.push_back(make_pair(userNum[5], userName[5]));
+				sort(userScore.begin(), userScore.end());
+				fptr = fopen("./bobo.txt", "w");
+				if (fptr == NULL)
+				{
+					cout << "write";
+				}
+				for (index = 5,i=0;i<=4 &&index >= 1; index--,i++)//index>=1************
+				{
+					
+						strcpy(name, userScore[index].second.c_str());
+
+						scoreLead[i] = userScore[index].first;
+						scoreTextLead[i] = userScore[index].second;
+						fprintf(fptr, "%s %d \n", name, userScore[index].first);
+					
+
+				}
+				fclose(fptr);
+				cout << '\n';
+				for (index = 5; index >= 0; index--)
+				{
+					cout << userScore[index].first << " " << userScore[index].second << '\n';
+				}
+				openfile = 1;
+			}
+
 			window.display();
 		}
-		if (state == 4)
+		
+		if (state == 4)//leaderboard
 		{
 			window.clear();
 			window.setMouseCursorVisible(true);
 
+			if (openfile == 0)
+			{
+				leaderText.setStr(scoreTextLead[0]);
+				no2Text.setStr(scoreTextLead[1]);
+				no3Text.setStr(scoreTextLead[2]);
+				no4Text.setStr(scoreTextLead[3]);
+				no5Text.setStr(scoreTextLead[4]);
+				scoreLeaderText.setInt(scoreLead[0]);
+				scoreno2Text.setInt(scoreLead[1]);
+				scoreno3Text.setInt(scoreLead[2]);
+				scoreno4Text.setInt(scoreLead[3]);
+				scoreno5Text.setInt(scoreLead[4]);
+				for (i = 0; i <= 4; i++)
+				{
+					
+		
+					cout << scoreLead[i] << " " << scoreTextLead[i] << '\n';
+
+				}
+				openfile = 1;
+			}
+			
 			window.draw(bgleader);
 			backButtonlead.drawTO(window);
+			scoreno5Text.drawTo(window);
+			scoreno4Text.drawTo(window);
+			scoreno3Text.drawTo(window);
+			no5Text.drawTo(window);
+			no4Text.drawTo(window);
+			no3Text.drawTo(window);
+			no2Text.drawTo(window);
+			scoreno2Text.drawTo(window);
+			leaderText.drawTo(window);
+			scoreLeaderText.drawTo(window);
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
 			window.display();
@@ -3506,7 +3691,6 @@ int main()
 			itemcoins.setPosition(poscoins[i].x, poscoins[i].y);
 			window.draw(itemcoins);
 		}
-		window.draw(hitboxTrain);
 		//sign
 		for (i = 0; i <= 2; i++)
 		{
@@ -3517,6 +3701,7 @@ int main()
 			}
 		}
 		window.draw(chicksp);
+		window.draw(hitboxTrain);
 		window.draw(nameplayerDisplay);
 		window.draw(staminaSprite);
 		window.draw(staminabar);
