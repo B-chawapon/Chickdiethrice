@@ -37,6 +37,7 @@ int framechicken = 0;
 int checksideplayer = 0;
 int redchicken = 0;
 int redchcikeny = 0;
+
 bool collinreturn;
 bool restart;
 bool texttyping = 0;
@@ -58,7 +59,7 @@ int countcollin = 0;
 int die = 0;
 int countchecksign = 0;
 int answer;
-int firstopemfile=0;
+int firstopemfile = 0;
 int state = 1;
 
 int checkSoundAlert = 0;
@@ -68,6 +69,7 @@ struct checksidexi
 }whitex[6], redx[7], yellowx[6], bluex[6], greenx[4];
 int checksidexci;
 
+int repeat = -1;
 int scoreLead[6];
 string scoreTextLead[6];
 
@@ -106,6 +108,26 @@ int main()
 	chicksp.setTextureRect(sf::IntRect(0.0f, 0.0f, 48.f, 48.f));
 	chicksp.setScale(1.371428571428571f, 1.371428571428571f);
 
+	int framecrash = 0;
+	int checkcrasheffect = 0;
+	int totalcrash = 0;
+	sf::Texture crashtexture;
+	crashtexture.loadFromFile("crash.png");
+	sf::Sprite crashsp[100];
+	for ( totalcrash = 0; totalcrash < 100; totalcrash++)
+	{
+		crashsp[totalcrash].setTexture(crashtexture);
+		crashsp[totalcrash].setTextureRect(sf::IntRect(0.0f, 0.0f, 50.f, 50.f));
+		crashsp[totalcrash].setScale(0.96f, 0.96f);
+		crashsp[totalcrash].setPosition(-99,-99);
+	}
+
+	sf::Texture bloodsctexture;
+	bloodsctexture.loadFromFile("dieeffect.png");
+	sf::Sprite bloodsc;
+	bloodsc.setTexture(bloodsctexture);
+	bloodsc.setPosition(-1080, -720);
+	
 	sf::Vector2f spawnPoint = { 1080 / 2,145.f };
 	sf::Vector2f halfPoint = { 1080 / 2,2400.f };
 	sf::Vector2f bottomPoint = { 1080 / 2,3896.f };
@@ -1020,6 +1042,8 @@ int main()
 	bool realspawn = 0;
 	sf::Time spawnTrain;
 	sf::Clock trainclock;
+	sf::Clock dieclock;
+	sf::Time dieTime;
 
 	sf::SoundBuffer effectcarcrash;
 	effectcarcrash.loadFromFile("carcrash1.wav");
@@ -1194,31 +1218,28 @@ int main()
 	bgleader.setTexture(ledTexture);
 
 	char name[255];
-	string userName[6];
-	int userNum[6];
+	string userName[100];
+	int userNum[100];
 	vector<pair<int, string>> userScore;
 	FILE* fptr;
 	int index = 0;
 	int lenstr;
-
-	
 
 	fptr = fopen("./bobo.txt", "r");
 	if (fptr == NULL)
 	{
 		cout << "read";
 	}
-	for (index = 0; index < 6; index++)
+	for (index = 0; index < 5; index++)
 	{
-		if (index <= 4)
-		{
+		
 			fscanf(fptr, "%s", &name);
 			userName[index] = name;
 			fscanf(fptr, "%d", &userNum[index]);
 			scoreLead[index] = userNum[index];
 			scoreTextLead[index] = userName[index];
 			userScore.push_back(make_pair(userNum[index], userName[index]));
-		}
+		
 	}
 	fclose(fptr);
 	/*fptr = fopen("./bobo.txt", "r");
@@ -1257,7 +1278,7 @@ int main()
 		cout << userScore[index].first << " " << userScore[index].second << '\n';
 	}*/
 
-	string nameliveinput;
+	
 	while (window.isOpen())
 	{
 
@@ -1397,11 +1418,13 @@ int main()
 				if (event.key.code == sf::Keyboard::Enter && state == 2 && pausemenu.GetPressedItem() == 1)
 				{
 					state = 1;
+					repeat--;
 				}
 				if (event.key.code == sf::Keyboard::Enter && state == 3 && endMenu.GetPressedItem() == 0)
 				{
 					state = 0;
 					restart = 1;
+					openfile = 0;
 				}
 				if (event.key.code == sf::Keyboard::Enter && state == 3 && endMenu.GetPressedItem() == 1)
 				{
@@ -1442,11 +1465,11 @@ int main()
 				{
 					if (playButton.isMouseOver(window))
 					{
-						if (state == 1 && (nameliveinput!=""||nameliveinput!=" "))
+						if (state == 1 && (textbox1.getText() != "" && textbox1.getText() != " "))
 						{
 							restart = 1;
 							state = 0;
-							
+
 						}
 						else
 						{
@@ -1464,12 +1487,11 @@ int main()
 						}
 						else
 						{
-							textbox1.setColor(sf::Color(255, 100, 5,255));
+							textbox1.setColor(sf::Color(255,100, 5, 255));
 							textbox1.setSelected(false);
 							clickinsername = 0;
-							nameliveinput = textbox1.getText();
-							cout << userName[5] ;
-							if (nameliveinput == ""||nameliveinput==" ")
+							//cout << userName[5];
+							if (textbox1.getText() == "" || textbox1.getText() == " ")
 							{
 								textbox1.setColor(sf::Color::White);
 								insertNameButton.setTextColor(sf::Color(255, 30, 75, 255));
@@ -1479,9 +1501,9 @@ int main()
 							else
 							{
 								playButton.setTextColor(sf::Color::Green);
-								
+
 							}
-							
+
 						}
 					}
 					if (leaderboardButton.isMouseOver(window))
@@ -1515,7 +1537,19 @@ int main()
 			window.setMouseCursorVisible(false);
 			if (restart == 1)
 			{
-				userName[5] = nameliveinput;
+				redchicken = 0;
+				redchcikeny = 0;
+				staminabar.setSize(sf::Vector2f(27.f, 241.0f ));
+				die = 0;
+				bloodsc.setPosition(-1080,-720);
+				for (totalcrash = 0; totalcrash < 100; totalcrash++)
+				{
+					crashsp[totalcrash].setPosition(-99, -99);
+				}
+				checkcrasheffect=0;
+				repeat++;
+				cout <<'\n'<< "REPEAT " << repeat<<'\n';
+				userName[5+repeat] = textbox1.getText();
 				window.clear();
 				highscoretext.setFillColor(sf::Color::White);
 				highscoretext.setCharacterSize(20);
@@ -1547,6 +1581,8 @@ int main()
 				clockstandTp.restart();
 				playerchange = sf::seconds(0.00f);
 				animationtp.restart();
+				dieclock.restart();
+				dieTime = sf::seconds(0.00f);
 				tptime = sf::seconds(0.00f);
 				player.setFillColor(sf::Color::Green);
 				player.setPosition(spawnPoint);
@@ -2180,25 +2216,25 @@ int main()
 			{
 				player.move(0.f, -2.5f * speed);
 				checksideplayer = 3;
-				
+
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 			{
 				player.move(0.f, 2.5f * speed);
 				checksideplayer = 0;
-				
+
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 			{
 				player.move(-2.5f * speed, 0.0f);
 				checksideplayer = 1;
-				
+
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
 				player.move(2.5f * speed, 0.f);
 				checksideplayer = 2;
-				
+
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 			{
@@ -2672,11 +2708,11 @@ int main()
 			//Collinsion Train
 			if (player.getGlobalBounds().intersects(hitboxTrain.getGlobalBounds()))
 			{
-				
+
 				trainSound.stop();
 				staminabar.setSize(sf::Vector2f(27.f, -1));
-				
-				
+	
+
 			}
 
 			//signtrain
@@ -2736,6 +2772,7 @@ int main()
 			//Collinsion car
 			if (checkcollintime == 0)
 			{
+				
 				for (a = 0; a <= 6; a++)
 				{
 					for (i = 0; i <= 5; i++)
@@ -2789,6 +2826,7 @@ int main()
 						redchcikeny = 4;
 						speed -= 0.05;
 						immue = immueclock.restart();
+						
 						if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
 						{
 							carcrash1.play();
@@ -2809,17 +2847,33 @@ int main()
 						{
 							carcrash5.play();
 						}
+						checkcrasheffect++;
+						//crashdraw[checkcrasheffect] = true;
+						crashsp[checkcrasheffect].setPosition(player.getPosition().x, player.getPosition().y);
+						if (framecrash == 4)
+						{
+							framecrash = 0;
+						}
+						crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * framecrash), 0.0f, 50.f, 50.f));
+						framecrash=rand()%4;
+						
+						
+						
 						break;
 					}
+
 				}
 			}
 			//count collinsion + delay immue
 			if (checkcollintime == 1)
 			{
+				
 				player.setFillColor(sf::Color::Red);
 				immue = immueclock.getElapsedTime();
 				if (immue.asSeconds() > 1.0f)
 				{
+					
+					
 					player.setFillColor(sf::Color::Green);
 					checkcollintime = 0;
 					redchicken = 0;
@@ -2830,6 +2884,7 @@ int main()
 			//stamina bar+ HP+ DEATH
 			if (staminabar.getSize().y > 0)
 			{
+				dieTime = dieclock.getElapsedTime();
 				if (die == 0)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 241.0f - (hpbar * 16.067f)));
@@ -2837,27 +2892,50 @@ int main()
 				if (die == 1)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 160.6666666666667f - (hpbar * 16.067f)));
+					//crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
+					if (dieTime.asSeconds() < 1.0f )
+					{
+						
+						bloodsc.setPosition(positionview.x, positionview.y);
+					}
+					else {
+						bloodsc.setPosition(-1080, -720);
+					}
 				}
 				if (die == 2)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 80.33333333333333f - (hpbar * 16.067f)));
+					//crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
+					if (dieTime.asSeconds() < 1.0f)
+					{
+						
+						bloodsc.setPosition(positionview.x, positionview.y);
+					}
+					else {
+						bloodsc.setPosition(-1080, -720);
+					}
 				}
 			}
 			else {
+				dieclock.restart();
+				
 				hpbar = 0;
 				die += 1;
 				if (die == 1)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 160.6666666666667f));
+					crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
 					player.setPosition(spawnPoint);
 				}
 				if (die == 2)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 80.33333333333333f));
+					crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
 					player.setPosition(spawnPoint);
 				}
 				if (die == 3)
 				{
+					crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
 					state = 3;
 				}
 			}
@@ -3240,7 +3318,7 @@ int main()
 			stringstream hs, sc, shoec, coinc, nameplayerValue;
 			//printf("%d", s);
 			distance = ((player.getPosition().y + player.getSize().y) - 120);
-			
+
 			if (distance - tempdistance > 0)
 			{
 				tempdistance = distance;
@@ -3322,11 +3400,11 @@ int main()
 
 			exitbutton.drawTO(window);
 			leaderboardButton.drawTO(window);
-			if (texttyping == 0 )
+			if (texttyping == 0)
 			{
 				insertNameButton.drawTO(window);
 			}
-			
+
 			playButton.drawTO(window);
 			window.display();
 		}
@@ -3350,7 +3428,7 @@ int main()
 		}
 		if (state == 3)//endgame
 		{
-			cout << userName[5] << '\n';
+			//cout << userName[5] << '\n';
 			window.setMouseCursorVisible(false);
 			alert.pause();
 			trainSound.pause();
@@ -3358,10 +3436,10 @@ int main()
 			coinSound.pause();
 			bootsSound.pause();
 			footSound.pause();
-			
+
 			stringstream hsend;
-			hsend << "HighScore" << '\n' << '\n' << "    " << highDistance+(scorecoins*10);
-			userNum[5] = highDistance + (scorecoins * 10);
+			hsend << "HighScore" << '\n' << '\n' << "    " << highDistance + (scorecoins * 10);
+			userNum[5+repeat] = highDistance + (scorecoins * 10);
 			highscoretext.setString(hsend.str());
 			highscoretext.setCharacterSize(100);
 			highscoretext.setPosition(positionview.x + 145, positionview.y + 95);
@@ -3374,36 +3452,36 @@ int main()
 			window.draw(highscoretext);
 			if (openfile == 0)
 			{
-				userScore.push_back(make_pair(userNum[5], userName[5]));
+				userScore.push_back(make_pair(userNum[5+repeat], userName[5+repeat]));
+				cout << '\n';
+				for (index = 5+repeat; index >= 0; index--)
+				{
+					cout << userScore[index].first << " " << userScore[index].second << "     "<<index <<'\n';
+				}
 				sort(userScore.begin(), userScore.end());
+				cout << '\n';
 				fptr = fopen("./bobo.txt", "w");
 				if (fptr == NULL)
 				{
 					cout << "write";
 				}
-				for (index = 5,i=0;i<=4 &&index >= 1; index--,i++)//index>=1************
+				for (index = 5+repeat, i = 0; i <= 4 && index >= 1+repeat; index--, i++)//index>=1************
 				{
-					
-						strcpy(name, userScore[index].second.c_str());
+					cout << userScore[index].first << " " << userScore[index].second << "     " << index << '\n';
+					strcpy(name, userScore[index].second.c_str());
+					fprintf(fptr, "%s %d \n", name, userScore[index].first);
+					/*scoreLead[i] = userScore[index].first;
+					scoreTextLead[i] = userScore[index].second;*/
 
-						/*scoreLead[i] = userScore[index].first;
-						scoreTextLead[i] = userScore[index].second;*/
-						fprintf(fptr, "%s %d \n", name, userScore[index].first);
-					
 
 				}
 				fclose(fptr);
-				cout << '\n';
-				for (index = 5; index >= 0; index--)
-				{
-					cout << userScore[index].first << " " << userScore[index].second << '\n';
-				}
+				
 				openfile = 1;
 			}
 
 			window.display();
 		}
-		
 		if (state == 4)//leaderboard
 		{
 			window.clear();
@@ -3416,21 +3494,17 @@ int main()
 				{
 					cout << "read";
 				}
-				for (index = 0; index < 6; index++)
+				for (index = 0; index < 5; index++)
 				{
-					if (index <= 4)
-					{
+					
 						fscanf(fptr, "%s", &name);
 						userName[index] = name;
 						fscanf(fptr, "%d", &userNum[index]);
 						scoreLead[index] = userNum[index];
 						scoreTextLead[index] = userName[index];
-					}
+					
 				}
 				fclose(fptr);
-
-
-
 
 				leaderText.setStr(scoreTextLead[0]);
 				no2Text.setStr(scoreTextLead[1]);
@@ -3444,14 +3518,14 @@ int main()
 				scoreno5Text.setInt(scoreLead[4]);
 				for (i = 0; i <= 4; i++)
 				{
-					
-		
-					cout << scoreLead[i] << " " << scoreTextLead[i] << '\n';
+
+
+					cout << scoreLead[i] << " " << scoreTextLead[i] << "     " << i << '\n';
 
 				}
 				openfile = 1;
 			}
-			
+
 			window.draw(bgleader);
 			backButtonlead.drawTO(window);
 			scoreno5Text.drawTo(window);
@@ -3471,6 +3545,11 @@ int main()
 		//cout << state << '\n' <<textbox1.getText();
 		window.draw(platmid);
 		window.draw(mapbox);
+		for(int a =0; a <= checkcrasheffect ; a++)
+		{ 
+			window.draw(crashsp[a]);
+		}
+		
 		//draw white
 		for (a = 0; a <= 5; a++)
 		{
@@ -3683,7 +3762,7 @@ int main()
 		//window.draw(endPointbox);
 		window.draw(tpsp);
 		//window.draw(player);
-
+		
 		//draw clock
 		for (i = 0; i <= 2; i++)
 		{
@@ -3733,6 +3812,7 @@ int main()
 			window.draw(scoretext);
 			window.draw(highscoretext);
 		}
+		window.draw(bloodsc);
 
 	}
 	return 0;
