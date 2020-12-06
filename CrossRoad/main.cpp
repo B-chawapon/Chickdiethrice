@@ -37,6 +37,8 @@ int framechicken = 0;
 int checksideplayer = 0;
 int redchicken = 0;
 int redchcikeny = 0;
+int greenchick = 0;
+int greenchicy = 0;
 
 bool collinreturn;
 bool restart;
@@ -61,7 +63,7 @@ int countchecksign = 0;
 int answer;
 int firstopemfile = 0;
 int state = 1;
-
+int flipwalk = 1;
 int checkSoundAlert = 0;
 struct checksidexi
 {
@@ -420,6 +422,7 @@ int main()
 		}
 
 	}
+	
 	sf::RectangleShape itemboots(sf::Vector2f(40.f, 40.f));
 	sf::Texture textureboots;
 	textureboots.loadFromFile("boots.png");
@@ -439,6 +442,34 @@ int main()
 		}
 	}
 	itemboots.setScale(sf::Vector2f(1.1f, 1.1f));
+
+	bool flip = 0;
+	int framebeer = 0;
+	int totalbeer=0;
+	sf::Texture texturebeer;
+	texturebeer.loadFromFile("beer2.png");
+	sf::Sprite beersp[20];
+	sf::Vector2f posbeer;
+	for (totalbeer = 0; totalbeer < 20; totalbeer++)
+	{
+		beersp[totalbeer].setTexture(texturebeer);
+		beersp[totalbeer].setTextureRect(sf::IntRect(0.0f, 0.0f, 200.f, 200.f));
+		beersp[totalbeer].setScale(0.2f, 0.2f);
+		for (i = 0; i <20; i++)
+		{
+			posbeer.x = rand() % 1000;
+			while (true)
+			{
+				posbeer.y = rand() % 4900;
+				if (posbeer.y > 100.0f)
+				{
+					beersp[i].setPosition(posbeer.x, posbeer.y);
+					break;
+				}
+			}
+		}
+	}
+
 
 	sf::Sprite itemcoins;
 	sf::Texture texturecoins;
@@ -1044,6 +1075,12 @@ int main()
 	sf::Clock trainclock;
 	sf::Clock dieclock;
 	sf::Time dieTime;
+	sf::Clock beerclockframe;
+	sf::Time beerTimeframe;
+	sf::Clock beerclcok;
+	sf::Time beerTime;
+
+	
 
 	sf::SoundBuffer effectcarcrash;
 	effectcarcrash.loadFromFile("carcrash1.wav");
@@ -1242,42 +1279,6 @@ int main()
 		
 	}
 	fclose(fptr);
-	/*fptr = fopen("./bobo.txt", "r");
-	if (fptr == NULL)
-	{
-		cout << "read";
-	}
-	for(index=0;index<6;index++)
-	{
-		fscanf(fptr, "%s", &name);
-		userName[index] = name;
-		//userName[5] = "puck2";
-		fscanf(fptr,"%d",&userNum[index]);
-		//userNum[5] = 70;
-		userScore.push_back(make_pair(userNum[index], userName[index]));
-		//cout << userName[index]<< " " << userNum[index] << '\n';
-	}
-	fclose(fptr);
-	sort(userScore.begin(), userScore.end());
-	fptr = fopen("./bobo.txt", "w");
-	if (fptr == NULL)
-	{
-		cout << "write";
-	}
-	for (index = 5; index >=0 ; index--)//index>=1************
-	{
-		strcpy(name,userScore[index].second.c_str());
-		fprintf(fptr,"%s %d\n",name, userScore[index].first);
-
-	}
-	fclose(fptr);
-
-	cout  << '\n';
-	for (index = 5; index>=0; index--)
-	{
-		cout << userScore[index].first << " " << userScore[index].second << '\n';
-	}*/
-
 	
 	while (window.isOpen())
 	{
@@ -1560,6 +1561,7 @@ int main()
 				checkslowtime = 0;
 				stackshoes = 0; scorecoins = 0; restart = 0; tempdistance = 0; highDistance = 0; hpbar = 0; countcollin = 0; die = 0; countchecksign = 0;
 				answer = 0;
+				
 				clock.restart();
 				durationslow = sf::seconds(0.00f);
 				coin = sf::seconds(0.00f);
@@ -1584,6 +1586,10 @@ int main()
 				dieclock.restart();
 				dieTime = sf::seconds(0.00f);
 				tptime = sf::seconds(0.00f);
+				flip = 0;
+				flipwalk = 1;
+				beerclcok.restart();
+				beerTime = sf::seconds(0.00f);
 				player.setFillColor(sf::Color::Green);
 				player.setPosition(spawnPoint);
 				//reset purple
@@ -2214,27 +2220,30 @@ int main()
 			//player move  //+ Collinsions *************************************************************
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))//2.5
 			{
-				player.move(0.f, -2.5f * speed);
+				player.move(0.f, -2.5f * speed*flipwalk);
 				checksideplayer = 3;
+				greenchicy = 0;
 
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
 			{
-				player.move(0.f, 2.5f * speed);
+				player.move(0.f, 2.5f * speed*flipwalk);
 				checksideplayer = 0;
+				greenchicy = 3;
 
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 			{
-				player.move(-2.5f * speed, 0.0f);
+				player.move(-2.5f * speed*flipwalk, 0.0f);
 				checksideplayer = 1;
+				greenchicy = 2;
 
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 			{
-				player.move(2.5f * speed, 0.f);
+				player.move(2.5f * speed*flipwalk, 0.f);
 				checksideplayer = 2;
-
+				greenchicy = 1;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 			{
@@ -2266,6 +2275,25 @@ int main()
 				}
 				animationplayer.restart();
 			}
+			//animation beer
+			beerTimeframe = beerclockframe.getElapsedTime();
+			if (beerTimeframe.asSeconds() > 0.25f)
+			{
+				if (framebeer <= 3)
+				{
+					for (i = 0; i < 20; i++)
+					{
+						beersp[i].setTextureRect(sf::IntRect(framebeer * 200.f, 0, 200.f, 200.f));
+					}
+					framebeer++;
+					if (framebeer == 4)
+					{
+						framebeer = 0;
+					}
+				}
+				beerclockframe.restart();
+			}
+
 			//animation coins
 			coin = animationcoin.getElapsedTime();
 			if (coin.asSeconds() > 0.15f)
@@ -3269,6 +3297,29 @@ int main()
 					checkslowtime = 0;
 				}
 			}
+			//itembeer
+			for (i = 0; i < 20; i++)
+			{
+				if (Collision(beersp[i].getPosition(), itemboots, player, player))
+				{
+					coinSound.play();
+					scorecoins += 1;
+					beersp[i].setPosition(-100, -100);
+					flipwalk = -1;
+					flip = 1;
+					beerclcok.restart();
+				}
+			}
+			if (flip == 1)
+			{
+				chicksp.setTextureRect(sf::IntRect(((framechicken + greenchicy) * 48.f) + 0.0f, ((checksideplayer + 3) * 48.f) + 0.0f, 48.f, 48.f));
+				beerTime = beerclcok.getElapsedTime();
+				if (beerTime.asSeconds() > 2.0f)
+				{
+					flip = 0;
+					flipwalk = 1;
+				}
+			}
 
 			//itemboots
 			for (i = 0; i <= 1; i++)
@@ -3314,6 +3365,7 @@ int main()
 				poscoins[25].x = -99;
 				poscoins[25].y = -99;
 			}
+		
 
 			stringstream hs, sc, shoec, coinc, nameplayerValue;
 			//printf("%d", s);
@@ -3779,6 +3831,11 @@ int main()
 			}
 			itemboots.setPosition(posboots[i].x, posboots[i].y);
 			window.draw(itemboots);
+		}
+		//draw beer
+		for (i = 0; i <20; i++)
+		{
+			window.draw(beersp[i]);
 		}
 		//draw coin
 		for (i = 0; i <= 25; i++)
