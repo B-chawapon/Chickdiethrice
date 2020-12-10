@@ -1,5 +1,5 @@
 IO 9999 
-bot1 5 
-bot2 4 
-bot3 3
-bot2 2 
+bot6 6 
+bot5 5 
+bot4 4 
+bot3 3 

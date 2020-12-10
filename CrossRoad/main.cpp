@@ -56,7 +56,7 @@ int highDistance;
 int allowDraw = 0;
 
 int checkcollintime = 0;
-int hpbar = 0;
+float hpbar = 0;
 int countcollin = 0;
 int die = 0;
 int countchecksign = 0;
@@ -90,7 +90,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(screen.x, screen.y), "GAME!", sf::Style::Close | sf::Style::Resize);
 
 	sf::Texture bgtexture;
-	bgtexture.loadFromFile("bgmenu.png");
+	bgtexture.loadFromFile("bgmenu2.png");
 	sf::Sprite bgmenubox;
 	bgmenubox.setTexture(bgtexture);
 
@@ -130,7 +130,7 @@ int main()
 	bloodsc.setTexture(bloodsctexture);
 	bloodsc.setPosition(-1080, -720);
 	
-	sf::Vector2f spawnPoint = { 1080 / 2,145.f };
+	sf::Vector2f spawnPoint = { 1080 / 2,100.f };
 	sf::Vector2f halfPoint = { 1080 / 2,2400.f };
 	sf::Vector2f bottomPoint = { 1080 / 2,3896.f };
 	player.setPosition(spawnPoint);
@@ -150,32 +150,6 @@ int main()
 	sf::RectangleShape blue(sf::Vector2f(sizecarx, sizecary));
 	blue.setFillColor(sf::Color::Transparent);
 
-	sf::RectangleShape purple(sf::Vector2f(100.f, 50.f));
-	purple.setFillColor(sf::Color::Magenta);
-	sf::Vector2f pospurple[6];
-	for (i = 0; i <= 5; i++)
-	{
-		if (i == 0)
-		{
-			pospurple[0].x = 500.0f;
-			pospurple[i].y = 755.0f;
-			continue;
-		}
-		if (i >= 1 && i <= 2)
-		{
-			pospurple[1].x = 200.0f;
-			pospurple[2].x = 800.0f;
-			pospurple[i].y = 1845.0f;
-			continue;
-		}
-		if (i >= 3 && i <= 5)
-		{
-			pospurple[3].x = 180.0f;
-			pospurple[4].x = 490.0f;
-			pospurple[5].x = 800.0f;
-			pospurple[i].y = 3335.0f;
-		}
-	}
 
 	sf::RectangleShape river(sf::Vector2f(1080.f, 250.f));//250
 	river.setFillColor(sf::Color::Cyan);
@@ -448,26 +422,24 @@ int main()
 	int totalbeer=0;
 	sf::Texture texturebeer;
 	texturebeer.loadFromFile("beer2.png");
-	sf::Sprite beersp[20];
+	sf::Sprite beersp[12];
 	sf::Vector2f posbeer;
-	for (totalbeer = 0; totalbeer < 20; totalbeer++)
+	for (totalbeer = 0; totalbeer < 12; totalbeer++)
 	{
 		beersp[totalbeer].setTexture(texturebeer);
 		beersp[totalbeer].setTextureRect(sf::IntRect(0.0f, 0.0f, 200.f, 200.f));
 		beersp[totalbeer].setScale(0.2f, 0.2f);
-		for (i = 0; i <20; i++)
+		posbeer.x = rand() % 1000;
+		while (true)
 		{
-			posbeer.x = rand() % 1000;
-			while (true)
-			{
 				posbeer.y = rand() % 4900;
 				if (posbeer.y > 100.0f)
 				{
-					beersp[i].setPosition(posbeer.x, posbeer.y);
+					beersp[totalbeer].setPosition(posbeer.x, posbeer.y);
 					break;
 				}
-			}
 		}
+	
 	}
 
 
@@ -618,25 +590,20 @@ int main()
 		if (whitex[a].checkside == 0)
 		{
 			whitex[a].checkside = 1;
-			for (i = 0; i <= 3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				if (a == 0)
 				{
 					poswhite[a][i].x = -120 - (540 * i);
 					poswhite[a][i].y = 295;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 				if (a == 1)
 				{
 					poswhite[a][i].x = -120 - (540 * i);
 					poswhite[a][i].y = 1370;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
+					
 				}
 				if (a == 2)
 				{
@@ -652,44 +619,32 @@ int main()
 				{
 					poswhite[a][i].x = -120 - (540 * i);
 					poswhite[a][i].y = 3605;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 				if (a == 5)
 				{
 					poswhite[a][i].x = -120 - (540 * i);
 					poswhite[a][i].y = 4400;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 			}
 		}
 		else
 		{
 			whitex[a].checkside = -1;
-			for (i = 0; i <= 3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				if (a == 0)
 				{
 					poswhite[a][i].x = 1080 + (540 * i);
 					poswhite[a][i].y = 295;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 				if (a == 1)
 				{
 					poswhite[a][i].x = 1080 + (540 * i);
 					poswhite[a][i].y = 1370;//470
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 				if (a == 2)
 				{
@@ -705,19 +660,13 @@ int main()
 				{
 					poswhite[a][i].x = 1080 + (540 * i);
 					poswhite[a][i].y = 3605;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 				if (a == 5)
 				{
 					poswhite[a][i].x = 1080 + (540 * i);
 					poswhite[a][i].y = 4400;
-					if (i == 3)
-					{
-						poswhite[a][i].y = -99;
-					}
+					
 				}
 			}
 		}
@@ -1244,7 +1193,7 @@ int main()
 	exitbutton.setFont(bit8);
 	exitbutton.setPositiontext({ 798,470 });
 
-	Buttuon backButtonlead("Back", { 130,30 }, 30, sf::Color::Green, sf::Color::White, sf::Color::Black, 3);
+	Buttuon backButtonlead("Back", { 130,30 }, 30, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
 	backButtonlead.setPosition({ 95,672 });
 	backButtonlead.setFont(bit8);
 	backButtonlead.setPositiontext({ 100,670 });
@@ -1337,10 +1286,7 @@ int main()
 						allowDraw = 0;
 						slowtime = 0.1;
 						speed = 10;
-						/*boat1.setFillColor(sf::Color::Transparent);//White Transparent
-						boat2.setFillColor(sf::Color::Transparent);//White Transparent
-						boat3.setFillColor(sf::Color::Transparent);//White Transparent
-						boat4.setFillColor(sf::Color::Transparent);//White Transparent*/
+						
 					}
 
 					hpbar = -30;
@@ -1592,30 +1538,7 @@ int main()
 				beerTime = sf::seconds(0.00f);
 				player.setFillColor(sf::Color::Green);
 				player.setPosition(spawnPoint);
-				//reset purple
-				for (i = 0; i <= 5; i++)
-				{
-					if (i == 0)
-					{
-						pospurple[0].x = 500.0f;
-						pospurple[i].y = 755.0f;
-						continue;
-					}
-					if (i >= 1 && i <= 2)
-					{
-						pospurple[1].x = 200.0f;
-						pospurple[2].x = 800.0f;
-						pospurple[i].y = 1845.0f;
-						continue;
-					}
-					if (i >= 3 && i <= 5)
-					{
-						pospurple[3].x = 180.0f;
-						pospurple[4].x = 490.0f;
-						pospurple[5].x = 800.0f;
-						pospurple[i].y = 3335.0f;
-					}
-				}
+				
 
 				//reset river
 				for (i = 0; i <= 2; i++)
@@ -1778,25 +1701,19 @@ int main()
 					if (whitex[a].checkside == 0)
 					{
 						whitex[a].checkside = 1;
-						for (i = 0; i <= 3; i++)
+						for (i = 0; i <3; i++)
 						{
 							if (a == 0)
 							{
 								poswhite[a][i].x = -120 - (540 * i);
 								poswhite[a][i].y = 295;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 							if (a == 1)
 							{
 								poswhite[a][i].x = -120 - (540 * i);
 								poswhite[a][i].y = 1370;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 							if (a == 2)
 							{
@@ -1812,44 +1729,32 @@ int main()
 							{
 								poswhite[a][i].x = -120 - (540 * i);
 								poswhite[a][i].y = 3605;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 							if (a == 5)
 							{
 								poswhite[a][i].x = -120 - (540 * i);
 								poswhite[a][i].y = 4400;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 						}
 					}
 					else
 					{
 						whitex[a].checkside = -1;
-						for (i = 0; i <= 3; i++)
+						for (i = 0; i < 3; i++)
 						{
 							if (a == 0)
 							{
 								poswhite[a][i].x = 1080 + (540 * i);
 								poswhite[a][i].y = 295;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 							if (a == 1)
 							{
 								poswhite[a][i].x = 1080 + (540 * i);
 								poswhite[a][i].y = 1370;//470
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 							if (a == 2)
 							{
@@ -1865,19 +1770,13 @@ int main()
 							{
 								poswhite[a][i].x = 1080 + (540 * i);
 								poswhite[a][i].y = 3605;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 							if (a == 5)
 							{
 								poswhite[a][i].x = 1080 + (540 * i);
 								poswhite[a][i].y = 4400;
-								if (i == 3)
-								{
-									poswhite[a][i].y = -99;
-								}
+								
 							}
 						}
 					}
@@ -2250,10 +2149,7 @@ int main()
 				speed = 1;
 				slowtime = 1;
 				stackshoes = 0;
-				/*boat1.setFillColor(sf::Color::Red);//White Transparent
-				boat2.setFillColor(sf::Color::Blue);//White Transparent
-				boat3.setFillColor(sf::Color::Black);//White Transparent
-				boat4.setFillColor(sf::Color::White);//White Transparent*/
+				
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 			{
@@ -2281,7 +2177,7 @@ int main()
 			{
 				if (framebeer <= 3)
 				{
-					for (i = 0; i < 20; i++)
+					for (i = 0; i < 12; i++)
 					{
 						beersp[i].setTextureRect(sf::IntRect(framebeer * 200.f, 0, 200.f, 200.f));
 					}
@@ -2354,7 +2250,7 @@ int main()
 			//white
 			for (a = 0; a <= 5; a++)
 			{
-				for (i = 0; i <= 3; i++)
+				for (i = 0; i < 3; i++)
 				{
 					if (whitex[a].checkside == 1)
 					{
@@ -2968,32 +2864,9 @@ int main()
 				}
 			}
 
-			//COllinsion block purple
-			/*for (i = 0; i <= 5; i++)
-			{
-				if (Collision(pospurple[i], purple, player, player))
-				{
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))//2.5
-					{
-						player.move(0.f, -5.5f * speed * -1);
-					}
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-					{
-						player.move(0.f, 5.5f * speed * -1);
-					}
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-					{
-						player.move(-5.5f * speed * -1, 0.0f);
-					}
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-					{
-						player.move(5.5f * speed * -1, 0.f);
-					}
-				}
-			}*/
 			//Water DAMMMM******************
-			bool checkCol = 0;
-			/*if (Collision(posriver[0], river, player, player))
+			/*bool checkCol = 0;
+			if (Collision(posriver[0], river, player, player))
 			{
 				player.move(0.0f, 0.0f);
 				for (i = 0; i <= 2; i++)
@@ -3112,8 +2985,8 @@ int main()
 					tempdistance = 0;
 					player.setPosition(spawnPoint);
 				}
-			}*/
-
+			}
+			*/
 			//boat1
 			for (i = 0; i <= 8; i++)
 			{
@@ -3298,12 +3171,12 @@ int main()
 				}
 			}
 			//itembeer
-			for (i = 0; i < 20; i++)
+			for (i = 0; i < 12; i++)
 			{
 				if (Collision(beersp[i].getPosition(), itemboots, player, player))
 				{
 					coinSound.play();
-					scorecoins += 1;
+					hpbar += -0.5;
 					beersp[i].setPosition(-100, -100);
 					flipwalk = -1;
 					flip = 1;
@@ -3314,11 +3187,15 @@ int main()
 			{
 				chicksp.setTextureRect(sf::IntRect(((framechicken + greenchicy) * 48.f) + 0.0f, ((checksideplayer + 3) * 48.f) + 0.0f, 48.f, 48.f));
 				beerTime = beerclcok.getElapsedTime();
-				if (beerTime.asSeconds() > 2.0f)
+				if (beerTime.asSeconds() > 0.5f)
 				{
 					flip = 0;
 					flipwalk = 1;
 				}
+			}
+			if (hpbar < 0)
+			{
+				hpbar = 0;
 			}
 
 			//itemboots
@@ -3369,7 +3246,7 @@ int main()
 
 			stringstream hs, sc, shoec, coinc, nameplayerValue;
 			//printf("%d", s);
-			distance = ((player.getPosition().y + player.getSize().y) - 120);
+			distance = ((player.getPosition().y + player.getSize().y)-135 );
 
 			if (distance - tempdistance > 0)
 			{
@@ -3605,7 +3482,7 @@ int main()
 		//draw white
 		for (a = 0; a <= 5; a++)
 		{
-			for (i = 0; i <= 3; i++)
+			for (i = 0; i < 3; i++)
 			{
 				if (whitex[a].checkside == 1)
 				{
@@ -3804,12 +3681,7 @@ int main()
 			window.draw(fishboat);
 			window.draw(woodlogboat2);
 		}
-		//box purple
-		/*for (i = 0; i <= 5; i++)
-		{
-			purple.setPosition(pospurple[i].x, pospurple[i].y);
-			window.draw(purple);
-		}*/
+	
 		//window.draw(tpbox);
 		//window.draw(endPointbox);
 		window.draw(tpsp);
@@ -3833,7 +3705,7 @@ int main()
 			window.draw(itemboots);
 		}
 		//draw beer
-		for (i = 0; i <20; i++)
+		for (i = 0; i <12; i++)
 		{
 			window.draw(beersp[i]);
 		}
