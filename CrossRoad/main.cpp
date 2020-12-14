@@ -22,6 +22,7 @@ int m = 0;
 int s = 0;
 int stackwtfpausemenu = 0;
 int a = 0;//blue
+int checkpont = 0;
 
 float speed = 1;
 float slowtime = 1;
@@ -134,6 +135,7 @@ int main()
 	sf::Vector2f halfPoint = { 1080 / 2,2400.f };
 	sf::Vector2f bottomPoint = { 1080 / 2,3896.f };
 	player.setPosition(spawnPoint);
+	
 
 	sf::RectangleShape white(sf::Vector2f(sizecarx, sizecary));
 	white.setFillColor(sf::Color::Transparent);
@@ -402,8 +404,8 @@ int main()
 	textureboots.loadFromFile("boots.png");
 	itemboots.setTexture(&textureboots);
 	textureboots.setSmooth(true);
-	sf::Vector2f posboots[3];
-	for (i = 0; i <= 1; i++)
+	sf::Vector2f posboots[11];
+	for (i = 0; i <= 9; i++)
 	{
 		posboots[i].x = rand() % 1000;
 		while (true)
@@ -486,28 +488,8 @@ int main()
 	cargreensp.setTextureRect(sf::IntRect(584, 101, 92.f, 65.0f));
 	//carsp.setScale(sf::Vector2f(1.0f, 1.0f));
 
-	sf::RectangleShape platmid(sf::Vector2f(1080.0f, 50.0f));//200
-	platmid.setFillColor(sf::Color::Cyan);
-	sf::Vector2f posplatmid[4];
-	for (i = 0; i <= 3; i++)
-	{
-		if (i == 0)
-		{
-			posplatmid[i].y = 390.0f;//360
-		}
-		if (i == 1)
-		{
-			posplatmid[i].y = 755.0f;//360
-		}
-		if (i == 2)
-		{
-			posplatmid[i].y = 1845.0f;//360
-		}
-		if (i == 3)
-		{
-			posplatmid[i].y = 3335.0f;//360
-		}
-	}
+	
+	
 
 	sf::RectangleShape endPointbox(sf::Vector2f(60, 60));
 	endPointbox.setFillColor(sf::Color::Green);
@@ -578,7 +560,7 @@ int main()
 	nameplayerDisplay.setCharacterSize(20);
 	nameplayerDisplay.setOutlineColor(sf::Color::Black);
 	nameplayerDisplay.setOutlineThickness(2);
-
+	
 	int distance;
 
 	window.setFramerateLimit(60);
@@ -1061,6 +1043,12 @@ int main()
 	carcrash5.setBuffer(effectcarcrash5);
 	carcrash5.setVolume(50);
 
+	sf::SoundBuffer effectcrashchic;
+	effectcrashchic.loadFromFile("crashchic.wav");
+	sf::Sound crashchic;
+	crashchic.setBuffer(effectcrashchic);
+	crashchic.setVolume(50);
+
 	sf::SoundBuffer effectalert;
 	effectalert.loadFromFile("alertcross2.wav");
 	sf::Sound alert;
@@ -1091,6 +1079,18 @@ int main()
 	clockSound.setBuffer(effeclock);
 	clockSound.setVolume(100);
 
+	sf::SoundBuffer effecdrink;
+	effecdrink.loadFromFile("drinkwater.wav");
+	sf::Sound drinkkSound;
+	drinkkSound.setBuffer(effecdrink);
+	drinkkSound.setVolume(100);
+
+	sf::SoundBuffer effectwater;
+	effectwater.loadFromFile("waterdrop.wav");
+	sf::Sound waterdrop;
+	waterdrop.setBuffer(effectwater);
+	waterdrop.setVolume(100);
+
 	int effectSoundCrash = 9;
 
 	sf::Music music;
@@ -1101,10 +1101,10 @@ int main()
 
 
 	sf::SoundBuffer effecfootstep;
-	effecfootstep.loadFromFile("footsteps111.wav");
+	effecfootstep.loadFromFile("footstepchic.wav");//footstepchic footsteps111
 	sf::Sound footSound;
 	footSound.setBuffer(effecfootstep);
-	footSound.setVolume(20);
+	footSound.setVolume(50);
 	footSound.setLoop(true);
 
 	sf::RectangleShape mapbox(sf::Vector2f(1080.f, 4955.f));
@@ -1123,53 +1123,55 @@ int main()
 
 	Textbox textbox1(40, sf::Color::White, false, sf::Color::Black, 3);
 	textbox1.setFont(bit8);
-	textbox1.setPosition({ 700,270 });
-	textbox1.setLimit(true, 5);
+	textbox1.setPosition({ 800,290 });
+	textbox1.setLimit(true, 6);
+	
 
 	Textbox leaderText(120, sf::Color::White, true, sf::Color::Black, 3);
 	leaderText.setFont(bit8);
 	leaderText.setPosition({ 230,50 });
-	leaderText.setLimit(true, 5);
+	leaderText.setLimit(true, 6);
+	
 	Textbox scoreLeaderText(110, sf::Color::White, true, sf::Color::Black, 3);
 	scoreLeaderText.setFont(bit8);
-	scoreLeaderText.setPosition({ 500,200 });
-	scoreLeaderText.setLimit(true, 5);
+	scoreLeaderText.setPosition({ 700,250 });
+	scoreLeaderText.setLimit(true, 6);
 
 	Textbox no2Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	no2Text.setFont(bit8);
 	no2Text.setPosition({ 530,380 });
-	no2Text.setLimit(true, 5);
+	no2Text.setLimit(true, 6);
 	Textbox scoreno2Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	scoreno2Text.setFont(bit8);
 	scoreno2Text.setPosition({ 800,380 });
-	scoreno2Text.setLimit(true, 5);
+	scoreno2Text.setLimit(true, 6);
 
 	Textbox no3Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	no3Text.setFont(bit8);
 	no3Text.setPosition({ 530,470 });
-	no3Text.setLimit(true, 5);
+	no3Text.setLimit(true, 6);
 	Textbox scoreno3Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	scoreno3Text.setFont(bit8);
 	scoreno3Text.setPosition({ 800,470 });
-	scoreno3Text.setLimit(true, 5);
+	scoreno3Text.setLimit(true, 6);
 
 	Textbox no4Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	no4Text.setFont(bit8);
 	no4Text.setPosition({ 530,560 });
-	no4Text.setLimit(true, 5);
+	no4Text.setLimit(true, 6);
 	Textbox scoreno4Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	scoreno4Text.setFont(bit8);
 	scoreno4Text.setPosition({ 800,560 });
-	scoreno4Text.setLimit(true, 5);
+	scoreno4Text.setLimit(true, 6);
 
 	Textbox no5Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	no5Text.setFont(bit8);
 	no5Text.setPosition({ 530,650 });
-	no5Text.setLimit(true, 5);
+	no5Text.setLimit(true, 6);
 	Textbox scoreno5Text(40, sf::Color::White, true, sf::Color::Black, 3);
 	scoreno5Text.setFont(bit8);
 	scoreno5Text.setPosition({ 800,650 });
-	scoreno5Text.setLimit(true, 5);
+	scoreno5Text.setLimit(true, 6);
 
 
 	Buttuon playButton("Play", { 160,40 }, 40, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
@@ -1193,15 +1195,23 @@ int main()
 	exitbutton.setFont(bit8);
 	exitbutton.setPositiontext({ 798,470 });
 
+	Buttuon creditbutton("Credit", { 130,40 }, 25, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
+	creditbutton.setPosition({ 100,675 });
+	creditbutton.setFont(bit8);
+	creditbutton.setPositiontext({ 100,680 });
+
 	Buttuon backButtonlead("Back", { 130,30 }, 30, sf::Color::Transparent, sf::Color::White, sf::Color::Black, 3);
-	backButtonlead.setPosition({ 95,672 });
 	backButtonlead.setFont(bit8);
-	backButtonlead.setPositiontext({ 100,670 });
 
 	sf::Texture ledTexture;
 	ledTexture.loadFromFile("leaderbg.png");
 	sf::Sprite bgleader;
 	bgleader.setTexture(ledTexture);
+
+	sf::Texture creditTexture;
+	creditTexture.loadFromFile("credit.png");
+	sf::Sprite bgcredit;
+	bgcredit.setTexture(creditTexture);
 
 	char name[255];
 	string userName[100];
@@ -1275,6 +1285,19 @@ int main()
 				}
 				if (event.key.code == sf::Keyboard::R && state == 0)
 				{
+					
+					if (allowDraw == 0)
+					{
+						allowDraw = 1;
+						
+					}
+					else
+					{
+						allowDraw = 0;
+					}
+				}
+				if (event.key.code == sf::Keyboard::Y && state == 0)
+				{
 					//slowtime = 0.1;//0.1
 					if (allowDraw == 0)
 					{
@@ -1286,7 +1309,7 @@ int main()
 						allowDraw = 0;
 						slowtime = 0.1;
 						speed = 10;
-						
+
 					}
 
 					hpbar = -30;
@@ -1406,13 +1429,14 @@ int main()
 				leaderboardButton.isMouseOver(window);
 				exitbutton.isMouseOver(window);
 				backButtonlead.isMouseOver(window);
+				creditbutton.isMouseOver(window);
 				break;
 			case sf::Event::MouseButtonPressed:
 				if (state == 1)
 				{
 					if (playButton.isMouseOver(window))
 					{
-						if (state == 1 && (textbox1.getText() != "" && textbox1.getText() != " "))
+						if ((textbox1.getText() != "" && textbox1.getText() != " "))
 						{
 							restart = 1;
 							state = 0;
@@ -1455,12 +1479,14 @@ int main()
 					}
 					if (leaderboardButton.isMouseOver(window))
 					{
-						if (state == 1)
-						{
-							insertNameButton.setTextColor(sf::Color::White);
 							state = 4;
-						}
+						
 					}
+					if (creditbutton.isMouseOver(window))
+					{
+						state = 5;
+					}
+
 					if (exitbutton.isMouseOver(window))
 					{
 						window.close();
@@ -1468,12 +1494,26 @@ int main()
 				}
 				if (state == 4)
 				{
+					backButtonlead.setPosition({ 95,672 });
+					backButtonlead.setPositiontext({ 100,670 });
 					if (backButtonlead.isMouseOver(window))
 					{
 						state = 1;
 						openfile = 0;
 					}
 				}
+				if (state == 5)
+				{
+					backButtonlead.setPosition({ 95,472 });
+					backButtonlead.setPositiontext({ 100,470 });
+
+					if (backButtonlead.isMouseOver(window))
+					{
+						state = 1;
+						
+					}
+				}
+				
 				break;
 			}
 		}
@@ -1484,6 +1524,8 @@ int main()
 			window.setMouseCursorVisible(false);
 			if (restart == 1)
 			{
+				checkpont = 0;
+				spawnPoint = { 1080 / 2,100.f };
 				redchicken = 0;
 				redchcikeny = 0;
 				staminabar.setSize(sf::Vector2f(27.f, 241.0f ));
@@ -1649,7 +1691,7 @@ int main()
 
 				}
 				//reset boots
-				for (i = 0; i <= 1; i++)
+				for (i = 0; i <=9; i++)
 				{
 					posboots[i].x = rand() % 1000;
 					while (true)
@@ -1674,26 +1716,7 @@ int main()
 						}
 					}
 				}
-				//rest plat mid
-				for (i = 0; i <= 3; i++)
-				{
-					if (i == 0)
-					{
-						posplatmid[i].y = 390.0f;//360
-					}
-					if (i == 1)
-					{
-						posplatmid[i].y = 755.0f;//360
-					}
-					if (i == 2)
-					{
-						posplatmid[i].y = 1845.0f;//360
-					}
-					if (i == 3)
-					{
-						posplatmid[i].y = 3335.0f;//360
-					}
-				}
+				
 				//reset poswhite
 				for (a = 0; a <= 5; a++)
 				{
@@ -2235,6 +2258,34 @@ int main()
 				}
 				animationtp.restart();
 			}
+
+
+			if (player.getPosition().y > 940 && player.getPosition().y<1025 && checkpont==0)
+			{
+				spawnPoint = { 1080 / 2,760 };
+				checkpont = 1;
+			}
+			else if (player.getPosition().y > 1280 && player.getPosition().y < 1390 && checkpont == 1)
+			{
+				spawnPoint = { 1080 / 2,1300 };
+				checkpont = 2;
+			}
+			else if (player.getPosition().y > 2410 && player.getPosition().y < 2513 && checkpont == 2)
+			{
+				spawnPoint = { 1080 / 2,2420 };
+				checkpont = 3;
+			}
+			else if (player.getPosition().y > 2770 && player.getPosition().y < 2855 && checkpont == 3)
+			{
+				spawnPoint = { 1080 / 2,2800 };
+				checkpont = 4;
+			}
+			else if (player.getPosition().y > 3900 && player.getPosition().y < 4050 && checkpont == 4)
+			{
+				spawnPoint = { 1080 / 2,3950 };
+			}
+
+
 			positionview.y = player.getPosition().y + 10 - (screen.y / 2);
 			positionview.x = 0;
 			if (positionview.y < 0)
@@ -2246,6 +2297,9 @@ int main()
 				positionview.y = 4235;
 			}
 			view.reset(sf::FloatRect(positionview.x, positionview.y, screen.x, screen.y));
+
+
+
 
 			//white
 			for (a = 0; a <= 5; a++)
@@ -2618,7 +2672,7 @@ int main()
 				{
 					trainSound.stop();
 					spawnTrain = trainclock.getElapsedTime();
-					if (spawnTrain.asSeconds() > 10.0f)//10.00f
+					if (spawnTrain.asSeconds() > 5.0f)//10.00f
 					{
 						hitboxTrain.setPosition(-4520, findPosCarY(hitboxTrain, hitboxTrain.getPosition().y)/*2534*/);//-4320
 						trainrunning = 0;
@@ -2635,7 +2689,8 @@ int main()
 
 				trainSound.stop();
 				staminabar.setSize(sf::Vector2f(27.f, -1));
-	
+				spawnPoint = { 1080 / 2,100.f };
+				checkpont = 0;
 
 			}
 
@@ -2690,9 +2745,6 @@ int main()
 				}
 			}
 
-			//hitboxTrain.setPosition(-4210, 50);//-4320
-			//hitboxTrain.move(50.0f, 0.0f);
-
 			//Collinsion car
 			if (checkcollintime == 0)
 			{
@@ -2703,40 +2755,35 @@ int main()
 					{
 						if (Collision(posblue[a][i], blue, player, player))
 						{
-							//player.setPosition(spawnPoint);
-							//speed -= 0.005;
+						
 							checkcollintime = 1;
 							effectSoundCrash = 1;
 							break;
 						}
 						if (Collision(poswhite[a][i], white, player, player))
 						{
-							//player.setPosition(spawnPoint);
-							//speed -= 0.005;
+							
 							checkcollintime = 1;
 							effectSoundCrash = 2;
 							break;
 						}
 						if (Collision(posred[a][i], red, player, player))
 						{
-							//player.setPosition(spawnPoint);
-							//speed -= 0.005;
+							
 							checkcollintime = 1;
 							effectSoundCrash = 3;
 							break;
 						}
 						if (Collision(posyellow[a][i], yellow, player, player))
 						{
-							//player.setPosition(spawnPoint);
-							//speed -= 0.005;
+							
 							checkcollintime = 1;
 							effectSoundCrash = 4;
 							break;
 						}
 						if (Collision(posgreen[a][i], green, player, player))
 						{
-							//player.setPosition(spawnPoint);
-							//speed -= 0.005;
+							
 							checkcollintime = 1;
 							effectSoundCrash = 5;
 							break;
@@ -2750,6 +2797,7 @@ int main()
 						redchcikeny = 4;
 						speed -= 0.05;
 						immue = immueclock.restart();
+						crashchic.play();
 						
 						if (effectSoundCrash == 1 && carcrash1.getStatus() != 2)
 						{
@@ -2772,7 +2820,6 @@ int main()
 							carcrash5.play();
 						}
 						checkcrasheffect++;
-						//crashdraw[checkcrasheffect] = true;
 						crashsp[checkcrasheffect].setPosition(player.getPosition().x, player.getPosition().y);
 						if (framecrash == 4)
 						{
@@ -2816,7 +2863,6 @@ int main()
 				if (die == 1)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 160.6666666666667f - (hpbar * 16.067f)));
-					//crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
 					if (dieTime.asSeconds() < 1.0f )
 					{
 						
@@ -2829,7 +2875,6 @@ int main()
 				if (die == 2)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 80.33333333333333f - (hpbar * 16.067f)));
-					//crashsp[checkcrasheffect].setTextureRect(sf::IntRect((50 * 4), 0.0f, 50.f, 50.f));
 					if (dieTime.asSeconds() < 1.0f)
 					{
 						
@@ -2842,9 +2887,10 @@ int main()
 			}
 			else {
 				dieclock.restart();
-				
 				hpbar = 0;
 				die += 1;
+				speed = 1;
+				stackshoes =0;
 				if (die == 1)
 				{
 					staminabar.setSize(sf::Vector2f(27.f, 160.6666666666667f));
@@ -2864,8 +2910,9 @@ int main()
 				}
 			}
 
+			cout << '\n' << player.getPosition().y;
 			//Water DAMMMM******************
-			/*bool checkCol = 0;
+			bool checkCol = 0;
 			if (Collision(posriver[0], river, player, player))
 			{
 				player.move(0.0f, 0.0f);
@@ -2903,6 +2950,9 @@ int main()
 				{
 					distance = 0;
 					tempdistance = 0;
+					
+						waterdrop.play();
+					
 					player.setPosition(spawnPoint);
 				}
 			}
@@ -2943,6 +2993,7 @@ int main()
 				{
 					distance = 0;
 					tempdistance = 0;
+					waterdrop.play();
 					player.setPosition(spawnPoint);
 				}
 			}
@@ -2983,10 +3034,11 @@ int main()
 				{
 					distance = 0;
 					tempdistance = 0;
+					waterdrop.play();
 					player.setPosition(spawnPoint);
 				}
 			}
-			*/
+			
 			//boat1
 			for (i = 0; i <= 8; i++)
 			{
@@ -3017,7 +3069,7 @@ int main()
 						posboat[i].x = -200;
 					}
 					else {
-						posboat[i].x += 7.2f * slowtime;
+						posboat[i].x += 6.8f * slowtime;
 					}
 				}
 			}
@@ -3109,7 +3161,7 @@ int main()
 						posboat4[i].x = 1700;
 					}
 					else {
-						posboat4[i].x -= 6.5f * slowtime;
+						posboat4[i].x -= 6.0f * slowtime;
 					}
 				}
 				if (i >= 4 && i <= 5)
@@ -3119,7 +3171,7 @@ int main()
 						posboat4[i].x = 1700;
 					}
 					else {
-						posboat4[i].x -= 8.5f * slowtime;
+						posboat4[i].x -= 7.5f * slowtime;
 					}
 				}
 			}
@@ -3144,7 +3196,7 @@ int main()
 				if ((player.getPosition().x + player.getSize().x > posclock[i].x) && (player.getPosition().x < posclock[i].x + itemclock.getSize().x)        // player's horizontal range can touch the platform
 					&& (player.getPosition().y + player.getSize().y > posclock[i].y) && (player.getPosition().y < posclock[i].y + itemclock.getSize().y))// player's vertical   range can touch the platform
 				{
-					slowtime = 0.3;
+					slowtime = 0.35;
 					checkslowtime = 1;
 					clock.restart();
 					posclock[i].x = rand() % 1000;
@@ -3163,7 +3215,7 @@ int main()
 			{
 				durationslow = clock.getElapsedTime();
 				//printf("%f\n", durationslow.asSeconds());
-				if (durationslow.asSeconds() > 0.9f)
+				if (durationslow.asSeconds() > 1.0f)
 				{
 					clockSound.stop();
 					slowtime = 1;
@@ -3181,11 +3233,12 @@ int main()
 					flipwalk = -1;
 					flip = 1;
 					beerclcok.restart();
+					drinkkSound.play();
 				}
 			}
 			if (flip == 1)
 			{
-				chicksp.setTextureRect(sf::IntRect(((framechicken + greenchicy) * 48.f) + 0.0f, ((checksideplayer + 3) * 48.f) + 0.0f, 48.f, 48.f));
+				chicksp.setTextureRect(sf::IntRect(rand()%12*48.f, (rand()%8 * 48.f) + 0.0f, 48.f, 48.f));
 				beerTime = beerclcok.getElapsedTime();
 				if (beerTime.asSeconds() > 0.5f)
 				{
@@ -3199,19 +3252,15 @@ int main()
 			}
 
 			//itemboots
-			for (i = 0; i <= 1; i++)
+			for (i = 0; i <= 9; i++)
 			{
 				if ((player.getPosition().x + player.getSize().x > posboots[i].x) && (player.getPosition().x < posboots[i].x + itemboots.getSize().x)        // player's horizontal range can touch the platform
 					&& (player.getPosition().y + player.getSize().y > posboots[i].y) && (player.getPosition().y < posboots[i].y + itemboots.getSize().y))// player's vertical   range can touch the platform
 				{
 					bootsSound.play();
-					if (stackshoes >= 6)//6
+					stackshoes += 1;
+					if (stackshoes <= 6)//6
 					{
-						speed += 0;
-					}
-					else
-					{
-						stackshoes += 1;
 						speed += 0.075;
 					}
 					posboots[i].x = rand() % 1000;
@@ -3224,10 +3273,9 @@ int main()
 						}
 					}
 				}
-				posboots[2].x = -99;
-				posboots[2].y = -99;
+				
 			}
-
+			cout << '\n' << speed;
 			//itemcoins
 			for (i = 0; i <= 24; i++)
 			{
@@ -3239,8 +3287,7 @@ int main()
 					poscoins[i].x = -100;
 					poscoins[i].y = -100;
 				}
-				poscoins[25].x = -99;
-				poscoins[25].y = -99;
+				
 			}
 		
 
@@ -3287,10 +3334,7 @@ int main()
 
 			staminabar.setPosition(33.3f, positionview.y + 710.5f);
 			staminaSprite.setPosition(8, positionview.y + 520);
-			for (i = 0; i <= 3; i++)
-			{
-				platmid.setPosition(posplatmid[i].x, posplatmid[i].y);
-			}
+		
 			chicksp.setPosition(player.getPosition().x - 18, player.getPosition().y - 20);
 
 
@@ -3325,8 +3369,9 @@ int main()
 			window.setView(view);
 
 			window.draw(bgmenubox);
+			textbox1.setOrg();
 			textbox1.drawTo(window);
-
+			creditbutton.drawTO(window);
 			exitbutton.drawTO(window);
 			leaderboardButton.drawTO(window);
 			if (texttyping == 0)
@@ -3466,13 +3511,21 @@ int main()
 			no2Text.drawTo(window);
 			scoreno2Text.drawTo(window);
 			leaderText.drawTo(window);
+			scoreLeaderText.setOrg();
 			scoreLeaderText.drawTo(window);
 			view.reset(sf::FloatRect(0, 0, screen.x, screen.y));
 			window.setView(view);
 			window.display();
 		}
+		if (state == 5)//credit
+		{
+			window.clear();
+			window.draw(bgcredit);
+			backButtonlead.drawTO(window);
+			window.display();
+		}
 		//cout << state << '\n' <<textbox1.getText();
-		window.draw(platmid);
+		
 		window.draw(mapbox);
 		for(int a =0; a <= checkcrasheffect ; a++)
 		{ 
@@ -3694,12 +3747,16 @@ int main()
 			window.draw(itemclock);
 		}
 		//draw boots
-		for (i = 0; i <= 2; i++)
+		for (i = 0; i <=10; i++)
 		{
 			if (allowDraw == 1)//1
 			{
-				posboots[2].x = positionview.x + 450;
-				posboots[2].y = positionview.y;
+				posboots[10].x = positionview.x + 450;
+				posboots[10].y = positionview.y;
+			}
+			else {
+				posboots[10].x = -99;
+				posboots[10].y = -99;
 			}
 			itemboots.setPosition(posboots[i].x, posboots[i].y);
 			window.draw(itemboots);
@@ -3716,6 +3773,10 @@ int main()
 			{
 				poscoins[25].x = positionview.x + 310;
 				poscoins[25].y = positionview.y;
+			}
+			else {
+				poscoins[25].x = -99;
+				poscoins[25].y = -99;
 			}
 			itemcoins.setPosition(poscoins[i].x, poscoins[i].y);
 			window.draw(itemcoins);

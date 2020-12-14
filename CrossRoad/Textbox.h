@@ -23,6 +23,8 @@ public:
 		textbox.setFillColor(color);
 		textbox.setOutlineColor(outline);
 		textbox.setOutlineThickness(sizeoutline);
+		
+
 		isSelected = sel;
 		if (sel)
 		{
@@ -33,6 +35,7 @@ public:
 			textbox.setString("");
 		}
 	}
+	
 	void setFont(sf::Font& font)
 	{
 		textbox.setFont(font);
@@ -63,6 +66,10 @@ public:
 			}
 		}
 	}
+	void setOrg()
+	{
+		return textbox.setOrigin(textbox.getGlobalBounds().width / 2, textbox.getGlobalBounds().height / 2);
+	}
 	void setStr(string a)
 	{
 		return textbox.setString(a);
@@ -81,6 +88,7 @@ public:
 	}
 	void drawTo(sf::RenderWindow& window)
 	{
+		//textbox.setOrigin(textbox.getGlobalBounds().width / 2, textbox.getGlobalBounds().height / 2);
 		window.draw(textbox);
 	}
 	void typeOn(sf::Event input)

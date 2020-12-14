@@ -1,5 +1,5 @@
-IO 9999 
-bot6 6 
+abcdef 123
 bot5 5 
-bot4 4 
-bot3 3 
+bot4 4
+bot3 3
+bot2 2
