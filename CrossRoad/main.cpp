@@ -1094,7 +1094,7 @@ int main()
 	int effectSoundCrash = 9;
 
 	sf::Music music;
-	if (!music.openFromFile("soundsonicbg2.wav"))
+	if (!music.openFromFile("sonicbg22.wav"))
 		return -1; // error
 	music.setVolume(100);//60
 	music.setLoop(true);
