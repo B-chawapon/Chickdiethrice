@@ -910,63 +910,54 @@ C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(2908,69): warning C4
           [
               T=int
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3197,21): warning C4305: '=': truncation from 'double' to 'float'
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3200,29): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3199,21): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3202,29): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3203,30): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3205,30): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3239,88): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3241,88): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=int
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3239,82): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3241,82): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=int
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3239,74): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3241,74): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=int
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3239,49): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3241,49): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=int
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3262,21): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3264,29): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3264,21): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3266,29): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3267,30): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3269,30): warning C4244: '=': conversion from 'int' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3294,61): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3296,61): warning C4244: '=': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3366,51): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-          with
-          [
-              T=int
-          ]
-          and
-          [
-              T=float
-          ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3366,41): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3368,51): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=int
@@ -975,7 +966,7 @@ C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3366,41): warning C4
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3514,51): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3368,41): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=int
@@ -984,7 +975,16 @@ C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3514,51): warning C4
           [
               T=float
           ]
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3514,41): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3516,51): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3516,41): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
           with
           [
               T=int
@@ -994,7 +994,7 @@ C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3514,41): warning C4
               T=float
           ]
 C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(1222,6): warning C4101: 'lenstr': unreferenced local variable
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3815,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3827,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3830): warning C4715: 'findPosCarY': not all control paths return a value
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3817,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3829,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Chawapon\source\repos\CrossRoad\CrossRoad\main.cpp(3832): warning C4715: 'findPosCarY': not all control paths return a value
   CrossRoad.vcxproj -> C:\Users\Chawapon\source\repos\CrossRoad\x64\Debug\CrossRoad.exe

@@ -1,5 +1,5 @@
-abcdef 123
+abcdef 123 
+bot6 6
 bot5 5 
-bot4 4
-bot3 3
-bot2 2
+bot4 4 
+bot3 3 

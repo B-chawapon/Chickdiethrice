@@ -1109,7 +1109,7 @@ int main()
 
 	sf::RectangleShape mapbox(sf::Vector2f(1080.f, 4955.f));
 	sf::Texture texturemap;
-	texturemap.loadFromFile("map.png");
+	texturemap.loadFromFile("map2.png");
 	mapbox.setTexture(&texturemap);
 	//texturemap.setSmooth(true);
 
