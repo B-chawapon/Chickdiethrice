@@ -84,6 +84,7 @@ bool changeVolumeSign(float playery, float trainy, float limitupper, float limit
 sf::Vector2f positionview;
 int main()
 {
+	
 	struct checksidexi;
 	srand(time(NULL));
 
@@ -126,7 +127,7 @@ int main()
 	}
 
 	sf::Texture bloodsctexture;
-	bloodsctexture.loadFromFile("dieeffect.png");
+	bloodsctexture.loadFromFile("blood.png");
 	sf::Sprite bloodsc;
 	bloodsc.setTexture(bloodsctexture);
 	bloodsc.setPosition(-1080, -720);

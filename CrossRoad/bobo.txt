@@ -1,5 +1,5 @@
-abcdef 123 
-bot6 6
-bot5 5 
-bot4 4 
-bot3 3 
+num2 4953 
+python 4916 
+hello 4900 
+bravo 4851 
+test 4844 
